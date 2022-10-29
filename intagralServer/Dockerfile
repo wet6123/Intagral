@@ -17,4 +17,4 @@ ARG JAR_FILE=build/libs/intagral-0.0.1-SNAPSHOT.jar
 ADD ${JAR_FILE} a304.jar
 
 # Run the jar file
-ENTRYPOINT ["java","-jar","/a304.jar"]
+ENTRYPOINT ["java","-jar","/a304.jar", "--spring.profiles.active=prod"]
