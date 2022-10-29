@@ -1,0 +1,21 @@
+server:
+  port: 8080
+  servlet:
+    contextPath: /
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+spring:
+  config:
+    import:
+      - classpath:/db-config.yaml
+  jpa:
+    hibernate:
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy
+      ddl-auto: none
+  devtools:
+    livereload:
+      enabled: true
