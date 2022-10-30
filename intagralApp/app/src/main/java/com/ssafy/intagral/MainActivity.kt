@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         val signInButton = findViewById<SignInButton>(R.id.sign_in_button)
         signInButton.setSize(SignInButton.SIZE_STANDARD)
 
-        findViewById(R.id.sign_in_button).setOnClickListener(this);
+        signInButton.setOnClickListener(this)
 
         // Configure sign-in to request the user's ID, email address, and basic
         // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
