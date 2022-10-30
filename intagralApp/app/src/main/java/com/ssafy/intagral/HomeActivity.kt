@@ -30,9 +30,9 @@ class HomeActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         //전달받은 인텐트에서 extra 정보 확인 후 화면에 출력
-        val userEmail = intent.getStringExtra("user")
+        val userEmail = intent.getStringExtra("userEmail")
         binding.testUserEmailView.text = userEmail
-
+        binding.testUserNameView.text = intent.getStringExtra("userName")
         //돌아가기 버튼 클릭하면 MainActivity로 넘어간다
         binding.returnButton.setOnClickListener{
 

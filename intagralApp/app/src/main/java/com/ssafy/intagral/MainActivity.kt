@@ -82,7 +82,8 @@ class MainActivity : AppCompatActivity() {
     private fun updateUI(account: GoogleSignInAccount){
         println("updateUI 시작")
         val intent = Intent(this, HomeActivity::class.java)
-        intent.putExtra("user",account.email)
+        intent.putExtra("userEmail",account.email)
+        intent.putExtra("userName",account.displayName)
         startActivity(intent) //단방향 이동
     }
 
