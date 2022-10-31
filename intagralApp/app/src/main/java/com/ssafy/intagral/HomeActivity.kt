@@ -2,11 +2,14 @@ package com.ssafy.intagral
 
 import android.app.Activity
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Button
-import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.tasks.OnCompleteListener
 import com.ssafy.intagral.databinding.ActivityHomeBinding
+
 
 class HomeActivity : AppCompatActivity() {
 
@@ -15,6 +18,7 @@ class HomeActivity : AppCompatActivity() {
 
     //viewBinding
     private lateinit var binding : ActivityHomeBinding
+    private lateinit var mGoogleSignInClient : GoogleSignInClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,15 +37,30 @@ class HomeActivity : AppCompatActivity() {
         val userEmail = intent.getStringExtra("userEmail")
         binding.testUserEmailView.text = userEmail
         binding.testUserNameView.text = intent.getStringExtra("userName")
+
+
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
+        mGoogleSignInClient = this.let { GoogleSignIn.getClient(it, gso) }
+
         //돌아가기 버튼 클릭하면 MainActivity로 넘어간다
         binding.returnButton.setOnClickListener{
-
-            //돌아가기 전 데이터 전달 가능
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("test_to_main","testIntent_to_main")
-            setResult(Activity.RESULT_OK, intent)
-
+            logout()
+            //revokeAccess()
             finish() //HomeActivity 종료
         }
+    }
+    private fun logout() {
+        mGoogleSignInClient.signOut()
+            .addOnCompleteListener(this) {
+                // 로그아웃 성공시 실행
+                // 로그아웃 이후의 이벤트들(토스트 메세지, 화면 종료)을 여기서 수행하면 됨
+            }
+    }
+
+    private fun revokeAccess() {
+        mGoogleSignInClient.revokeAccess()
+            .addOnCompleteListener(this) {
+                // ...
+            }
     }
 }

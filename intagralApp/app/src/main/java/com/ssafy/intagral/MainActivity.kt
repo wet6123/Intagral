@@ -1,12 +1,9 @@
 package com.ssafy.intagral
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -16,7 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.ssafy.intagral.databinding.ActivityMainBinding
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -114,7 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     private var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         println("result launcher 시작")
-        if (result.resultCode == 1) {
+        if (result.resultCode == RESULT_OK) { //originally 1
             val data: Intent? = result.data
             val task: Task<GoogleSignInAccount> =
                 GoogleSignIn.getSignedInAccountFromIntent(data)
