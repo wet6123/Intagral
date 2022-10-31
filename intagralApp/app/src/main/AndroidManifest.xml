@@ -14,21 +14,7 @@
         android:theme="@style/Theme.Intagral"
         tools:targetApi="31">
         <activity
-            android:name=".HomeActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".MainMenuActivity"
-            android:exported="false">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
-            android:name=".ui.upload.UploadActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
