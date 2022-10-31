@@ -1,12 +1,24 @@
 package com.ssafy.intagral.ui.upload
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
+import android.os.Environment
+import android.provider.MediaStore
+import android.view.*
+import android.widget.ImageView
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentPhotoPickerBinding
+import java.io.File
+import java.text.SimpleDateFormat
+import java.util.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,12 +36,24 @@ class PhotoPicker : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentPhotoPickerBinding
+    private lateinit var cameraLauncher : ActivityResultLauncher<Intent>
+    private lateinit var currentPhotoFile : File
+    private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
+        }
+
+        cameraLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()){ result ->
+            if(result.resultCode == Activity.RESULT_OK){
+                println("captured!!!")
+                val bitmap : Bitmap = BitmapFactory.decodeFile(currentPhotoFile.absolutePath)
+                imageView.setImageBitmap(bitmap)
+            }
         }
     }
 
@@ -39,14 +63,63 @@ class PhotoPicker : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPhotoPickerBinding.inflate(inflater, container, false)
+        imageView = binding.imageView2
+        imageView.setOnClickListener{
+            it.showContextMenu()
+        }
+        registerForContextMenu(imageView)
         return binding.root
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        activity?.menuInflater?.inflate(R.menu.photo_picker_menu, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.photo_picker_capture -> {
+                capture()
+            }
+            R.id.photo_picker_album -> {
+                println("album clicked!!!")
+            }
+            else -> {
+
+            }
+        }
+        return super.onContextItemSelected(item)
     }
 
     // View 생성이 완료 되었으며 UI 초기화 작업 진행
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+    }
 
-        // binding.~~~
+    //이미지 파일 생성
+    private fun createImageFile(): File {
+        val timestamp : String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
+        val storageDir : File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
+        return File.createTempFile("JPEG_${timestamp}_",".jpeg",storageDir).apply {
+            currentPhotoFile = this
+        }
+    }
+
+    // 카메라 실행
+    private fun capture(){
+        context?.also{
+            val photoUri : Uri = FileProvider.getUriForFile(
+                it,
+                "com.ssafy.intagral.provider",
+                createImageFile()
+            )
+            val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            cameraLauncher.launch(intent)
+        }
     }
 
     // 프레그먼트가 생성돼서 해당 프레그먼트가 액티비티에 추가되기 전에 인자를 첨부하기 위해 companion object 사용
