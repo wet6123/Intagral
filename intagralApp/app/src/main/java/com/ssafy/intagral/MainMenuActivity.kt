@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.FragmentTransaction
+import androidx.transition.FragmentTransitionSupport
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -12,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
+import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
 
 class MainMenuActivity : AppCompatActivity() {
@@ -33,6 +35,12 @@ class MainMenuActivity : AppCompatActivity() {
                 finish()
             }
         }
+        setHome()
+    }
+    private fun setHome() {
+        println("setHome")
+        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
     }
 
     inner class BottomTabListener : NavigationBarView.OnItemSelectedListener{
