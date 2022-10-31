@@ -28,6 +28,14 @@ spring:
 logging:
   level:
     root: INFO
-    org.sringframework.boot: DEBUG
-    org.sringframework.security: DEBUG
-    com.a304.intagral: DEBUG
+    org:
+      sringframework:
+        boot: DEBUG
+        security: DEBUG
+      hibernate:
+        type:
+          descriptor:
+            sql: trace
+    com:
+      a304:
+        intagral: DEBUG
