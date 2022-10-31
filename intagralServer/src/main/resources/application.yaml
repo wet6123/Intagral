@@ -20,3 +20,10 @@ spring:
   devtools:
     livereload:
       enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.sringframework.boot: DEBUG
+    org.sringframework.security: DEBUG
+    com.a304.intagral: DEBUG
