@@ -34,8 +34,9 @@ class MainMenuActivity : AppCompatActivity() {
                 logout()
                 finish()
             }
+            setHome()
         }
-        setHome()
+
     }
     private fun setHome() {
         println("setHome")
