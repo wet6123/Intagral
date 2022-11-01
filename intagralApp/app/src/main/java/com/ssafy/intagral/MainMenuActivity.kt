@@ -73,6 +73,15 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
+    fun changeFragment(index: Int) {
+        val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
+        when(index) {
+            1 -> {
+                supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
+            }
+        }
+    }
+
     private fun logout() {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this) {
