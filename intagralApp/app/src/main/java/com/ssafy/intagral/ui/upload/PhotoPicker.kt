@@ -4,12 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.graphics.ImageDecoder
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -36,6 +39,7 @@ class PhotoPicker : Fragment() {
     private var param2: String? = null
 
     private lateinit var binding: FragmentPhotoPickerBinding
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher : ActivityResultLauncher<Intent>
     private lateinit var currentPhotoFile : File
     private lateinit var imageView: ImageView
@@ -48,11 +52,33 @@ class PhotoPicker : Fragment() {
         }
 
         cameraLauncher = registerForActivityResult(
-            ActivityResultContracts.StartActivityForResult()){ result ->
+            ActivityResultContracts.StartActivityForResult()
+        ){ result ->
             if(result.resultCode == Activity.RESULT_OK){
-                println("captured!!!")
+                Toast.makeText(context, "captured!!!", Toast.LENGTH_SHORT).show();
                 val bitmap : Bitmap = BitmapFactory.decodeFile(currentPhotoFile.absolutePath)
                 imageView.setImageBitmap(bitmap)
+            }
+        }
+        galleryLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ){
+            if(it.resultCode == Activity.RESULT_OK){
+                Toast.makeText(context, "get photo from gallery", Toast.LENGTH_SHORT).show();
+                val photoUri : Uri? = it.data?.data
+                photoUri?.also{
+                    if(Build.VERSION.SDK_INT < 28) {
+                        val bitmap = MediaStore.Images.Media.getBitmap(
+                            requireActivity().contentResolver,
+                            photoUri
+                        )
+                        imageView?.setImageBitmap(bitmap)
+                    } else {
+                        val source = ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
+                        val bitmap = ImageDecoder.decodeBitmap(source)
+                        imageView?.setImageBitmap(bitmap)
+                    }
+                }
             }
         }
     }
@@ -86,7 +112,7 @@ class PhotoPicker : Fragment() {
                 capture()
             }
             R.id.photo_picker_album -> {
-                println("album clicked!!!")
+                getImageFromGallery()
             }
             else -> {
 
@@ -120,6 +146,13 @@ class PhotoPicker : Fragment() {
             val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
             cameraLauncher.launch(intent)
         }
+    }
+
+    // 갤러리 실행
+    private fun getImageFromGallery(){
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("image/*")
+        galleryLauncher.launch(intent)
     }
 
     // 프레그먼트가 생성돼서 해당 프레그먼트가 액티비티에 추가되기 전에 인자를 첨부하기 위해 companion object 사용
