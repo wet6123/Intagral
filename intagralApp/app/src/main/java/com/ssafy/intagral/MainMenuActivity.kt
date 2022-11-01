@@ -1,6 +1,6 @@
 package com.ssafy.intagral
 
-import android.content.Intent
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -21,13 +21,23 @@ import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.ui.home.SearchFragment
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
+import org.pytorch.LiteModuleLoader
+import org.pytorch.Module
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class MainMenuActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainMenuBinding
     private lateinit var mGoogleSignInClient : GoogleSignInClient
+
+    lateinit var mModule : Module
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mModule = LiteModuleLoader.load(assetFilePath(this, "best.opti.ptl"))
+
         setContentView(R.layout.activity_main_menu)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).build()
@@ -121,5 +131,28 @@ class MainMenuActivity : AppCompatActivity() {
                 // 로그아웃 이후의 이벤트들(토스트 메세지, 화면 종료)을 여기서 수행하면 됨
                 finish()
             }
+    }
+
+
+    /**
+     * asset
+     */
+    @Throws(IOException::class)
+    fun assetFilePath(context: Context, assetName: String?): String? {
+        val file = File(context.filesDir, assetName)
+        if (file.exists() && file.length() > 0) {
+            return file.absolutePath
+        }
+        context.assets.open(assetName!!).use { `is` ->
+            FileOutputStream(file).use { os ->
+                val buffer = ByteArray(4 * 1024)
+                var read: Int
+                while (`is`.read(buffer).also { read = it } != -1) {
+                    os.write(buffer, 0, read)
+                }
+                os.flush()
+            }
+            return file.absolutePath
+        }
     }
 }

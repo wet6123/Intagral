@@ -71,6 +71,8 @@ obj/
 /out/
 
 # User-specific configurations
+.idea
+.idea/
 .idea/caches/
 .idea/libraries/
 .idea/shelf/
@@ -95,8 +97,6 @@ obj/
 .idea/gradle.xml
 .idea/jarRepositories.xml
 .idea/navEditor.xml
-.idea
-.idea/
 
 # Legacy Eclipse project files
 .classpath
@@ -134,5 +134,9 @@ fabric.properties
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar
+
+# pytorch model
+*.pt
+*.ptl
 
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio

@@ -53,4 +53,11 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.14.2'
     implementation "androidx.fragment:fragment-ktx:1.5.4"
 
+    // pytorch
+    implementation 'org.pytorch:pytorch_android_lite:1.12.1'
+    implementation 'org.pytorch:pytorch_android_torchvision_lite:1.10.0'
+
+    // coroutine
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
+
 }
