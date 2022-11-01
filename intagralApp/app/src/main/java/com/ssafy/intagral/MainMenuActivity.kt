@@ -39,7 +39,6 @@ class MainMenuActivity : AppCompatActivity() {
 
     }
     private fun setHome() {
-        println("setHome")
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
     }
@@ -51,6 +50,7 @@ class MainMenuActivity : AppCompatActivity() {
             when(item?.itemId){
                 R.id.nav_home -> {
                     println("home selected!")
+                    setHome()
                 }
                 R.id.nav_upload -> {
                     println("upload selected!")
