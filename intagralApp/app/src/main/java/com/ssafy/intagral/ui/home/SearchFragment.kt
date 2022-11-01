@@ -13,8 +13,7 @@ import com.ssafy.intagral.data.ProfileSimpleItem
 import com.ssafy.intagral.ui.common.profile.ProfileSimpleAdapter
 
 class SearchFragment: Fragment() {
-    val imgPath = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
-    //simple profile list
+//simple profile list
     private lateinit var profileSimpleRecyclerView: RecyclerView
     private lateinit var profileSimpleAdapter : ProfileSimpleAdapter
     private var profileSimpleList = mutableListOf<ProfileSimpleItem>()
