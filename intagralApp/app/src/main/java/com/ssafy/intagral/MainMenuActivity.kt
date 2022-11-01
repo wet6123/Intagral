@@ -13,6 +13,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.home.HomeFragment
+import com.ssafy.intagral.ui.home.SearchFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
 
 class MainMenuActivity : AppCompatActivity() {
@@ -57,6 +58,8 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.nav_hashtag -> {
                     println("hashtag selected!")
+                    val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.menu_frame_layout, SearchFragment()).commit()
                 }
                 R.id.nav_mypage -> {
                     println("mypage selected!")

@@ -4,6 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/home_searchbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:searchIcon="@drawable/ic_baseline_search_24"
+        app:closeIcon="@drawable/ic_baseline_close_24"
+    />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_filter_tag_list"
         android:background="@color/black"
