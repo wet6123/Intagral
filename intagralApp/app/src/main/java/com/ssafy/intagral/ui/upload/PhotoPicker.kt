@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
+import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -41,7 +42,7 @@ class PhotoPicker : Fragment() {
     private lateinit var binding: FragmentPhotoPickerBinding
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher : ActivityResultLauncher<Intent>
-    private lateinit var currentPhotoFile : File
+    private var currentPhotoFile : File? = null
     private lateinit var imageView: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,8 +57,10 @@ class PhotoPicker : Fragment() {
         ){ result ->
             if(result.resultCode == Activity.RESULT_OK){
                 Toast.makeText(context, "captured!!!", Toast.LENGTH_SHORT).show();
-                val bitmap : Bitmap = BitmapFactory.decodeFile(currentPhotoFile.absolutePath)
-                imageView.setImageBitmap(bitmap)
+                currentPhotoFile?.also {
+                    val bitmap : Bitmap = BitmapFactory.decodeFile(it.absolutePath)
+                    imageView.setImageBitmap(bitmap)
+                }
             }
         }
         galleryLauncher = registerForActivityResult(
@@ -73,10 +76,12 @@ class PhotoPicker : Fragment() {
                             photoUri
                         )
                         imageView?.setImageBitmap(bitmap)
+                        currentPhotoFile = File(photoUri.path)
                     } else {
                         val source = ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
                         val bitmap = ImageDecoder.decodeBitmap(source)
                         imageView?.setImageBitmap(bitmap)
+                        currentPhotoFile = File(photoUri.path)
                     }
                 }
             }
@@ -94,6 +99,21 @@ class PhotoPicker : Fragment() {
             it.showContextMenu()
         }
         registerForContextMenu(imageView)
+
+        binding.button.setOnClickListener {
+            currentPhotoFile?.also {
+                requireActivity()
+                    .supportFragmentManager
+                    .beginTransaction()
+                    .replace(
+                        R.id.menu_frame_layout,
+                        ResultTagListFragment.newInstance(arrayListOf("default"), binding.imageView2.drawable as BitmapDrawable)
+                    ).commit()
+            }
+            if(currentPhotoFile == null){
+                Toast.makeText(requireContext(), "사진을 선택해주세요", Toast.LENGTH_SHORT).show()
+            }
+        }
         return binding.root
     }
 
