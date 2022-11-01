@@ -3,7 +3,6 @@ package com.ssafy.intagral
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.view.View
 import androidx.fragment.app.FragmentTransaction
 import androidx.transition.FragmentTransitionSupport
 import com.google.android.gms.auth.api.signin.GoogleSignIn
