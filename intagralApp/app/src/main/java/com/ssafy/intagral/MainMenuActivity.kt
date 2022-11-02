@@ -4,15 +4,13 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.FragmentTransaction
-import androidx.transition.FragmentTransitionSupport
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.home.HomeFragment
+import com.ssafy.intagral.ui.home.SearchFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
 
 class MainMenuActivity : AppCompatActivity() {
@@ -29,10 +27,6 @@ class MainMenuActivity : AppCompatActivity() {
         binding = ActivityMainMenuBinding.inflate(layoutInflater).apply {
             setContentView(root)
             menuBottomNavigation.setOnItemSelectedListener(BottomTabListener())
-            tmpLogoutBtn.setOnClickListener{
-                logout()
-                finish()
-            }
             setHome()
         }
 
@@ -57,6 +51,8 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.nav_hashtag -> {
                     println("hashtag selected!")
+                    val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    transaction.replace(R.id.menu_frame_layout, SearchFragment()).commit()
                 }
                 R.id.nav_mypage -> {
                     println("mypage selected!")
@@ -67,6 +63,19 @@ class MainMenuActivity : AppCompatActivity() {
             }
 
             return true
+        }
+    }
+
+    fun changeFragment(index: Int) {
+        val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
+        when(index) {
+            1 -> {
+                supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
+            }
+            2 -> {
+                logout()
+                finish()
+            }
         }
     }
 

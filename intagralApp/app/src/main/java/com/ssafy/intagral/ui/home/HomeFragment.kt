@@ -1,14 +1,20 @@
 package com.ssafy.intagral.ui.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.FilterTagItem
 import com.ssafy.intagral.data.PostItem
@@ -67,6 +73,18 @@ class HomeFragment : Fragment() {
                 layoutManager = LinearLayoutManager(it, RecyclerView.HORIZONTAL, false)
             }
         }
+
+//tool bar
+//TODO: refactor toolbar
+        view.findViewById<ImageView>(R.id.home_toolbar_search_icon).setOnClickListener {
+            val activity = activity as MainMenuActivity
+            activity.changeFragment(1)
+        }
+        view.findViewById<Button>(R.id.tmpLogoutBtn).setOnClickListener {
+            val activity = activity as MainMenuActivity
+            activity.changeFragment(2)
+        }
+
         return view
     }
 }
