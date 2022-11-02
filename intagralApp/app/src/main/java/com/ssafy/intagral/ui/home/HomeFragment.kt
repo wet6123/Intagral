@@ -33,11 +33,6 @@ class HomeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
 
-// inflate top bar
-        val toolbar:Toolbar = view.findViewById(R.id.home_toolbar)
-        toolbar.inflateMenu(R.menu.top_bar)
-        toolbar.setOnMenuItemClickListener(TopBarListener())
-
 //post list fragment
         postRecyclerView = view.findViewById(R.id.fragment_post_list)
 
@@ -79,26 +74,5 @@ class HomeFragment : Fragment() {
 
 
         return view
-    }
-
-    inner class TopBarListener : Toolbar.OnMenuItemClickListener {
-        override fun onMenuItemClick(item: MenuItem?): Boolean {
-            val activity = activity as MainMenuActivity
-            when (item?.itemId) {
-                R.id.toolbar_logo -> {
-                    activity.changeFragment(3)
-                }
-                R.id.toolbar_search_icon -> {
-                    activity.changeFragment(1)
-                }
-                R.id.toolbar_tmpLogout -> {
-                    activity.changeFragment(2)
-                }
-                else -> {
-
-                }
-            }
-            return true
-        }
     }
 }
