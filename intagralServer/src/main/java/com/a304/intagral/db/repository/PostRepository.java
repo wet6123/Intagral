@@ -1,6 +1,7 @@
 package com.a304.intagral.db.repository;
 
 import com.a304.intagral.db.entity.Post;
+import com.a304.intagral.dto.PostDto;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -9,9 +10,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<Post, Long> {
+public interface PostRepository extends JpaRepository<PostDto, Long> {
 
-    Optional<Post> findByPostId(Long postId);
+    PostDto findByPostIdEquals(Long postId);
 
     //JPQL하다가 화남
 

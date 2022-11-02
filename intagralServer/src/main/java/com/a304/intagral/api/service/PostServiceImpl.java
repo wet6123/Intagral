@@ -1,7 +1,7 @@
 package com.a304.intagral.api.service;
 
-import com.a304.intagral.db.entity.Post;
 import com.a304.intagral.db.repository.PostRepository;
+import com.a304.intagral.dto.PostDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ public class PostServiceImpl implements PostService {
     PostRepository postRepository;
 
     @Override
-    public Post getPostByPostId(Long postId) {
-        return postRepository.findByPostId(postId).get();
+    public PostDto getPostByPostId(Long postId) {
+        return postRepository.findByPostIdEquals(postId);
     }
 }
