@@ -9,15 +9,14 @@
         android:layout_height="40dp"
         app:showAsAction="always"/>
     <item
-        android:id="@+id/toolbar_search_icon"
+        android:id="@+id/search_fragment"
         android:title="search_icon"
         android:icon="@drawable/ic_baseline_search_24"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        app:showAsAction="always"/>
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
     <item
         android:id="@+id/toolbar_tmpLogout"
         android:title="tmp_logout"
         android:icon="@drawable/ic_baseline_logout_24"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         app:showAsAction="always"/>
 </menu>
