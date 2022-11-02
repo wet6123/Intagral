@@ -10,9 +10,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PostRepository extends JpaRepository<PostDto, Long> {
+public interface PostRepository extends JpaRepository<Post, Long> {
 
-    PostDto findByPostIdEquals(Long postId);
+    Post findByPostIdEquals(Long postId);
+
+
+
 
     //JPQL하다가 화남
 
