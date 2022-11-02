@@ -24,7 +24,7 @@ public class UserController {
             log.debug("auth token: "+tokenRes.getAccessToken());
             return ResponseEntity.ok(UserLoginPostRes.of(200, "Success", tokenRes.getAccessToken()));
         } catch(RuntimeException e) {
-            return ResponseEntity.status(500).body(BaseResponseBody.of(500, "Internal Server Error"));
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
     }
 
