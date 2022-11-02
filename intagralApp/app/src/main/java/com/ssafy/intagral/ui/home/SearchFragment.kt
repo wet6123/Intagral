@@ -21,6 +21,8 @@ class SearchFragment: Fragment() {
         val view = inflater.inflate(R.layout.fragment_search, container, false)
 
 //simple profile list fragment
+//TODO: binding simple profiles when typing text into searchbar
+//TODO: pop elements from profileSimpleList when click event (on simple profile) occurs
         profileSimpleRecyclerView = view.findViewById(R.id.search_profile_simple_list)
 
         profileSimpleList.add(ProfileSimpleItem(1, "user", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp", "한유연1", true))
