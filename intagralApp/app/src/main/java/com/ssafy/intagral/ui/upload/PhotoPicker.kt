@@ -5,6 +5,7 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.ImageDecoder
+import android.graphics.Matrix
 import android.graphics.drawable.BitmapDrawable
 import android.net.Uri
 import android.os.Build
@@ -17,6 +18,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
+import androidx.exifinterface.media.ExifInterface
 import androidx.fragment.app.Fragment
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentPhotoPickerBinding
@@ -58,8 +60,16 @@ class PhotoPicker : Fragment() {
             if(result.resultCode == Activity.RESULT_OK){
                 Toast.makeText(context, "captured!!!", Toast.LENGTH_SHORT).show();
                 currentPhotoFile?.also {
-                    val bitmap : Bitmap = BitmapFactory.decodeFile(it.absolutePath)
-                    imageView.setImageBitmap(bitmap)
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        val source = ImageDecoder.createSource(requireActivity().contentResolver, Uri.fromFile(it))
+                        ImageDecoder.decodeBitmap(source)?.let {
+                            imageView.setImageBitmap(resizeBitmap(it, 900f, 0f))
+                        }
+                    } else {
+                        MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, Uri.fromFile(it))?.let {
+                            imageView.setImageBitmap(resizeBitmap(it, 900f, 0f))
+                        }
+                    }
                 }
             }
         }
@@ -153,6 +163,27 @@ class PhotoPicker : Fragment() {
         return File.createTempFile("JPEG_${timestamp}_",".jpeg",storageDir).apply {
             currentPhotoFile = this
         }
+    }
+
+    private fun resizeBitmap(src: Bitmap, size: Float, angle: Float): Bitmap {
+        val width = src.width
+        val height = src.height
+        var newWidth = 0f
+        var newHeight = 0f
+        if(width > height) {
+            newWidth = size
+            newHeight = height.toFloat() * (newWidth / width.toFloat())
+        } else {
+            newHeight = size
+            newWidth = width.toFloat() * (newHeight / height.toFloat())
+        }
+        val scaleWidth = newWidth.toFloat() / width
+        val scaleHeight = newHeight.toFloat() / height
+        val matrix = Matrix()
+        matrix.postRotate(angle);
+        matrix.postScale(scaleWidth, scaleHeight)
+        val resizedBitmap = Bitmap.createBitmap(src, 0, 0, width, height, matrix, true)
+        return resizedBitmap
     }
 
     // 카메라 실행

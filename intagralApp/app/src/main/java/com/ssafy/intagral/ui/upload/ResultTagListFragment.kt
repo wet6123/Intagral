@@ -117,7 +117,14 @@ class ResultTagListFragment : Fragment() {
                     }
                 }
                 R.id.publish_preview_button -> {
-                    Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.menu_frame_layout,
+                            UploadPreviewFragment.newInstance()
+                        ).commit()
                 }
                 R.id.tag_result_publish_button -> {
                     Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
