@@ -29,7 +29,7 @@ logging:
   level:
     root: INFO
     org:
-      sringframework:
+      springframework:
         boot: DEBUG
         security: DEBUG
       hibernate:
