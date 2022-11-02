@@ -3,7 +3,11 @@ package com.ssafy.intagral
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -29,11 +33,16 @@ class MainMenuActivity : AppCompatActivity() {
         binding = ActivityMainMenuBinding.inflate(layoutInflater).apply {
             setContentView(root)
             menuBottomNavigation.setOnItemSelectedListener(BottomTabListener())
-            menuTopToolbar.inflateMenu(R.menu.top_bar)
+
+            menuTopToolbar.inflateMenu(R.menu.top_bar)  //setSupportActionBar
             menuTopToolbar.setOnMenuItemClickListener(TopBarListener())
-            setHome()
+
+            val searchItem = menuTopToolbar.menu.findItem(R.id.toolbar_search_icon).actionView as SearchView
+            searchItem.setOnQueryTextListener(SearchListener())
+
         }
 
+        setHome()
     }
     private fun setHome() {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
@@ -77,6 +86,7 @@ class MainMenuActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.toolbar_search_icon -> {
+
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
                 }
                 R.id.toolbar_tmpLogout -> {
@@ -93,7 +103,16 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-
+    inner class SearchListener : OnQueryTextListener{
+        override fun onQueryTextSubmit(query: String?): Boolean {
+            Toast.makeText(this@MainMenuActivity,"on query text submit", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        override fun onQueryTextChange(newText: String?): Boolean {
+            Toast.makeText(this@MainMenuActivity,"on query text change", Toast.LENGTH_SHORT).show()
+            return false
+        }
+    }
     private fun logout() {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this) {
