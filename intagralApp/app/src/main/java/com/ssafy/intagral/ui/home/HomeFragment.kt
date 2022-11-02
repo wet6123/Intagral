@@ -1,16 +1,14 @@
 package com.ssafy.intagral.ui.home
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ImageView
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
+import android.widget.Toolbar.OnMenuItemClickListener
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -34,6 +32,11 @@ class HomeFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
+
+// inflate top bar
+        val toolbar:Toolbar = view.findViewById(R.id.home_toolbar)
+        toolbar.inflateMenu(R.menu.top_bar)
+        toolbar.setOnMenuItemClickListener(TopBarListener())
 
 //post list fragment
         postRecyclerView = view.findViewById(R.id.fragment_post_list)
@@ -74,17 +77,28 @@ class HomeFragment : Fragment() {
             }
         }
 
-//tool bar
-//TODO: refactor toolbar
-        view.findViewById<ImageView>(R.id.home_toolbar_search_icon).setOnClickListener {
-            val activity = activity as MainMenuActivity
-            activity.changeFragment(1)
-        }
-        view.findViewById<Button>(R.id.tmpLogoutBtn).setOnClickListener {
-            val activity = activity as MainMenuActivity
-            activity.changeFragment(2)
-        }
 
         return view
+    }
+
+    inner class TopBarListener : Toolbar.OnMenuItemClickListener {
+        override fun onMenuItemClick(item: MenuItem?): Boolean {
+            val activity = activity as MainMenuActivity
+            when (item?.itemId) {
+                R.id.toolbar_logo -> {
+                    activity.changeFragment(3)
+                }
+                R.id.toolbar_search_icon -> {
+                    activity.changeFragment(1)
+                }
+                R.id.toolbar_tmpLogout -> {
+                    activity.changeFragment(2)
+                }
+                else -> {
+
+                }
+            }
+            return true
+        }
     }
 }
