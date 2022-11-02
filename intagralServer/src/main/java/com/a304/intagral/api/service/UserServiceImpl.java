@@ -4,11 +4,10 @@ import com.a304.intagral.api.response.TokenRes;
 import com.a304.intagral.common.util.JwtTokenUtil;
 import com.a304.intagral.db.entity.User;
 import com.a304.intagral.db.repository.UserRepository;
-import com.google.gson.JsonObject;
-import org.apache.tomcat.util.json.JSONParser;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
     public TokenRes login(String idTokenString) {
 
-        JsonObject jsonObj = verifyGoogleToken(idTokenString);
+        JSONObject jsonObj = verifyGoogleToken(idTokenString);
         if(jsonObj == null){
             throw new RuntimeException("token is invalid");
         }
@@ -74,7 +73,7 @@ public class UserServiceImpl implements UserService {
 
     public String generateNickname() {
         StringBuilder builder = new StringBuilder("temp_");
-        while(builder.toString().length() == 0) {
+        while("temp_".equals(builder.toString())) {
             int length = 6;
             for(int i = 0; i < length; i++) {
                 builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
@@ -86,15 +85,13 @@ public class UserServiceImpl implements UserService {
         return builder.toString();
     }
 
-    public JsonObject verifyGoogleToken(String idTokenString){
+    public JSONObject verifyGoogleToken(String idToken){
         BufferedReader in  = null;
         InputStream is = null;
         InputStreamReader isr = null;
-        JSONParser jsonParser = null;
+        JSONParser jsonParser = new JSONParser();;
 
         try {
-            String idToken = idTokenString.split("=")[1];
-
             String url = "https://oauth2.googleapis.com/tokeninfo";
             url += "?id_token="+idToken;
 
@@ -105,8 +102,7 @@ public class UserServiceImpl implements UserService {
             isr = new InputStreamReader(is, "UTF-8");
             in = new BufferedReader(isr);
 
-            jsonParser = new JSONParser(in);
-            return (JsonObject)jsonParser.parse();
+            return (JSONObject)jsonParser.parse(in);
 
         }catch(Exception e) {
             return null;
