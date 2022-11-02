@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -73,7 +74,7 @@ class HomeFragment : Fragment() {
         }
 
 //search view
-        view.findViewById<SearchView>(R.id.home_searchbar).setOnClickListener {
+        view.findViewById<ImageView>(R.id.home_toolbar_search_icon).setOnClickListener {
             println("dd")
             val activity = activity as MainMenuActivity
             activity.changeFragment(1)
