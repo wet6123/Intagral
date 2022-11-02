@@ -75,6 +75,7 @@ class HomeFragment : Fragment() {
         }
 
 //tool bar
+//TODO: refactor toolbar
         view.findViewById<ImageView>(R.id.home_toolbar_search_icon).setOnClickListener {
             val activity = activity as MainMenuActivity
             activity.changeFragment(1)
