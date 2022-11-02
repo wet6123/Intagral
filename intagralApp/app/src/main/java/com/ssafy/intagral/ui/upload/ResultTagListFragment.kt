@@ -97,7 +97,13 @@ class ResultTagListFragment : Fragment() {
         override fun onClick(p0: View?) {
             when(p0?.id){
                 R.id.add_tag_button -> {
-                    val tag = binding.inputTagText.text.toString()
+                    val regex = """\s""".toRegex()
+                    val tag : String = regex.replace(binding.inputTagText.text.toString(), "")
+                    if(tag == ""){
+                        binding.inputTagText.setText("")
+                        Toast.makeText(requireContext(), "태그를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                        return
+                    }
                     if(!resultTagSet.contains(tag)){
                         val chip = layoutInflater.inflate(R.layout.view_tag_choice_chip, binding.resultTagChipGroup, false) as Chip
                         chip.text = (tag)
@@ -111,7 +117,14 @@ class ResultTagListFragment : Fragment() {
                     }
                 }
                 R.id.publish_preview_button -> {
-                    Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.menu_frame_layout,
+                            UploadPreviewFragment.newInstance()
+                        ).commit()
                 }
                 R.id.tag_result_publish_button -> {
                     Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
