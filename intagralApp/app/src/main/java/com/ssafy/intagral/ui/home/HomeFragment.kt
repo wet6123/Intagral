@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -73,13 +74,15 @@ class HomeFragment : Fragment() {
             }
         }
 
-//search view
+//tool bar
         view.findViewById<ImageView>(R.id.home_toolbar_search_icon).setOnClickListener {
-            println("dd")
             val activity = activity as MainMenuActivity
             activity.changeFragment(1)
         }
-
+        view.findViewById<Button>(R.id.tmpLogoutBtn).setOnClickListener {
+            val activity = activity as MainMenuActivity
+            activity.changeFragment(2)
+        }
 
         return view
     }
