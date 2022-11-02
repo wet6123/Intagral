@@ -60,8 +60,10 @@ public class UserServiceImpl implements UserService {
                 .oauthPlatform("google")
                 .profileImagePath(imageUrl)
                 .build();
-        }
 
+            // user 생성
+            user = userRepository.saveAndFlush(user);
+        }
         //4.토큰 반환
         String accessToken = JwtTokenUtil.getToken(String.valueOf(user.getId()));
 
