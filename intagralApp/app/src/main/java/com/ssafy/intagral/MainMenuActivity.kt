@@ -1,8 +1,10 @@
 package com.ssafy.intagral
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
+import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -27,6 +29,8 @@ class MainMenuActivity : AppCompatActivity() {
         binding = ActivityMainMenuBinding.inflate(layoutInflater).apply {
             setContentView(root)
             menuBottomNavigation.setOnItemSelectedListener(BottomTabListener())
+            menuTopToolbar.inflateMenu(R.menu.top_bar)
+            menuTopToolbar.setOnMenuItemClickListener(TopBarListener())
             setHome()
         }
 
@@ -51,8 +55,6 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.nav_hashtag -> {
                     println("hashtag selected!")
-                    val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.menu_frame_layout, SearchFragment()).commit()
                 }
                 R.id.nav_mypage -> {
                     println("mypage selected!")
@@ -66,18 +68,31 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-    fun changeFragment(index: Int) {
-        val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
-        when(index) {
-            1 -> {
-                supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
+    inner class TopBarListener : Toolbar.OnMenuItemClickListener {
+        override fun onMenuItemClick(item: MenuItem?): Boolean {
+            when (item?.itemId) {
+                R.id.toolbar_logo -> { // redirect home
+                    val intent = intent // ?
+                    finishAffinity()
+                    startActivity(intent)
+                }
+                R.id.toolbar_search_icon -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
+                }
+                R.id.toolbar_tmpLogout -> {
+                    logout()
+                    finish()
+                    val intent = Intent(this@MainMenuActivity, MainActivity::class.java) // TODO: redirect mainActivity
+                    startActivity(intent)
+                }
+                else -> {
+
+                }
             }
-            2 -> {
-                logout()
-                finish()
-            }
+            return true
         }
     }
+
 
     private fun logout() {
         mGoogleSignInClient.signOut()
