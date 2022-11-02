@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.Toolbar
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -39,7 +41,7 @@ class MainMenuActivity : AppCompatActivity() {
 
             val searchItem = menuTopToolbar.menu.findItem(R.id.toolbar_search_icon).actionView as SearchView
             searchItem.setOnQueryTextListener(SearchListener())
-
+//TODO : Search Fragment에서 Home으로 뒤로가기 했을 때 키보드 풀기
         }
 
         setHome()
@@ -86,7 +88,6 @@ class MainMenuActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.toolbar_search_icon -> {
-
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
                 }
                 R.id.toolbar_tmpLogout -> {
@@ -105,12 +106,12 @@ class MainMenuActivity : AppCompatActivity() {
 
     inner class SearchListener : OnQueryTextListener{
         override fun onQueryTextSubmit(query: String?): Boolean {
-            Toast.makeText(this@MainMenuActivity,"on query text submit", Toast.LENGTH_SHORT).show()
-            return false
+            supportFragmentManager.setFragmentResult("search text", bundleOf("input text" to query))
+            return true
         }
         override fun onQueryTextChange(newText: String?): Boolean {
-            Toast.makeText(this@MainMenuActivity,"on query text change", Toast.LENGTH_SHORT).show()
-            return false
+            supportFragmentManager.setFragmentResult("search text", bundleOf("input text" to newText))
+            return true
         }
     }
     private fun logout() {
