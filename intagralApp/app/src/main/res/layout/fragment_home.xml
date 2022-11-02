@@ -27,16 +27,16 @@
             android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:src="@drawable/ic_baseline_search_24"
-            app:layout_constraintEnd_toEndOf="@id/home_toolbar"
+            app:layout_constraintEnd_toStartOf="@id/tmpLogoutBtn"
             app:layout_constraintTop_toTopOf="parent" />
         <Button
             android:id="@+id/tmpLogoutBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:layout_gravity="right"
             android:text="tmpLogout"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        />
 
     </androidx.appcompat.widget.Toolbar>
 

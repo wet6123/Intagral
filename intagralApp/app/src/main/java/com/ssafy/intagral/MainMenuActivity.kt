@@ -4,12 +4,9 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.fragment.app.FragmentTransaction
-import androidx.transition.FragmentTransitionSupport
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.material.bottomnavigation.BottomNavigationMenuView
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.home.HomeFragment
@@ -30,10 +27,6 @@ class MainMenuActivity : AppCompatActivity() {
         binding = ActivityMainMenuBinding.inflate(layoutInflater).apply {
             setContentView(root)
             menuBottomNavigation.setOnItemSelectedListener(BottomTabListener())
-            tmpLogoutBtn.setOnClickListener{
-                logout()
-                finish()
-            }
             setHome()
         }
 
@@ -78,6 +71,10 @@ class MainMenuActivity : AppCompatActivity() {
         when(index) {
             1 -> {
                 supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
+            }
+            2 -> {
+                logout()
+                finish()
             }
         }
     }
