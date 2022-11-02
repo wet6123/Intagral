@@ -29,7 +29,7 @@ class MainMenuActivity : AppCompatActivity() {
         binding = ActivityMainMenuBinding.inflate(layoutInflater).apply {
             setContentView(root)
             menuBottomNavigation.setOnItemSelectedListener(BottomTabListener())
-            menuTopToolbar.inflateMenu(R.menu.top_bar)
+            menuTopToolbar.inflateMenu(R.menu.top_bar)  //setSupportActionBar
             menuTopToolbar.setOnMenuItemClickListener(TopBarListener())
             setHome()
         }

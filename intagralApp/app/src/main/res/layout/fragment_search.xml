@@ -5,10 +5,9 @@
     android:layout_height="match_parent">
 
     <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_fragment_searchbar"
+        android:id="@+id/toolbar_search_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:closeIcon="@drawable/ic_baseline_close_24"
         android:searchIcon="@drawable/ic_baseline_search_24"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,5 +20,5 @@
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_fragment_searchbar" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar_search_icon" />
 </androidx.constraintlayout.widget.ConstraintLayout>
