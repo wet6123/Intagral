@@ -51,8 +51,6 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.nav_hashtag -> {
                     println("hashtag selected!")
-                    val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    transaction.replace(R.id.menu_frame_layout, SearchFragment()).commit()
                 }
                 R.id.nav_mypage -> {
                     println("mypage selected!")
@@ -67,14 +65,18 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     fun changeFragment(index: Int) {
-        val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
         when(index) {
-            1 -> {
+            1 -> { //change home to search fragment
                 supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
             }
-            2 -> {
+            2 -> { //logout
                 logout()
                 finish()
+            }
+            3 -> { //redirect home ?
+                val intent = intent // ?
+                finishAffinity()
+                startActivity(intent)
             }
         }
     }
