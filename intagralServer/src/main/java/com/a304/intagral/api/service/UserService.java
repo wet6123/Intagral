@@ -10,4 +10,5 @@ public interface UserService {
 
     public TokenRes login(String idToken);
 
+    public void logout(Long userId);
 }
