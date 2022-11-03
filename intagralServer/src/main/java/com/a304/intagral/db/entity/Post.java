@@ -4,7 +4,9 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Getter
@@ -28,4 +30,7 @@ public class Post extends BaseEntity {
     LocalDateTime postDate;
     @Column(nullable = false)
     Integer likeCnt;
+
+    @OneToMany(mappedBy = "postLikePost", fetch = FetchType.LAZY)
+    List<PostLike> postLikeList = new ArrayList<>();
 }
