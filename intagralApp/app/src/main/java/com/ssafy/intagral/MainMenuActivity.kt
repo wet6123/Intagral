@@ -3,14 +3,11 @@ package com.ssafy.intagral
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.Toolbar
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -18,6 +15,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationBarView
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
+import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
 import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.ui.home.SearchFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
@@ -67,6 +65,7 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.nav_hashtag -> {
                     println("hashtag selected!")
+                    transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
                 }
                 R.id.nav_mypage -> {
                     transaction.replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance("user","tmp")).commit()
