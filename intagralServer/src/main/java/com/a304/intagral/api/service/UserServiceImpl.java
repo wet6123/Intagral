@@ -110,4 +110,11 @@ public class UserServiceImpl implements UserService {
             return null;
         }
     }
+
+    @Override
+    public void logout(Long userId){
+        User user = userRepository.findById(userId).get();
+        user.setAuthToken(null);
+        userRepository.save(user);
+    }
 }
