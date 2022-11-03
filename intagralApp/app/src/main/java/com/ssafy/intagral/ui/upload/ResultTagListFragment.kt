@@ -73,7 +73,7 @@ class ResultTagListFragment : Fragment() {
 
         uploadViewModel.getDetectedClassList().value?.also {
             // TODO : repository viewmodel로 빼기
-            val preset = presetRepository.getPresetList()
+            val preset = presetRepository.getPreset()
             val tagMap = uploadViewModel.getTagMap().value ?: HashMap<String, Boolean>()
             for(cls in it){
                 if(cls != "default"){
