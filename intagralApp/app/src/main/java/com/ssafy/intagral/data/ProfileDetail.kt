@@ -6,7 +6,7 @@ data class ProfileDetail ( //TODO: 본인인지 확인하는 변수 필요한지
     val profileImg: String,
     val follower: Int,
     val isFollow: Boolean,
-    val following: Int?,
-    val hashtag: Int?,
-    val intro: String?
+    val following: Int? = null,
+    val hashtag: Int? = null,
+    val intro: String? = null
 ):java.io.Serializable
