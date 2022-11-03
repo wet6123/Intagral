@@ -29,4 +29,7 @@ public class Hashtag extends BaseEntity {
 
     @OneToMany(mappedBy = "hashtagFollowPostHashtag", fetch = FetchType.LAZY)
     List<PostHashtag> hashtagPostList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "hashtagPresetHashtag", fetch = FetchType.LAZY)
+    List<HashtagPreset> hashtagPresetList = new ArrayList<>();
 }

@@ -45,4 +45,6 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "postLikeUser", fetch = FetchType.LAZY)
     List<PostLike> postLikeList = new ArrayList<>();
 
+    @OneToMany(mappedBy = "hashtagPresetUser", fetch = FetchType.LAZY)
+    List<HashtagPreset> hashtagPresetList = new ArrayList<>();
 }
