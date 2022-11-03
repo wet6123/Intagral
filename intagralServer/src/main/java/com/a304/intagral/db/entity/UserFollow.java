@@ -23,10 +23,10 @@ public class UserFollow extends BaseEntity {
     Integer userIdTo;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id_from", referencedColumnName = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id_from", insertable = false, updatable = false)
     User followingUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id_to", referencedColumnName = "user_id", insertable = false, updatable = false)
+    @JoinColumn(name = "user_id_to", insertable = false, updatable = false)
     User followedUser;
 }
