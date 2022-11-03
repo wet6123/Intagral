@@ -5,12 +5,19 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
+import com.ssafy.intagral.data.ProfileDetail
+import com.ssafy.intagral.databinding.FragmentUserProfileBinding
+import java.util.Objects
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val ARG_PARAM1 = "isUser"
+private const val ARG_PARAM2 = "profileData"
 
 /**
  * A simple [Fragment] subclass.
@@ -19,23 +26,63 @@ private const val ARG_PARAM2 = "param2"
  */
 class ProfileDetailFragment : Fragment() {
     // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
+    private var param1: Boolean = true //default user
+    private var param2: ProfileDetail? = null
+    private lateinit var binding: Any // TODO: 동적으로 type 설정 가능한지 확인
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+            param1 = it.getBoolean(ARG_PARAM1)
+            param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail //TODO: request json -> ProfileDetail로 변경 후 Fragment 생성
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_profile, container, false)
+        val view :View
+        if(param1) {
+            // user profile
+            view = inflater.inflate(R.layout.fragment_user_profile, container, false)
+            val button: Button = view.findViewById<Button>(R.id.profile_detail_btn)
+            if(param2?.name == "yuyeon") {
+                //TODO: 조건문 본인일 때로 수정
+                button.apply {
+                    text = "setting"
+                    setOnClickListener {
+                        //TODO: profile setting Fragment로 교환
+                        Toast.makeText(view.context, "setting fragment로 이동", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                button.apply {
+                    text = if(param2?.isFollow == true) "UNFOLLOW" else "FOLLOW"
+                    setOnClickListener {
+                        //TODO: follow API 호출
+                        Toast.makeText(view.context, "follow API 호출", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+            Glide.with(view.context).load("https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp")
+                .into(view.findViewById(R.id.user_profile_img))
+            view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
+            view.findViewById<TextView>(R.id.following_cnt).text = param2?.following?.toString() ?: "0"
+            view.findViewById<TextView>(R.id.hashtag_cnt).text = param2?.hashtag?.toString() ?: "0"
+        } else {
+            // hashtag fragment
+            view = inflater.inflate(R.layout.fragment_hashtag_profile, container, false)
+            val button: Button = view.findViewById<Button>(R.id.profile_detail_btn)
+            button.apply {
+                text = if(param2?.isFollow == true) "UNFOLLOW" else "FOLLOW"
+                setOnClickListener {
+                    //TODO: follow API 호출
+                    Toast.makeText(view.context, "follow API 호출", Toast.LENGTH_SHORT).show()
+                }
+            }
+            Glide.with(view.context).load("https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png")
+                .into(view.findViewById(R.id.hashtag_profile_img))
+            view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
+        }
+        return view
     }
 
     companion object {
@@ -49,11 +96,11 @@ class ProfileDetailFragment : Fragment() {
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: Boolean, param2: ProfileDetail) =
             ProfileDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putBoolean(ARG_PARAM1, param1)
+                    putSerializable(ARG_PARAM2, param2)
                 }
             }
     }
