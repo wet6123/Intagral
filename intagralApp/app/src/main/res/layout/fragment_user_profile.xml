@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="130dp">
         <ImageView
-            android:id="@+id/profile_detail_img"
+            android:id="@+id/user_profile_img"
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_marginLeft="20dp"
@@ -19,7 +19,7 @@
         <Button
             android:id="@+id/profile_detail_btn"
             android:text="follow"
-            android:layout_toRightOf="@+id/profile_detail_img"
+            android:layout_toRightOf="@+id/user_profile_img"
             android:layout_marginBottom="10dp"
             android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
@@ -30,7 +30,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
-            android:layout_toRightOf="@+id/profile_detail_img"
+            android:layout_toRightOf="@+id/user_profile_img"
             android:layout_above="@+id/profile_detail_btn"
             android:gravity="center">
 

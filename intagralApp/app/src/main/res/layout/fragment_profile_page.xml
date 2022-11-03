@@ -6,7 +6,7 @@
 
     <include
         android:id="@+id/include_profile_detail"
-        layout="@layout/fragment_profile_detail" />
+        layout="@layout/fragment_user_profile" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/fragment_post_list"
