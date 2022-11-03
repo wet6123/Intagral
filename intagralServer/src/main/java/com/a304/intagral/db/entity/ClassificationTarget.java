@@ -17,6 +17,6 @@ public class ClassificationTarget extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     String targetName;
 }
