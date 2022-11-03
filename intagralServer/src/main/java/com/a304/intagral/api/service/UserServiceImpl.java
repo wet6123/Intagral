@@ -57,8 +57,8 @@ public class UserServiceImpl implements UserService {
             user = User.builder()
                 .email(email)
                 .nickname(generateNickname())
-                .oauthPlatform("google")
-                .profileImagePath(imageUrl)
+                .oauthPlatform("gg")
+                .profileImgPath(imageUrl)
                 .build();
 
             // user 생성

@@ -34,8 +34,8 @@ public class UserDetails implements org.springframework.security.core.userdetail
 	public String getNickname() {
 		return this.user.getNickname();
 	}
-	public String getProfileImagePath() {
-		return this.user.getProfileImagePath();
+	public String getProfileImgPath() {
+		return this.user.getProfileImgPath();
 	}
 	public String getIntro() {
 		return this.user.getIntro();
