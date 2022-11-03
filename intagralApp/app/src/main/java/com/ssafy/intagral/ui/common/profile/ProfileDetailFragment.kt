@@ -25,15 +25,14 @@ private const val ARG_PARAM2 = "profileData"
  * create an instance of this fragment.
  */
 class ProfileDetailFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: Boolean = true //default user
+    private var param1: Boolean = true //default user, TODO: type Boolean인지 String인지 ProfilePageFragment랑 통일
     private var param2: ProfileDetail? = null
     private lateinit var binding: Any // TODO: 동적으로 type 설정 가능한지 확인
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getBoolean(ARG_PARAM1)
-            param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail //TODO: request json -> ProfileDetail로 변경 후 Fragment 생성
+            param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
         }
     }
 

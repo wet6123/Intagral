@@ -17,6 +17,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationBarView
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
+import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
 import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.ui.home.SearchFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
@@ -68,6 +69,7 @@ class MainMenuActivity : AppCompatActivity() {
                     println("hashtag selected!")
                 }
                 R.id.nav_mypage -> {
+                    transaction.replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance("user","tmp")).commit()
                     println("mypage selected!")
                 }
                 else -> {

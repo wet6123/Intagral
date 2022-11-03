@@ -4,18 +4,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/include_profile_detail"
-        layout="@layout/fragment_user_profile" />
+    <FrameLayout
+        android:id="@+id/profile_detail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </FrameLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/fragment_post_list"
+        android:id="@+id/profile_post_list"
         android:background="@color/design_default_color_primary_variant"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/include_profile_detail">
+        app:layout_constraintTop_toBottomOf="@id/profile_detail">
     </androidx.recyclerview.widget.RecyclerView>
 </androidx.constraintlayout.widget.ConstraintLayout>
