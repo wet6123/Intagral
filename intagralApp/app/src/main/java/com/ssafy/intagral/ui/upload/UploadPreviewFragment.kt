@@ -5,32 +5,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentUploadPreviewBinding
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.ssafy.intagral.viewmodel.UploadViewModel
 
 /**
- * A simple [Fragment] subclass.
- * Use the [UploadPreviewFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * TODO
+ *  - 업로드 요청
  */
 class UploadPreviewFragment : Fragment() {
 
     private lateinit var binding: FragmentUploadPreviewBinding
 
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private val uploadViewModel: UploadViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -40,28 +32,65 @@ class UploadPreviewFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         binding = FragmentUploadPreviewBinding.inflate(inflater)
-
-
+        binding.backButton.setOnClickListener(UploadPreviewButtonListener())
+        binding.publishButton.setOnClickListener(UploadPreviewButtonListener())
 
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        uploadViewModel.getImageBitmap().value?.also {
+            binding.postDetail.postImage.setImageBitmap(it)
+        }
+
+        var selectedTagList: List<String> = listOf()
+        uploadViewModel.getTagMap().value?.also{
+            selectedTagList = it.filterValues {
+                it
+            }.keys.toList()
+        }
+
+        val content = selectedTagList.joinToString(
+            " #",
+            "#"
+        )
+
+        binding.postDetail.postContent.text = content
+    }
+
+    inner class UploadPreviewButtonListener: View.OnClickListener {
+        override fun onClick(p0: View?) {
+            when(p0?.id){
+                R.id.back_button -> {
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.menu_frame_layout,
+                            ResultTagListFragment.newInstance()
+                        ).commit()
+                }
+                R.id.publish_button -> {
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.menu_frame_layout,
+                            UploadCompleteFragment.newInstance()
+                        ).commit()
+                }
+            }
+        }
+
+    }
+
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UploadPreviewFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(/*aram1: String, param2: String*/) =
+        fun newInstance() =
             UploadPreviewFragment().apply {
                 arguments = Bundle().apply {
-//                    putString(ARG_PARAM1, param1)
-//                    putString(ARG_PARAM2, param2)
                 }
             }
     }

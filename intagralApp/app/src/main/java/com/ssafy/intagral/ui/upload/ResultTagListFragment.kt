@@ -1,7 +1,5 @@
 package com.ssafy.intagral.ui.upload
 
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,22 +7,16 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.source.PresetRepository
 import com.ssafy.intagral.databinding.FragmentResultTagListBinding
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.ssafy.intagral.viewmodel.UploadViewModel
 
 /**
- * A simple [Fragment] subclass.
- * Use the [ResultTagListFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * TODO
+ *  - presetRepository를 viewmodel로 빼기
  */
 class ResultTagListFragment : Fragment() {
 
@@ -32,17 +24,12 @@ class ResultTagListFragment : Fragment() {
 
     private lateinit var binding: FragmentResultTagListBinding
 
-    private var detectedClassList: ArrayList<String>? = null
-    private var detectedImageBitmap: Bitmap? = null
-    private var resultTagSet: HashSet<String> = HashSet()
-    private var selectedTagList: List<String> = listOf()
+    private val uploadViewModel: UploadViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         arguments?.also {
-            detectedClassList = it.getStringArrayList(ARG_PARAM1)
-            detectedImageBitmap = it.getParcelable(ARG_PARAM2)
         }
     }
 
@@ -55,41 +42,48 @@ class ResultTagListFragment : Fragment() {
         binding.addTagButton.setOnClickListener(ResultTagListButtonClickListener())
         binding.publishPreviewButton.setOnClickListener(ResultTagListButtonClickListener())
         binding.tagResultPublishButton.setOnClickListener(ResultTagListButtonClickListener())
-
-        binding.resultTagChipGroup.setOnCheckedStateChangeListener { group, checkedIds ->
-            val tagList = arrayListOf<String>()
-            for(id in checkedIds){
-                val chip : Chip = requireActivity().findViewById<Chip?>(id)
-                tagList.add(chip.text.toString())
-            }
-            selectedTagList = tagList.toList()
-        }
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        detectedImageBitmap?.also {
+        uploadViewModel.getImageBitmap().value?.also {
             binding.resultTagImage.setImageBitmap(it)
         }
 
-        detectedClassList?.also {
-            val preset = presetRepository.getPresetList()
-            for(cls in it){
-                if(cls != "default"){
-                    resultTagSet.add(cls)
-                }
-                preset.tagMap[cls]?.also {
-                    resultTagSet.addAll(it.toList())
+        uploadViewModel.getTagMap().observe(
+            viewLifecycleOwner
+        ){
+            binding.resultTagChipGroup.removeAllViews()
+            it?.also {
+                for((tag, isSelected) in it){
+                    val chip = layoutInflater.inflate(R.layout.view_tag_choice_chip, binding.resultTagChipGroup, false) as Chip
+                    chip.text = (tag)
+                    chip.isSelected = isSelected
+                    chip.setOnCheckedChangeListener { compoundButton, b ->
+                        val tagMap = uploadViewModel.getTagMap().value ?: HashMap()
+                        tagMap[compoundButton.text.toString()] = b
+                        uploadViewModel.getTagMap().value = tagMap
+                    }
+                    binding.resultTagChipGroup.addView(chip)
                 }
             }
         }
 
-        for(tag in resultTagSet.toList()){
-            val chip = layoutInflater.inflate(R.layout.view_tag_choice_chip, binding.resultTagChipGroup, false) as Chip
-            chip.text = (tag)
-            binding.resultTagChipGroup.addView(chip)
+        uploadViewModel.getDetectedClassList().value?.also {
+            // TODO : repository viewmodel로 빼기
+            val preset = presetRepository.getPresetList()
+            val tagMap = uploadViewModel.getTagMap().value ?: HashMap<String, Boolean>()
+            for(cls in it){
+                if(cls != "default"){
+                    tagMap[cls] = tagMap[cls] ?: false
+                }
+                preset.tagMap[cls]?.also {
+                    tagMap.putAll(it.map { it to (tagMap[it]?: false) }.toMap())
+                }
+            }
+            uploadViewModel.getTagMap().value = tagMap
         }
     }
 
@@ -104,12 +98,10 @@ class ResultTagListFragment : Fragment() {
                         Toast.makeText(requireContext(), "태그를 입력해주세요.", Toast.LENGTH_SHORT).show()
                         return
                     }
-                    if(!resultTagSet.contains(tag)){
-                        val chip = layoutInflater.inflate(R.layout.view_tag_choice_chip, binding.resultTagChipGroup, false) as Chip
-                        chip.text = (tag)
-                        binding.resultTagChipGroup.addView(chip)
-                        binding.resultTagChipGroup.check(chip.id)
-                        resultTagSet.add(tag)
+                    val tagMap = uploadViewModel.getTagMap().value ?: HashMap()
+                    if(!tagMap.contains(tag)){
+                        tagMap[tag] = true
+                        uploadViewModel.getTagMap().value = tagMap
                         Toast.makeText(requireContext(), "${tag} 태그가 추가되었습니다.", Toast.LENGTH_SHORT).show()
                         binding.inputTagText.setText("")
                     }else{
@@ -117,7 +109,6 @@ class ResultTagListFragment : Fragment() {
                     }
                 }
                 R.id.publish_preview_button -> {
-//                    Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
                     requireActivity()
                         .supportFragmentManager
                         .beginTransaction()
@@ -127,7 +118,13 @@ class ResultTagListFragment : Fragment() {
                         ).commit()
                 }
                 R.id.tag_result_publish_button -> {
-                    Toast.makeText(requireContext(), selectedTagList.toString(), Toast.LENGTH_SHORT).show()
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.menu_frame_layout,
+                            UploadCompleteFragment.newInstance()
+                        ).commit()
                 }
                 else -> {
 
@@ -138,21 +135,10 @@ class ResultTagListFragment : Fragment() {
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ResultTagListFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: ArrayList<String> = arrayListOf("default"), param2: BitmapDrawable) =
+        fun newInstance() =
             ResultTagListFragment().apply {
                 arguments = Bundle().apply {
-                    putStringArrayList(ARG_PARAM1, param1)
-                    putParcelable(ARG_PARAM2, param2.bitmap)
                 }
             }
     }
