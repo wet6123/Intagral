@@ -3,6 +3,8 @@ package com.a304.intagral.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -21,5 +23,8 @@ public class Hashtag extends BaseEntity {
     String content;
     @Column(nullable = false)
     Integer searchCnt;
+
+    @OneToMany(mappedBy = "hashtagFollowHashtag", fetch = FetchType.LAZY)
+    List<HashtagFollow> hashtagFollowList = new ArrayList<>();
 
 }
