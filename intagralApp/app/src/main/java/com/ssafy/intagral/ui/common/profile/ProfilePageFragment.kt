@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -79,7 +80,14 @@ class ProfilePageFragment : Fragment() {
             }
         }
 
-
+        view.findViewById<Button>(R.id.temporary_btn1).setOnClickListener{
+            parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
+                false, inputDataParam3)).commit()
+        }
+        view.findViewById<Button>(R.id.temporary_btn2).setOnClickListener{
+            parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
+                true, inputDataParam4)).commit()
+        }
         return view
     }
 
@@ -95,6 +103,11 @@ class ProfilePageFragment : Fragment() {
     }
 }
 
+//test input data
 const val inputDataParam1:Boolean = true
 val inputDataParam2 = ProfileDetail(true, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
 13,false,123,2,"dsfkdsjflkds")
+val inputDataParam3 = ProfileDetail(false, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
+10, true)
+val inputDataParam4 = ProfileDetail(true, "yuyeo2222n", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
+    10, true)
