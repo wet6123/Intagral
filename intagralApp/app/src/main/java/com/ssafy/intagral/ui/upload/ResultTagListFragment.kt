@@ -55,12 +55,13 @@ class ResultTagListFragment : Fragment() {
         uploadViewModel.getTagMap().observe(
             viewLifecycleOwner
         ){
-            binding.resultTagChipGroup.removeAllViews()
             it?.also {
+                binding.resultTagChipGroup.removeAllViews()
                 for((tag, isSelected) in it){
                     val chip = layoutInflater.inflate(R.layout.view_tag_choice_chip, binding.resultTagChipGroup, false) as Chip
                     chip.text = (tag)
-                    chip.isSelected = isSelected
+                    chip.isCheckable = true
+                    chip.isChecked = isSelected
                     chip.setOnCheckedChangeListener { compoundButton, b ->
                         val tagMap = uploadViewModel.getTagMap().value ?: HashMap()
                         tagMap[compoundButton.text.toString()] = b
