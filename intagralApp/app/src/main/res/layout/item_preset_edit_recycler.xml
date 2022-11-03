@@ -7,16 +7,40 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/class_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="default" />
+        android:text="default"
+        android:textSize="24sp" />
 
     <com.google.android.material.chip.ChipGroup
+        android:id="@+id/preset_edit_tag_chip_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
     </com.google.android.material.chip.ChipGroup>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:layout_gravity="end">
+
+        <EditText
+            android:id="@+id/tag_input"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="6"
+            android:inputType="textPersonName"
+            android:text="tag" />
+
+        <Button
+            android:id="@+id/tag_add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="추가" />
+    </LinearLayout>
 </LinearLayout>
