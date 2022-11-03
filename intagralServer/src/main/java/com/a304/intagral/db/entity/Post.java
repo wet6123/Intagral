@@ -33,4 +33,7 @@ public class Post extends BaseEntity {
 
     @OneToMany(mappedBy = "postLikePost", fetch = FetchType.LAZY)
     List<PostLike> postLikeList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "postHashtagUser", fetch = FetchType.LAZY)
+    List<PostHashtag> postHashtagList = new ArrayList<>();
 }
