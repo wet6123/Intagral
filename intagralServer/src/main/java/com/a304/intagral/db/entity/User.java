@@ -3,6 +3,8 @@ package com.a304.intagral.db.entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,4 +29,10 @@ public class User extends BaseEntity {
     String refreshToken;
     String authToken;
     String oauthPlatform;
+
+    @OneToMany(mappedBy = "followingUser", fetch = FetchType.LAZY)
+    List<UserFollow> followingList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "followedUser", fetch = FetchType.LAZY)
+    List<UserFollow> followerList = new ArrayList<>();
 }
