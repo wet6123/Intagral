@@ -21,7 +21,7 @@ public class User extends BaseEntity {
     @Column(nullable = false, unique = true)
     String nickname;
 
-    String profileImagePath;
+    String profileImgPath;
     String intro;
     String accessToken;
     String refreshToken;

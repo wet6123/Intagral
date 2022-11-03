@@ -18,13 +18,13 @@ import java.time.LocalDateTime;
 public class BaseEntity {
     @CreatedDate
     @Column(updatable = false)
-    LocalDateTime registDate;
+    LocalDateTime regDate;
     @LastModifiedDate
-    LocalDateTime modifyDate;
+    LocalDateTime mdfDate;
 
     @CreatedBy
     @Column(updatable = false)
-    Integer registUserId;
+    Integer regUser;
     @LastModifiedBy
-    Integer modifyUserId;
+    Integer mdfUser;
 }
