@@ -19,6 +19,7 @@ import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
 import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
 import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.ui.home.SearchFragment
+import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
 
 class MainMenuActivity : AppCompatActivity() {
@@ -92,11 +93,8 @@ class MainMenuActivity : AppCompatActivity() {
                 R.id.toolbar_search_icon -> {
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
                 }
-                R.id.toolbar_tmpLogout -> {
-                    logout()
-                    finish()
-                    val intent = Intent(this@MainMenuActivity, MainActivity::class.java) // TODO: redirect mainActivity
-                    startActivity(intent)
+                R.id.toolbar_setting -> {
+                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SettingFragment()).commit()
                 }
                 else -> {
 
@@ -116,11 +114,12 @@ class MainMenuActivity : AppCompatActivity() {
             return true
         }
     }
-    private fun logout() {
+    fun logout() {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this) {
                 // 로그아웃 성공시 실행
                 // 로그아웃 이후의 이벤트들(토스트 메세지, 화면 종료)을 여기서 수행하면 됨
+                finish()
             }
     }
 }

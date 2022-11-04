@@ -15,8 +15,8 @@
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="androidx.appcompat.widget.SearchView"/>
     <item
-        android:id="@+id/toolbar_tmpLogout"
-        android:title="tmp_logout"
-        android:icon="@drawable/ic_baseline_logout_24"
+        android:id="@+id/toolbar_setting"
+        android:title="setting_logo"
+        android:icon="@drawable/ic_baseline_settings_24"
         app:showAsAction="always"/>
 </menu>
