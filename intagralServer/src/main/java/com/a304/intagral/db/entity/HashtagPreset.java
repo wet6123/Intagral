@@ -19,13 +19,13 @@ public class HashtagPreset extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
-    User hashtagPresetUser;
+    User hashtagPresetToUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id", nullable = false, insertable = false, updatable = false)
-    Hashtag hashtagPresetHashtag;
+    Hashtag hashtagPresetToHashtag;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cls_target_id", nullable = false, insertable = false, updatable = false)
-    ClassificationTarget hashtagPresetClassificationTarget;
+    ClassificationTarget hashtagPresetToClassificationTarget;
 }

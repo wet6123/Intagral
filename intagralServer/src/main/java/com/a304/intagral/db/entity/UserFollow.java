@@ -24,9 +24,9 @@ public class UserFollow extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_from", insertable = false, updatable = false)
-    User followingUser;
+    User userFollowingToUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id_to", insertable = false, updatable = false)
-    User followedUser;
+    User userFollowerToUser;
 }

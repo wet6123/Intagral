@@ -19,9 +19,9 @@ public class PostHashtag extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false, insertable = false, updatable = false)
-    Post postHashtagUser;
+    Post postHashtagToPost;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id", nullable = false, insertable = false, updatable = false)
-    Hashtag hashtagFollowPostHashtag;
+    Hashtag postHashtagToHashtag;
 }

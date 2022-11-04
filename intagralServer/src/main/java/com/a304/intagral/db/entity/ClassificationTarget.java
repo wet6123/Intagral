@@ -22,6 +22,6 @@ public class ClassificationTarget extends BaseEntity {
     @Column(nullable = false)
     String targetName;
 
-    @OneToMany(mappedBy = "hashtagPresetClassificationTarget", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hashtagPresetToClassificationTarget", fetch = FetchType.LAZY)
     List<HashtagPreset> hashtagPresetList = new ArrayList<>();
 }

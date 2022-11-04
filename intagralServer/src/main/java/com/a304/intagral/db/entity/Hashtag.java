@@ -24,12 +24,12 @@ public class Hashtag extends BaseEntity {
     @Column(nullable = false)
     Integer searchCnt;
 
-    @OneToMany(mappedBy = "hashtagFollowHashtag", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hashtagFollowToHashtag", fetch = FetchType.LAZY)
     List<HashtagFollow> hashtagFollowList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hashtagFollowPostHashtag", fetch = FetchType.LAZY)
-    List<PostHashtag> hashtagPostList = new ArrayList<>();
+    @OneToMany(mappedBy = "postHashtagToHashtag", fetch = FetchType.LAZY)
+    List<PostHashtag> postHashtagList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hashtagPresetHashtag", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hashtagPresetToHashtag", fetch = FetchType.LAZY)
     List<HashtagPreset> hashtagPresetList = new ArrayList<>();
 }

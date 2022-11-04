@@ -30,21 +30,21 @@ public class User extends BaseEntity {
     String authToken;
     String oauthPlatform;
 
-    @OneToMany(mappedBy = "followingUser", fetch = FetchType.LAZY)
-    List<UserFollow> followingList = new ArrayList<>();
+    @OneToMany(mappedBy = "userFollowingToUser", fetch = FetchType.LAZY)
+    List<UserFollow> userFollowingList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "followedUser", fetch = FetchType.LAZY)
-    List<UserFollow> followerList = new ArrayList<>();
+    @OneToMany(mappedBy = "userFollowerToUser", fetch = FetchType.LAZY)
+    List<UserFollow> userFollowerList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "postToUser", fetch = FetchType.LAZY)
     List<Post> postList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hashtagFollowUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hashtagFollowToUser", fetch = FetchType.LAZY)
     List<HashtagFollow> hashtagFollowList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "postLikeUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "postLikeToUser", fetch = FetchType.LAZY)
     List<PostLike> postLikeList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "hashtagPresetUser", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hashtagPresetToUser", fetch = FetchType.LAZY)
     List<HashtagPreset> hashtagPresetList = new ArrayList<>();
 }

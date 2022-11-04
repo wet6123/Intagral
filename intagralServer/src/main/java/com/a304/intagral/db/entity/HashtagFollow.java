@@ -19,9 +19,9 @@ public class HashtagFollow extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
-    User hashtagFollowUser;
+    User hashtagFollowToUser;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "hashtag_id", nullable = false, insertable = false, updatable = false)
-    Hashtag hashtagFollowHashtag;
+    Hashtag hashtagFollowToHashtag;
 }
