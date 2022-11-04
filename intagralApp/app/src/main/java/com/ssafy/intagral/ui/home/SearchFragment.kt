@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.ProfileSimpleItem
+import com.ssafy.intagral.data.ProfileType
 import com.ssafy.intagral.ui.common.profile.ProfileSimpleAdapter
 
 class SearchFragment: Fragment() {
@@ -30,7 +31,7 @@ class SearchFragment: Fragment() {
         }
 
         profileSimpleRecyclerView = view.findViewById(R.id.search_profile_simple_list)
-        profileSimpleList = ArrayList<ProfileSimpleItem>()
+
         return view
     }
 
@@ -40,38 +41,37 @@ class SearchFragment: Fragment() {
             //TODO : api 호출
             profileSimpleList.add(
                 ProfileSimpleItem(
-                    1,
-                    "user",
-                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp",
+                    ProfileType.user,
                     "한유연1",
-                    true
+                    true,
+                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp"
                 )
             )
             profileSimpleList.add(
                 ProfileSimpleItem(
-                    2,
-                    "hashtag",
-                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/images.jfif",
+                    ProfileType.hashtag,
                     "한유연2",
-                    false
+                    false,
+                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/images.jfif",
                 )
             )
             profileSimpleList.add(
                 ProfileSimpleItem(
-                    3,
-                    "user",
-                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
+                    ProfileType.user,
                     "한유연3",
-                    true
+                    true,
+                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
                 )
             )
 
         }
+        //TODO: null일 경우 처리
         context?.also {
             profileSimpleAdapter = ProfileSimpleAdapter(it, profileSimpleList)
             profileSimpleAdapter.onItemClickListener =
                 object : ProfileSimpleAdapter.OnItemClickListener {
                     override fun onClick(view: View, position: Int) {
+                        //TODO: Profile Page로 이동
                         Toast.makeText(it, "listener : $position", Toast.LENGTH_SHORT).show()
                     }
                 }
