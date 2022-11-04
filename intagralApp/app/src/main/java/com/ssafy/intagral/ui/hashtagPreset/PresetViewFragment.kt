@@ -17,10 +17,11 @@ import com.ssafy.intagral.databinding.ItemPresetViewRecyclerBinding
 /**
  * TODO
  *  - presetRepository를 viewmodel로 빼기
- *  - floating 메뉴? 편집 버튼 만들기
+ *  - 편집 버튼 만들기
  */
 class PresetViewFragment : Fragment() {
 
+    // viewmodel로 만들기
     private val presetRepository : PresetRepository = PresetRepository()
 
     private lateinit var binding: FragmentPresetViewBinding
@@ -38,11 +39,22 @@ class PresetViewFragment : Fragment() {
         // Inflate the layout for this fragment
         binding = FragmentPresetViewBinding.inflate(inflater, container, false)
 
+        binding.presetEditButton.setOnClickListener {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.menu_frame_layout,
+                    PresetEditFragment.newInstance()
+                ).commit()
+        }
+
         // create  layoutManager
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
         // pass it to rvLists layoutManager
         binding.presetViewRecyclerList.layoutManager = layoutManager
 
+        // TODO : viewmodel 작성하기
         val presetItemList = presetRepository.getPreset().tagMap.map {
             PresetItem(it.key, it.value)
         }
