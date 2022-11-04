@@ -4,15 +4,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.hashtagPreset.PresetViewFragment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="end"
+    tools:context=".ui.hashtagPreset.PresetViewFragment">
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:text="프리셋 설정" />
+        android:text="프리셋 설정"
+        android:gravity="center"
+        android:textSize="34sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/preset_view_recycler_list"
@@ -25,8 +28,9 @@
 
     <Button
         android:id="@+id/preset_edit_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_weight="0"
         android:text="편집하기" />
 </LinearLayout>
