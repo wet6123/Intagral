@@ -5,26 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.PresetItem
-import com.ssafy.intagral.data.source.PresetRepository
+import com.ssafy.intagral.data.PresetClassItem
 import com.ssafy.intagral.databinding.FragmentPresetViewBinding
 import com.ssafy.intagral.databinding.ItemPresetViewRecyclerBinding
+import com.ssafy.intagral.viewmodel.PresetViewModel
 
-/**
- * TODO
- *  - presetRepository를 viewmodel로 빼기
- *  - 편집 버튼 만들기
- */
 class PresetViewFragment : Fragment() {
 
-    // viewmodel로 만들기
-    private val presetRepository : PresetRepository = PresetRepository()
-
     private lateinit var binding: FragmentPresetViewBinding
+    private val presetViewModel: PresetViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,12 +48,15 @@ class PresetViewFragment : Fragment() {
         // pass it to rvLists layoutManager
         binding.presetViewRecyclerList.layoutManager = layoutManager
 
-        // TODO : viewmodel 작성하기
-        val presetItemList = presetRepository.getPreset().tagMap.map {
-            PresetItem(it.key, it.value)
-        }
-        binding.presetViewRecyclerList.adapter = PresetViewAdapter(presetItemList)
+        binding.presetViewRecyclerList.adapter = PresetViewAdapter(presetViewModel.getPresetList().value ?: listOf())
 
+        presetViewModel.getPresetList().observe(
+                viewLifecycleOwner
+        ){
+            it?.also {
+                binding.presetViewRecyclerList.adapter = PresetViewAdapter(it)
+            }
+        }
         return binding.root
     }
 
@@ -73,7 +70,7 @@ class PresetViewFragment : Fragment() {
     }
 
 
-    inner class PresetViewAdapter(var presetItemList: List<PresetItem>): RecyclerView.Adapter<PresetViewAdapter.ViewHolder>(){
+    inner class PresetViewAdapter(var presetClassItemList: List<PresetClassItem>): RecyclerView.Adapter<PresetViewAdapter.ViewHolder>(){
         inner class ViewHolder(val binding: ItemPresetViewRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -84,7 +81,7 @@ class PresetViewFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             with(holder){
-                with(presetItemList[position]){
+                with(presetClassItemList[position]){
                     binding.className.text = this.className
                     for(tag in this.tagList){
                         val chip = layoutInflater.inflate(R.layout.view_preset_view_chip, binding.presetViewTagChipGroup, false) as Chip
@@ -96,7 +93,7 @@ class PresetViewFragment : Fragment() {
         }
 
         override fun getItemCount(): Int {
-            return presetItemList.size
+            return presetClassItemList.size
         }
 
     }
