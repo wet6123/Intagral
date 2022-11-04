@@ -15,16 +15,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.PostItem
 import com.ssafy.intagral.data.ProfileDetail
+import com.ssafy.intagral.data.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
 import com.ssafy.intagral.databinding.FragmentUserProfileBinding
 import com.ssafy.intagral.ui.common.post.PostAdapter
 import com.ssafy.intagral.ui.home.HomeFragment
 
-private const val ARG_PARAM1 = "type" //user or hashtag
+private const val ARG_PARAM1 = "profileType" //user or hashtag
 private const val ARG_PARAM2 = "data" //profile data
 
 class ProfilePageFragment : Fragment() {
-    private var param1: String? = null
+    private var param1: ProfileType? = ProfileType.user //default user
     private var param2: String? = null //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
 
     //post list
@@ -37,7 +38,7 @@ class ProfilePageFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
+            param1 = it.getSerializable(ARG_PARAM1) as ProfileType
             param2 = it.getString(ARG_PARAM2)
         }
     }
@@ -57,10 +58,11 @@ class ProfilePageFragment : Fragment() {
 ***/
         val view = inflater.inflate(R.layout.fragment_profile_page,container,false)
 
+        //TODO: param2에서 필요한 data 뽑아서 profile detail fragment 생성
         parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
             inputDataParam1, inputDataParam2)).commit()
 
-        //TODO: API 호출
+        //TODO: hashtag인지 user인지 따라서 게시글 목록 요청하는 API 호출
         for(i in 1..9){
             postList.add(PostItem(i, "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"))
         }
@@ -71,6 +73,7 @@ class ProfilePageFragment : Fragment() {
             postAdapter = PostAdapter(it, postList)
             postAdapter.onItemClickListener = object : PostAdapter.OnItemClickListener {
                 override fun onClick(view: View, position: Int) {
+                    //TODO: post detail page로 이동
                     Toast.makeText(it,"listener : $position", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -80,23 +83,24 @@ class ProfilePageFragment : Fragment() {
             }
         }
 
+        //test dummy button
         view.findViewById<Button>(R.id.temporary_btn1).setOnClickListener{
             parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
-                false, inputDataParam3)).commit()
+                ProfileType.hashtag, inputDataParam3)).commit()
         }
         view.findViewById<Button>(R.id.temporary_btn2).setOnClickListener{
             parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
-                true, inputDataParam4)).commit()
+                ProfileType.user, inputDataParam4)).commit()
         }
         return view
     }
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance(param1: ProfileType, param2: String) =
             ProfilePageFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
+                    putSerializable(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)
                 }
             }
@@ -104,10 +108,10 @@ class ProfilePageFragment : Fragment() {
 }
 
 //test input data
-const val inputDataParam1:Boolean = true
-val inputDataParam2 = ProfileDetail(true, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
+val inputDataParam1:ProfileType = ProfileType.user
+val inputDataParam2 = ProfileDetail(ProfileType.user, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
 13,false,123,2,"dsfkdsjflkds")
-val inputDataParam3 = ProfileDetail(false, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
+val inputDataParam3 = ProfileDetail(ProfileType.hashtag, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
 10, true)
-val inputDataParam4 = ProfileDetail(true, "yuyeo2222n", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
+val inputDataParam4 = ProfileDetail(ProfileType.user, "yuyeo2222n", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
     10, true)
