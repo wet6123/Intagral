@@ -13,6 +13,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationBarView
+import com.ssafy.intagral.data.ProfileType
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
 import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
@@ -68,7 +69,7 @@ class MainMenuActivity : AppCompatActivity() {
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
                 }
                 R.id.nav_mypage -> {
-                    transaction.replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance("user","tmp")).commit()
+                    transaction.replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(ProfileType.user,"tmp")).commit()
                     println("mypage selected!")
                 }
                 else -> {

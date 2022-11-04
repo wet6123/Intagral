@@ -36,14 +36,17 @@ class HomeFragment : Fragment() {
 //post list fragment
         postRecyclerView = view.findViewById(R.id.fragment_post_list)
 
-        //temporary items, Bundle 객체 통해서 어떤 api 호출할지 메시지 전달 가능
-        for(i in 1..9){
+        //temporary items
+        //TODO: make newInstance method to call appropriate API
+        for(i in 1..50){
             postList.add(PostItem(i, "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"))
         }
+        //TODO: null일 경우 추가
         context?.also {
             postAdapter = PostAdapter(it, postList)
             postAdapter.onItemClickListener = object : PostAdapter.OnItemClickListener {
                 override fun onClick(view: View, position: Int) {
+                    //TODO: API 호출
                     Toast.makeText(it,"listener : $position",Toast.LENGTH_SHORT).show()
                 }
             }
@@ -59,10 +62,12 @@ class HomeFragment : Fragment() {
         filterTagList.add(FilterTagItem(1,"전체"))
         filterTagList.add(FilterTagItem(2,"팔로우"))
 
+        //TODO: null일 경우 추가
         context?.also {
             filterTagAdapter = FilterTagAdapter(it, filterTagList)
             filterTagAdapter.onItemClickListener = object: FilterTagAdapter.OnItemClickListener {
                 override fun onClick(view:View, position: Int) {
+                    //TODO: API 호출
                     Toast.makeText(it, "listener: $position", Toast.LENGTH_SHORT).show()
                 }
             }

@@ -11,12 +11,9 @@ import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.ProfileDetail
-import com.ssafy.intagral.databinding.FragmentUserProfileBinding
-import java.util.Objects
+import com.ssafy.intagral.data.ProfileType
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "isUser"
+private const val ARG_PARAM1 = "profileType"
 private const val ARG_PARAM2 = "profileData"
 
 /**
@@ -25,13 +22,13 @@ private const val ARG_PARAM2 = "profileData"
  * create an instance of this fragment.
  */
 class ProfileDetailFragment : Fragment() {
-    private var param1: Boolean = true //default user, TODO: type Boolean인지 String인지 ProfilePageFragment랑 통일
+    private var param1: ProfileType = ProfileType.user //default user
     private var param2: ProfileDetail? = null
     private lateinit var binding: Any // TODO: 동적으로 type 설정 가능한지 확인
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getBoolean(ARG_PARAM1)
+            param1 = it.getSerializable(ARG_PARAM1) as ProfileType
             param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
         }
     }
@@ -39,7 +36,7 @@ class ProfileDetailFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         val view :View
-        if(param1) {
+        if(param1.ordinal == 0) {
             // user profile
             view = inflater.inflate(R.layout.fragment_user_profile, container, false)
             val button: Button = view.findViewById<Button>(R.id.profile_detail_btn)
@@ -63,6 +60,7 @@ class ProfileDetailFragment : Fragment() {
             }
             Glide.with(view.context).load("https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp")
                 .into(view.findViewById(R.id.user_profile_img))
+            //TODO: follow 목록 페이지로 이동하는 리스너 등록
             view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
             view.findViewById<TextView>(R.id.following_cnt).text = param2?.following?.toString() ?: "0"
             view.findViewById<TextView>(R.id.hashtag_cnt).text = param2?.hashtag?.toString() ?: "0"
@@ -79,26 +77,18 @@ class ProfileDetailFragment : Fragment() {
             }
             Glide.with(view.context).load("https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png")
                 .into(view.findViewById(R.id.hashtag_profile_img))
+            //TODO: follow 목록 페이지로 이동하는 리스너 등록
             view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
         }
         return view
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ProfileDetailFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: Boolean, param2: ProfileDetail) =
+        fun newInstance(param1: ProfileType, param2: ProfileDetail) =
             ProfileDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putBoolean(ARG_PARAM1, param1)
+                    putSerializable(ARG_PARAM1, param1)
                     putSerializable(ARG_PARAM2, param2)
                 }
             }
