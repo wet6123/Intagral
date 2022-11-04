@@ -5,28 +5,33 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.chip.Chip
 import com.ssafy.intagral.R
-
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+import com.ssafy.intagral.data.PresetItem
+import com.ssafy.intagral.data.source.PresetRepository
+import com.ssafy.intagral.databinding.FragmentPresetEditBinding
+import com.ssafy.intagral.databinding.ItemPresetEditRecyclerBinding
+import com.ssafy.intagral.databinding.ItemPresetViewRecyclerBinding
+import com.ssafy.intagral.ui.upload.ResultTagListFragment
 
 /**
- * A simple [Fragment] subclass.
- * Use the [PresetEditFragment.newInstance] factory method to
- * create an instance of this fragment.
+ * TODO
+ *  - presetRepository viewmodel로 만들기
+ *  - 삭제 버튼
+ *  - 추가 버튼
  */
 class PresetEditFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+
+    // TODO : viewmodel로 만들기
+    private val presetRepository : PresetRepository = PresetRepository()
+
+    private lateinit var binding: FragmentPresetEditBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
         }
     }
 
@@ -35,26 +40,68 @@ class PresetEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_preset_edit, container, false)
+        binding = FragmentPresetEditBinding.inflate(inflater, container, false)
+
+        binding.presetCompleteButton.setOnClickListener {
+            requireActivity()
+                .supportFragmentManager
+                .beginTransaction()
+                .replace(
+                    R.id.menu_frame_layout,
+                    PresetViewFragment.newInstance()
+                ).commit()
+        }
+
+        // create  layoutManager
+        val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
+
+        // pass it to rvLists layoutManager
+        binding.presetEditRecyclerList.layoutManager = layoutManager
+
+        // TODO : viewmodel 작성하기
+        val presetItemList = presetRepository.getPreset().tagMap.map {
+            PresetItem(it.key, it.value)
+        }
+
+        binding.presetEditRecyclerList.adapter = PresetEditAdapter(presetItemList)
+
+        return binding.root
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment PresetEditFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
-        fun newInstance(param1: String, param2: String) =
+        fun newInstance() =
             PresetEditFragment().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
                 }
             }
+    }
+
+    inner class PresetEditAdapter(var presetItemList: List<PresetItem>): RecyclerView.Adapter<PresetEditAdapter.ViewHolder>(){
+        inner class ViewHolder(val binding: ItemPresetEditRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val binding = ItemPresetEditRecyclerBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+            return ViewHolder(binding)
+        }
+
+        override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+            with(holder){
+                with(presetItemList[position]){
+                    binding.className.text = this.className
+                    for(tag in this.tagList){
+                        val chip = layoutInflater.inflate(R.layout.view_preset_edit_chip, binding.presetEditTagChipGroup, false) as Chip
+                        chip.text = tag
+                        binding.presetEditTagChipGroup.addView(chip)
+                    }
+                }
+            }
+        }
+
+        override fun getItemCount(): Int {
+            return presetItemList.size
+        }
+
     }
 }

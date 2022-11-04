@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="end"
     tools:context=".ui.hashtagPreset.PresetEditFragment">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:text="프리셋 설정" />
+        android:text="프리셋 설정"
+        android:gravity="center"
+        android:textSize="34sp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/preset_edit_recycler_list"
@@ -24,8 +27,9 @@
 
     <Button
         android:id="@+id/preset_complete_button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="10dp"
         android:layout_weight="0"
         android:text="편집 완료" />
 
