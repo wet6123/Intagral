@@ -5,29 +5,21 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.PresetItem
-import com.ssafy.intagral.data.source.PresetRepository
+import com.ssafy.intagral.data.PresetClassItem
 import com.ssafy.intagral.databinding.FragmentPresetEditBinding
 import com.ssafy.intagral.databinding.ItemPresetEditRecyclerBinding
-import com.ssafy.intagral.databinding.ItemPresetViewRecyclerBinding
-import com.ssafy.intagral.ui.upload.ResultTagListFragment
+import com.ssafy.intagral.viewmodel.PresetViewModel
 
-/**
- * TODO
- *  - presetRepository viewmodel로 만들기
- *  - 삭제 버튼
- *  - 추가 버튼
- */
 class PresetEditFragment : Fragment() {
 
-    // TODO : viewmodel로 만들기
-    private val presetRepository : PresetRepository = PresetRepository()
-
     private lateinit var binding: FragmentPresetEditBinding
+    private val presetViewModel: PresetViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +50,15 @@ class PresetEditFragment : Fragment() {
         // pass it to rvLists layoutManager
         binding.presetEditRecyclerList.layoutManager = layoutManager
 
-        // TODO : viewmodel 작성하기
-        val presetItemList = presetRepository.getPreset().tagMap.map {
-            PresetItem(it.key, it.value)
-        }
+        binding.presetEditRecyclerList.adapter = PresetEditAdapter(presetViewModel.getPresetList().value ?: listOf())
 
-        binding.presetEditRecyclerList.adapter = PresetEditAdapter(presetItemList)
+        presetViewModel.getPresetList().observe(
+            viewLifecycleOwner
+        ){
+            it?.also {
+                binding.presetEditRecyclerList.adapter = PresetEditAdapter(it)
+            }
+        }
 
         return binding.root
     }
@@ -77,7 +72,7 @@ class PresetEditFragment : Fragment() {
             }
     }
 
-    inner class PresetEditAdapter(var presetItemList: List<PresetItem>): RecyclerView.Adapter<PresetEditAdapter.ViewHolder>(){
+    inner class PresetEditAdapter(var presetClassItemList: List<PresetClassItem>): RecyclerView.Adapter<PresetEditAdapter.ViewHolder>(){
         inner class ViewHolder(val binding: ItemPresetEditRecyclerBinding) : RecyclerView.ViewHolder(binding.root)
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -88,19 +83,28 @@ class PresetEditFragment : Fragment() {
 
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             with(holder){
-                with(presetItemList[position]){
+                with(presetClassItemList[position]){
                     binding.className.text = this.className
                     for(tag in this.tagList){
                         val chip = layoutInflater.inflate(R.layout.view_preset_edit_chip, binding.presetEditTagChipGroup, false) as Chip
                         chip.text = tag
+                        chip.setOnCloseIconClickListener{
+                            it as Chip
+                            presetViewModel.removeTag(this.className, it.text.toString())
+                            Toast.makeText(requireContext(), "${it.text} remove!!", Toast.LENGTH_SHORT).show()
+                        }
                         binding.presetEditTagChipGroup.addView(chip)
+                    }
+                    binding.tagAddButton.setOnClickListener {
+                        presetViewModel.removeTag(this.className, binding.tagInput.text.toString())
+                        Toast.makeText(requireContext(), "${binding.tagInput.text} insert into ${this.className}", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
         }
 
         override fun getItemCount(): Int {
-            return presetItemList.size
+            return presetClassItemList.size
         }
 
     }
