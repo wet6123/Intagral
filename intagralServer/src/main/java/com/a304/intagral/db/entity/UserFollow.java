@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(
+        columnNames = {"user_id_from", "user_id_to"})
+)
 public class UserFollow extends BaseEntity {
 
     @Id

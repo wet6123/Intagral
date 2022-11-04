@@ -1,6 +1,7 @@
 package com.a304.intagral.db.entity;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -22,6 +23,7 @@ public class Hashtag extends BaseEntity {
     @Column(nullable = false, unique = true)
     String content;
     @Column(nullable = false)
+    @ColumnDefault("0")
     Integer searchCnt;
 
     @OneToMany(mappedBy = "hashtagFollowToHashtag", fetch = FetchType.LAZY)

@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(
+        columnNames = {"user_id", "post_id"})
+)
 public class PostLike extends BaseEntity {
 
     @Id

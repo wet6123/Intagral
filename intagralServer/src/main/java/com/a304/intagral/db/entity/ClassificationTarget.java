@@ -19,7 +19,7 @@ public class ClassificationTarget extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     String targetName;
 
     @OneToMany(mappedBy = "hashtagPresetToClassificationTarget", fetch = FetchType.LAZY)

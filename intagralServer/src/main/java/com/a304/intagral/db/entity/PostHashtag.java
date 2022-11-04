@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(
+        columnNames = {"post_id", "hashtag_id"})
+)
 public class PostHashtag extends BaseEntity {
 
     @Id

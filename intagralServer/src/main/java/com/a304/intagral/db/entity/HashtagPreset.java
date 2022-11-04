@@ -10,6 +10,9 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(uniqueConstraints = @UniqueConstraint(
+        columnNames = {"user_id", "hashtag_id", "cls_target_id"})
+)
 public class HashtagPreset extends BaseEntity {
 
     @Id
