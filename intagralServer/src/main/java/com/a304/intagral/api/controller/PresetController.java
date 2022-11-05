@@ -4,7 +4,6 @@ import com.a304.intagral.api.response.PresetListRes;
 import com.a304.intagral.api.service.PresetService;
 import com.a304.intagral.common.auth.UserDetails;
 import com.a304.intagral.common.response.BaseResponseBody;
-import com.a304.intagral.db.dto.PresetListDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -27,7 +27,7 @@ public class PresetController {
 
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
-        List<PresetListDto> presetList = null;
+        Map<String, List<String>> presetList = null;
         List<String> classList = new ArrayList<>();
         try {
             // 리스트 가져오기

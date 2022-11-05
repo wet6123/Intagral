@@ -1,6 +1,5 @@
 package com.a304.intagral.api.service;
 
-import com.a304.intagral.db.dto.PresetListDto;
 import com.a304.intagral.db.entity.ClassificationTarget;
 import com.a304.intagral.db.entity.HashtagPreset;
 import com.a304.intagral.db.repository.ClassificationTargetRepository;
@@ -9,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("presetService")
 public class PresetServiceImpl implements PresetService {
@@ -21,13 +22,13 @@ public class PresetServiceImpl implements PresetService {
     ClassificationTargetRepository classificationTargetRepository;
 
     @Override
-    public List<PresetListDto> getAllPreset(Long userId, List<String> classList) {
+    public Map<String, List<String>> getAllPreset(Long userId, List<String> classList) {
         List<HashtagPreset> hashtagPresetList = userRepository.findById(userId).get().getHashtagPresetList();
-        List<PresetListDto> presetListDtoList = new ArrayList<>();
+        Map<String, List<String>> presetList = new HashMap<>();
         for (String cls : classList) {
-            presetListDtoList.add(getTargetPreset(hashtagPresetList, cls));
+            presetList.put(cls, getTargetPreset(hashtagPresetList, cls));
         }
-        return presetListDtoList;
+        return presetList;
     }
 
     @Override
@@ -43,7 +44,7 @@ public class PresetServiceImpl implements PresetService {
     }
 
     @Override
-    public PresetListDto getTargetPreset(List<HashtagPreset> hashtagPresetList, String targetCls) {
+    public List<String> getTargetPreset(List<HashtagPreset> hashtagPresetList, String targetCls) {
         List<String> tagList = new ArrayList<>();
         for(HashtagPreset hashtagPreset : hashtagPresetList){
             if(targetCls.equals(hashtagPreset.getHashtagPresetToClassificationTarget().getTargetName())){
@@ -51,6 +52,6 @@ public class PresetServiceImpl implements PresetService {
             }
         }
 
-        return new PresetListDto(targetCls, tagList);
+        return tagList;
     }
 }

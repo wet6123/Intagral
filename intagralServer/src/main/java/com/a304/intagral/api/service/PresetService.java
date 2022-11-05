@@ -1,14 +1,14 @@
 package com.a304.intagral.api.service;
 
-import com.a304.intagral.db.dto.PresetListDto;
 import com.a304.intagral.db.entity.HashtagPreset;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PresetService {
-    List<PresetListDto> getAllPreset(Long userId, List<String> classList);
+    Map<String, List<String>> getAllPreset(Long userId, List<String> classList);
 
-    List<String>  getAllClsName();
+    List<String> getAllClsName();
 
-    PresetListDto getTargetPreset(List<HashtagPreset> hashtagPresetList, String targetCls);
+    List<String> getTargetPreset(List<HashtagPreset> hashtagPresetList, String targetCls);
 }
