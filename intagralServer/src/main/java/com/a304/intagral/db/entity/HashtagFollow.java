@@ -20,6 +20,10 @@ public class HashtagFollow extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = " user_id", nullable = false)
+    Integer userId;
+    @Column(name = "hashtag_id", nullable = false)
+    Integer hashtagId;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     User hashtagFollowToUser;
