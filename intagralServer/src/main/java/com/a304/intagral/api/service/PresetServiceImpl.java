@@ -1,6 +1,7 @@
 package com.a304.intagral.api.service;
 
 import com.a304.intagral.api.request.PresetAddPostReq;
+import com.a304.intagral.api.request.PresetDeletePostReq;
 import com.a304.intagral.db.entity.ClassificationTarget;
 import com.a304.intagral.db.entity.Hashtag;
 import com.a304.intagral.db.entity.HashtagPreset;
@@ -83,5 +84,12 @@ public class PresetServiceImpl implements PresetService {
                 .build();
 
         hashtagPresetRepository.save(hashtagPreset);
+    }
+
+    @Override
+    public void deletePreset(Long userId, PresetDeletePostReq presetDeletePostReq) {
+        ClassificationTarget classificationTarget = classificationTargetRepository.findByTargetName(presetDeletePostReq.getCls()).get();
+        Hashtag hashtag = hashtagRepository.findByContent(presetDeletePostReq.getData()).get();
+        hashtagPresetRepository.deleteByUserIdAndHashtagIdAndClsTargetId(userId.intValue(), hashtag.getId().intValue(), classificationTarget.getId().intValue());
     }
 }

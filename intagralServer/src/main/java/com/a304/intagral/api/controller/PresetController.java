@@ -1,6 +1,7 @@
 package com.a304.intagral.api.controller;
 
 import com.a304.intagral.api.request.PresetAddPostReq;
+import com.a304.intagral.api.request.PresetDeletePostReq;
 import com.a304.intagral.api.response.PresetListRes;
 import com.a304.intagral.api.service.PresetService;
 import com.a304.intagral.common.auth.UserDetails;
@@ -52,6 +53,19 @@ public class PresetController {
         Long userId = Long.valueOf(userDetails.getUsername());
         try{
             presetService.addPreset(userId, presetAddPostReq);
+
+            return ResponseEntity.ok(PresetListRes.of(200, "success"));
+        } catch(RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/delete")
+    public ResponseEntity<? extends  BaseResponseBody> deleteTag(Authentication authentication, @RequestBody PresetDeletePostReq presetDeletePostReq){
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+        try{
+            presetService.deletePreset(userId, presetDeletePostReq);
 
             return ResponseEntity.ok(PresetListRes.of(200, "success"));
         } catch(RuntimeException e) {
