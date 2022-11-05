@@ -20,6 +20,13 @@ public class HashtagPreset extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = " user_id", nullable = false)
+    Integer userId;
+    @Column(name = "hashtag_id", nullable = false)
+    Integer hashtagId;
+    @Column(name = "cls_target_id", nullable = false)
+    Integer clsTargetId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     User hashtagPresetToUser;
