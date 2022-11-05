@@ -16,7 +16,7 @@ import java.util.Map;
 
 @Slf4j
 @RestController
-@RequestMapping("/preset")
+@RequestMapping("/api/preset")
 public class PresetController {
 
     @Autowired

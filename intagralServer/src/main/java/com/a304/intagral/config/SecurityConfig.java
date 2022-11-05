@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
                 .authorizeRequests()
-                .antMatchers(new String[]{"/user/login"}).permitAll()
+                .antMatchers(new String[]{"/api/user/login"}).permitAll()
                 .anyRequest().authenticated()
                 .and().cors();
     }
