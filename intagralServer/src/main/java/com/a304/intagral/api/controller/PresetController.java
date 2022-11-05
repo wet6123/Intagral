@@ -1,5 +1,6 @@
 package com.a304.intagral.api.controller;
 
+import com.a304.intagral.api.request.PresetAddPostReq;
 import com.a304.intagral.api.response.PresetListRes;
 import com.a304.intagral.api.service.PresetService;
 import com.a304.intagral.common.auth.UserDetails;
@@ -40,6 +41,19 @@ public class PresetController {
             presetList = presetService.getAllPreset(userId, classList);
 
             return ResponseEntity.ok(PresetListRes.of(200, "success", classList, presetList));
+        } catch(RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/add")
+    public ResponseEntity<? extends  BaseResponseBody> addPreset(Authentication authentication, @RequestBody PresetAddPostReq presetAddPostReq){
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+        try{
+            presetService.addPreset(userId, presetAddPostReq);
+
+            return ResponseEntity.ok(PresetListRes.of(200, "success"));
         } catch(RuntimeException e) {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
