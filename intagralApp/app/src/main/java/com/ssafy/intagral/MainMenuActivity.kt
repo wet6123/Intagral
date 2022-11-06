@@ -1,9 +1,12 @@
 package com.ssafy.intagral
 
 import android.content.Context
+
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.SearchView.OnQueryTextListener
 import androidx.appcompat.widget.Toolbar
@@ -13,12 +16,13 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationBarView
+import com.ssafy.intagral.data.ProfileDetail
 import com.ssafy.intagral.data.ProfileType
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
 import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
 import com.ssafy.intagral.ui.home.HomeFragment
-import com.ssafy.intagral.ui.home.SearchFragment
+import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
 import org.pytorch.LiteModuleLoader
@@ -84,7 +88,8 @@ class MainMenuActivity : AppCompatActivity() {
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
                 }
                 R.id.nav_mypage -> {
-                    transaction.replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(ProfileType.user,"tmp")).commit()
+                    transaction.replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(ProfileType.user,
+                        dummyData)).commit()
                     println("mypage selected!")
                 }
                 else -> {
@@ -105,7 +110,9 @@ class MainMenuActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 R.id.toolbar_search_icon -> {
-                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SearchFragment()).commit()
+                    val intent = Intent(this@MainMenuActivity, SearchActivity::class.java)
+                    startActivity(intent)
+//                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
                 }
                 R.id.toolbar_setting -> {
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SettingFragment()).commit()
@@ -120,6 +127,9 @@ class MainMenuActivity : AppCompatActivity() {
 
     inner class SearchListener : OnQueryTextListener{
         override fun onQueryTextSubmit(query: String?): Boolean {
+            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+            // TODO: 뒤로가기
             supportFragmentManager.setFragmentResult("search text", bundleOf("input text" to query))
             return true
         }
@@ -160,3 +170,8 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 }
+
+val dummyData: ProfileDetail = ProfileDetail(ProfileType.user, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
+    200,false)
+val dummyData2: ProfileDetail = ProfileDetail(ProfileType.user, "한유연", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
+    200,false)
