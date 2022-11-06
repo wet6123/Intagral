@@ -7,6 +7,7 @@ import com.a304.intagral.common.response.BaseResponseBody;
 import com.a304.intagral.db.entity.Post;
 import com.a304.intagral.db.entity.PostLike;
 import com.a304.intagral.db.entity.User;
+import com.a304.intagral.dto.PostDataDto;
 import com.a304.intagral.dto.PostListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -63,7 +64,7 @@ public class PostController {
             throw new NullPointerException("type이 hashtag이거나 user일때는 키워드를 보내주어야 합니다.");
         }
 
-        PostListDto postList = null;
+        List<PostDataDto> postList = null;
 
         if(type.equals("all")){
             postList = postService.getNewPostList(page);

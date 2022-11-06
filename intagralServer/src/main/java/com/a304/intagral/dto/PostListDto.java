@@ -8,12 +8,8 @@ import java.util.List;
 @Data
 @Builder
 public class PostListDto {
-    List<PostData> data;
-    int page;
+    List<PostDataDto> data;
+    Long page;
     boolean isNext;
-}
-class PostData{
-    int postId;
-    String imgPath;
 }
 

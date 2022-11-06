@@ -7,13 +7,14 @@ import com.a304.intagral.db.entity.User;
 import com.a304.intagral.db.repository.PostHashtagRepository;
 import com.a304.intagral.db.repository.PostRepository;
 import com.a304.intagral.db.repository.UserRepository;
-import com.a304.intagral.dto.PostListDto;
+import com.a304.intagral.dto.PostDataDto;
+import com.a304.intagral.dto.PostDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Service("postService")
 public class PostServiceImpl implements PostService {
@@ -53,22 +54,31 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostListDto getNewPostList(int page) {
+    public List<PostDataDto> getNewPostList(int page) {
+        List<PostDataDto> res = new ArrayList<>();
+        List<Post> postlist = postRepository.findAll();
+        for(Post post : postlist){
+            PostDataDto postData = null;
+            postData.setPostId(post.getId());
+            postData.setImgPath(post.getImgPath());
+            res.add(postData);
+        }
+        res.subList((page-1)*10, page*10);
+        return res;
+    }
+
+    @Override
+    public List<PostDataDto> getPostListByFollow(int page) {
         return null;
     }
 
     @Override
-    public PostListDto getPostListByFollow(int page) {
+    public List<PostDataDto> getPostListByHashtag(String hashtag, int page) {
         return null;
     }
 
     @Override
-    public PostListDto getPostListByHashtag(String hashtag, int page) {
-        return null;
-    }
-
-    @Override
-    public PostListDto getPostListByNickname(String nickname, int page) {
+    public List<PostDataDto> getPostListByNickname(String nickname, int page) {
         return null;
     }
 }
