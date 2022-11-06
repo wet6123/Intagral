@@ -1,5 +1,6 @@
 package com.a304.intagral.api.controller;
 
+import com.a304.intagral.api.response.HashtagHotListRes;
 import com.a304.intagral.api.response.HashtagProfileRes;
 import com.a304.intagral.api.response.SearchRes;
 import com.a304.intagral.api.service.HashtagService;
@@ -30,13 +31,24 @@ public class HashtagController {
 
     @GetMapping("/profile")
     public ResponseEntity<? extends BaseResponseBody> searchId(Authentication authentication, @RequestParam(value = "q") String target) {
-        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        UserDetails userDetails = (UserDetails) authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try {
             HashtagProfileDto hashtagProfileDto = hashTagService.getProfile(userId, target);
 
             return ResponseEntity.ok(HashtagProfileRes.of(200, "success", hashtagProfileDto));
-        } catch(RuntimeException e) {
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/list/hot")
+    public ResponseEntity<? extends BaseResponseBody> getHotList(){
+        try{
+            List<String> hotList = hashTagService.getHotList();
+
+            return ResponseEntity.ok(HashtagHotListRes.of(200, "success", hotList));
+        } catch (RuntimeException e) {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
     }

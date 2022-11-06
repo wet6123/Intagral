@@ -8,6 +8,9 @@ import com.a304.intagral.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service("hashtagService")
 public class HashtagServiceImpl implements HashtagService {
 
@@ -35,4 +38,16 @@ public class HashtagServiceImpl implements HashtagService {
 
         return hashtagProfileDto;
     }
+
+    @Override
+    public List<String> getHotList() {
+        List<Hashtag> hashtagList = hashtagRepository.findTop5ByOrderBySearchCntDesc();
+        List<String> hotList = new ArrayList<>();
+        for (Hashtag hashtag : hashtagList) {
+            hotList.add(hashtag.getContent());
+        }
+
+        return hotList;
+    }
+
 }
