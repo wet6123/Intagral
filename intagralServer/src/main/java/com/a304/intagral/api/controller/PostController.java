@@ -1,15 +1,20 @@
 package com.a304.intagral.api.controller;
 
+import com.a304.intagral.api.response.PostDetailRes;
 import com.a304.intagral.api.service.PostService;
+import com.a304.intagral.common.auth.UserDetails;
+import com.a304.intagral.common.response.BaseResponseBody;
 import com.a304.intagral.db.entity.Post;
-import com.a304.intagral.dto.PostDto;
+import com.a304.intagral.db.entity.PostLike;
+import com.a304.intagral.db.entity.User;
 import com.a304.intagral.dto.PostListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/post")
@@ -18,10 +23,31 @@ public class PostController {
     PostService postService;
 
     @GetMapping("/{post_id}")
-    public ResponseEntity<PostDto> getPostDetail(@PathVariable("post_id") Long postId){
-        Post a = postService.getPostByPostId(postId);
-        PostDto postDetail = null;
-        return new ResponseEntity<>(postDetail, HttpStatus.OK);
+    public ResponseEntity<? extends BaseResponseBody> getPostDetail(Authentication authentication, @PathVariable("post_id") Long postId){
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+
+//      포스트 관련 정보
+        Post post = postService.getPostByPostId(postId);
+        List<String> tags = postService.getTagsByPostId(postId);
+        String imgPath = post.getImgPath();
+        
+//      좋아요 정보
+        List<PostLike> likeList = postService.getLike(postId);
+        Long likeCount = Long.valueOf(likeList.size());
+        boolean isLike = false;
+        for(PostLike like : likeList){
+            if(like.getUserId() == userId){
+                isLike = true;
+            }
+        }
+        
+//      글쓴 유저 정보
+        User user = postService.getUserByPostId(postId);
+        String writer = user.getNickname();
+        String writerImgPath = user.getProfileImgPath();
+
+        return ResponseEntity.ok(PostDetailRes.of(200, "success", imgPath, tags, likeCount, isLike, writer, writerImgPath));
     }
 
     @GetMapping("/list")
