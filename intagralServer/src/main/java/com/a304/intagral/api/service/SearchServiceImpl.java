@@ -61,6 +61,8 @@ public class SearchServiceImpl implements SearchService{
         List<Hashtag> hashtagList = hashtagRepository.findAllByContentContaining(target);
         List<SearchHashtagDto> searchHashtagDtoList = new ArrayList<>();
         for(Hashtag searchedHashtag : hashtagList){
+            searchedHashtag.setSearchCnt(searchedHashtag.getSearchCnt() + 1);
+
             SearchHashtagDto searchHashtagDto = SearchHashtagDto.builder()
                     .name(searchedHashtag.getContent())
                     .isFollow(false)
@@ -69,6 +71,8 @@ public class SearchServiceImpl implements SearchService{
                 searchHashtagDto.setFollow(true);
             }
             searchHashtagDtoList.add(searchHashtagDto);
+
+            hashtagRepository.save(searchedHashtag);
         }
 
         return searchHashtagDtoList;
