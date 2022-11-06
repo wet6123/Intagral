@@ -27,11 +27,13 @@ public class PostController {
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
 
+        try{
+
 //      포스트 관련 정보
         Post post = postService.getPostByPostId(postId);
         List<String> tags = postService.getTagsByPostId(postId);
         String imgPath = post.getImgPath();
-        
+
 //      좋아요 정보
         List<PostLike> likeList = postService.getLike(postId);
         Long likeCount = Long.valueOf(likeList.size());
@@ -41,13 +43,16 @@ public class PostController {
                 isLike = true;
             }
         }
-        
+
 //      글쓴 유저 정보
         User user = postService.getUserByPostId(postId);
         String writer = user.getNickname();
         String writerImgPath = user.getProfileImgPath();
 
         return ResponseEntity.ok(PostDetailRes.of(200, "success", imgPath, tags, likeCount, isLike, writer, writerImgPath));
+        } catch (RuntimeException e){
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
     }
 
     @GetMapping("/list")
