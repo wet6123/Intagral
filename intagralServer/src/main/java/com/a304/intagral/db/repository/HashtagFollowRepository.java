@@ -7,4 +7,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface HashtagFollowRepository extends JpaRepository<HashtagFollow, Long> {
 
+    Long countByUserIdAndHashtagId(int userId, Integer hashtagId);
+
+    Long countByHashtagId(Integer hashtagId);
 }
