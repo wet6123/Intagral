@@ -1,11 +1,15 @@
 package com.a304.intagral.api.controller;
 
 import com.a304.intagral.api.request.UserLoginPostReq;
+import com.a304.intagral.api.response.HashtagProfileRes;
 import com.a304.intagral.api.response.TokenRes;
 import com.a304.intagral.api.response.UserLoginPostRes;
+import com.a304.intagral.api.response.UserProfileRes;
 import com.a304.intagral.api.service.UserService;
 import com.a304.intagral.common.auth.UserDetails;
 import com.a304.intagral.common.response.BaseResponseBody;
+import com.a304.intagral.db.dto.HashtagProfileDto;
+import com.a304.intagral.db.dto.UserProfileDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,5 +46,18 @@ public class UserController {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
         return ResponseEntity.ok(BaseResponseBody.of(200, "Success"));
+    }
+
+    @GetMapping("/profile")
+    public ResponseEntity<? extends BaseResponseBody> getUserProfile(Authentication authentication, @RequestParam(value = "q") String nickname) {
+        UserDetails userDetails = (UserDetails) authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+        try {
+            UserProfileDto userProfileDto = userService.getProfile(userId, nickname);
+
+            return ResponseEntity.ok(UserProfileRes.of(200, "success", userProfileDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
     }
 }

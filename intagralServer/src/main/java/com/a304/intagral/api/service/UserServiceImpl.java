@@ -2,7 +2,12 @@ package com.a304.intagral.api.service;
 
 import com.a304.intagral.api.response.TokenRes;
 import com.a304.intagral.common.util.JwtTokenUtil;
+import com.a304.intagral.db.dto.HashtagProfileDto;
+import com.a304.intagral.db.dto.UserProfileDto;
+import com.a304.intagral.db.entity.Hashtag;
 import com.a304.intagral.db.entity.User;
+import com.a304.intagral.db.repository.HashtagFollowRepository;
+import com.a304.intagral.db.repository.UserFollowRepository;
 import com.a304.intagral.db.repository.UserRepository;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -22,6 +27,11 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserFollowRepository userFollowRepository;
+    @Autowired
+    HashtagFollowRepository hashtagFollowRepository;
+
 
     final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
     final java.util.Random rand = new java.util.Random();
@@ -116,5 +126,27 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findById(userId).get();
         user.setAuthToken(null);
         userRepository.save(user);
+    }
+
+    @Override
+    public UserProfileDto getProfile(Long userId, String nickname) {
+        User user = userRepository.findByNickname(nickname).get();
+        Integer targetUserId = user.getId().intValue();
+
+        Long followingCnt = userFollowRepository.countByUserIdTo(targetUserId);
+        Long followerCnt = userFollowRepository.countByUserIdFrom(targetUserId);
+        Long hashtagFollowCnt = hashtagFollowRepository.countByUserId(targetUserId);
+        Long isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(userId.intValue(), targetUserId);
+
+        UserProfileDto userProfileDto = UserProfileDto.builder()
+                .nickname(nickname)
+                .intro(user.getIntro())
+                .following(followingCnt)
+                .follower(followerCnt)
+                .hashtag(hashtagFollowCnt)
+                .isFollow(isFollow != 0)
+                .build();
+
+        return userProfileDto;
     }
 }
