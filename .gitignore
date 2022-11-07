@@ -1,3 +1,4 @@
 
 datasets/
-yolov5/runs/
+yolov5/runs/detect/*
+yolov5/runs/train/*
