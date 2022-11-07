@@ -5,12 +5,10 @@ import com.ssafy.intagral.di.CommonService
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
-import javax.inject.Inject
 
 class PresetRepository {
 
-    @Inject
-    val commonService: Retrofit = CommonService.getCommonService()
+    var commonService: Retrofit = CommonService.getCommonService()
     private var presetService: PresetService
 
     init {
