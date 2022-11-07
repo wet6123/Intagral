@@ -1,35 +1,60 @@
 package com.ssafy.intagral.ui.upload
 
 import android.app.Activity
+import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.graphics.ImageDecoder
 import android.graphics.Matrix
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentPhotoPickerBinding
 import com.ssafy.intagral.viewmodel.UploadViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Default
+import kotlinx.coroutines.Dispatchers.Main
+import org.pytorch.IValue
+import org.pytorch.Module
+import org.pytorch.torchvision.TensorImageUtils
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.coroutines.CoroutineContext
 
 /**
  * TODO
- *  - model embedding
+ *  - 수행 결과 클래스 1개? 여러개?
  */
-class PhotoPicker : Fragment() {
+class PhotoPicker : Fragment(), CoroutineScope {
+
+    // 코루틴 비동기를 위한 정의 : pytorch 모델을 비동기로..
+    private lateinit var job: Job
+    override val coroutineContext: CoroutineContext
+        get() = Default + job
+
+    // 프로그레스 바
+    private lateinit var progressDialog: Dialog
 
     private lateinit var binding: FragmentPhotoPickerBinding
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
@@ -41,6 +66,20 @@ class PhotoPicker : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        job = Job()
+
+        // 프로그레스 다이얼로그
+        val progressBar = layoutInflater.inflate(R.layout.view_progress_model, null)
+        progressDialog = Dialog(requireContext())
+        progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // 배경을 투명하게
+        progressDialog.setContentView(progressBar) // ProgressBar 위젯 생성
+        progressDialog.setCanceledOnTouchOutside(false) // 외부 터치 막음
+        progressDialog.setCancelable(false)
+        (progressBar.findViewById(R.id.model_process_cancel_button) as Button).setOnClickListener {
+            job.cancel()
+            progressDialog.dismiss()
+        }
+
         uploadViewModel.getImageBitmap().value = null
         uploadViewModel.getDetectedClassList().value = null
         uploadViewModel.getTagMap().value = null
@@ -91,17 +130,18 @@ class PhotoPicker : Fragment() {
     }
 
     // layout을 inflate 하는 단계로 뷰 바인딩 진행, UI에 대한 작업은 진행하지 않음
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentPhotoPickerBinding.inflate(inflater, container, false)
+        binding.root.id
         imageView = binding.imageView2
         imageView.setOnClickListener{
             it.showContextMenu()
         }
         registerForContextMenu(imageView)
-
 
         uploadViewModel.getImageBitmap().observe(
             viewLifecycleOwner
@@ -110,23 +150,57 @@ class PhotoPicker : Fragment() {
                 binding.imageView2.setImageBitmap(it)
             }
         }
-
-        binding.button.setOnClickListener {
-            uploadViewModel.getImageBitmap().value?.also {
-                uploadViewModel.getDetectedClassList().value = arrayListOf("default")
+        uploadViewModel.getDetectedClassList().observe(
+            viewLifecycleOwner
+        ){
+            it?.also{
                 requireActivity()
                     .supportFragmentManager
                     .beginTransaction()
-                    .replace(
+                    .addToBackStack("upload")
+                    .add(
                         R.id.menu_frame_layout,
                         ResultTagListFragment.newInstance()
                     ).commit()
+            }
+        }
+
+        binding.button.setOnClickListener {
+            uploadViewModel.getImageBitmap().value?.also {
+                job = Job()
+                launch {
+                    withContext(Main){
+                        progressDialog.show()
+                    }
+                    val output = runModel()
+
+                    delay(1000) // 취소를 위해 살짝 딜레이
+
+                    output?.let {
+                        val result = parseScore(output)
+                        progressDialog.dismiss()
+
+                        withContext(Main){
+                            uploadViewModel.getDetectedClassList().value = result
+                        }
+                    }
+                }
             }
             if(uploadViewModel.getImageBitmap().value == null){
                 Toast.makeText(requireContext(), "사진을 선택해주세요", Toast.LENGTH_SHORT).show()
             }
         }
         return binding.root
+    }
+
+    // View 생성이 완료 되었으며 UI 초기화 작업 진행
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+    }
+    // 프레그먼트 없어지면 비동기 작업 취소
+    override fun onDestroy() {
+        super.onDestroy()
+        job.cancel()
     }
 
     override fun onCreateContextMenu(
@@ -151,11 +225,6 @@ class PhotoPicker : Fragment() {
             }
         }
         return super.onContextItemSelected(item)
-    }
-
-    // View 생성이 완료 되었으며 UI 초기화 작업 진행
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
     }
 
     //이미지 파일 생성
@@ -206,6 +275,87 @@ class PhotoPicker : Fragment() {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         galleryLauncher.launch(intent)
+    }
+
+    @Throws(IOException::class)
+    fun assetFilePath(context: Context, assetName: String?): String? {
+        val file = File(context.filesDir, assetName)
+        if (file.exists() && file.length() > 0) {
+            return file.absolutePath
+        }
+        context.assets.open(assetName!!).use { `is` ->
+            FileOutputStream(file).use { os ->
+                val buffer = ByteArray(4 * 1024)
+                var read: Int
+                while (`is`.read(buffer).also { read = it } != -1) {
+                    os.write(buffer, 0, read)
+                }
+                os.flush()
+            }
+            return file.absolutePath
+        }
+    }
+
+    // object detection
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun runModel(): FloatArray? {
+        uploadViewModel.getImageBitmap().value?.also {
+            val module: Module = (requireActivity() as MainMenuActivity).mModule
+            val mutableBitmap = it.copy(Bitmap.Config.RGBA_F16, true)
+            val resizedBitmap = Bitmap.createScaledBitmap(
+                mutableBitmap,
+                640,
+                640,
+                true
+            )
+            val inputTensor = TensorImageUtils.bitmapToFloat32Tensor(
+                resizedBitmap,
+                floatArrayOf(0.0f, 0.0f, 0.0f),
+                floatArrayOf(1.0f, 1.0f, 1.0f)
+            )
+
+            val outputTuple = module.forward(IValue.from(inputTensor)).toTuple()
+            val outputTensor = outputTuple[0].toTensor()
+            val outputs = outputTensor.dataAsFloatArray
+
+            println(outputs.size)
+            println(Arrays.toString(outputs))
+            parseScore(outputs)
+            return outputs
+        }
+        return null
+    }
+
+    // model output is of size 25200*(num_of_class+5)
+    private val mOutputRow = 25200 // as decided by the YOLOv5 model for input image of size 640*640
+
+    private val mOutputColumn = 85 // left, top, right, bottom, score and 80 class probability
+
+    private val mThreshold = 0.10f // score above which a detection is generated
+
+    private val mNmsLimit = 15
+    // parse detection score
+    private fun parseScore(outputs: FloatArray) : ArrayList<String>{
+        val classTargetList = (requireActivity() as MainMenuActivity).classList
+        val detectedSet: HashSet<String> = HashSet()
+        detectedSet.add("default")
+        for (i in 0 until mOutputRow){
+
+            if (outputs[i* mOutputColumn +4] > mThreshold) {
+
+                var max = outputs[i* mOutputColumn +5];
+                var cls = 0
+                for(j in 0 until mOutputColumn - 5){
+                    if (outputs[i* mOutputColumn +5+j] > max) {
+                        max = outputs[i* mOutputColumn +5+j]
+                        cls = j
+                    }
+                }
+                detectedSet.add(classTargetList[cls])
+            }
+        }
+
+        return ArrayList(detectedSet)
     }
 
     // 프레그먼트가 생성돼서 해당 프레그먼트가 액티비티에 추가되기 전에 인자를 첨부하기 위해 companion object 사용

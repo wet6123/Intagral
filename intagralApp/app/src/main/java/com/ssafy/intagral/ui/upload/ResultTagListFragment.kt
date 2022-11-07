@@ -88,6 +88,11 @@ class ResultTagListFragment : Fragment() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        uploadViewModel.getDetectedClassList().value = null
+    }
+
     inner class ResultTagListButtonClickListener: OnClickListener{
         override fun onClick(p0: View?) {
             when(p0?.id){
