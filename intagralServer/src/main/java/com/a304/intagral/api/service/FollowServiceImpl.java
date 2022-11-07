@@ -1,8 +1,13 @@
 package com.a304.intagral.api.service;
 
+import com.a304.intagral.db.dto.FollowHashtagPostDto;
 import com.a304.intagral.db.dto.FollowUserPostDto;
+import com.a304.intagral.db.entity.Hashtag;
+import com.a304.intagral.db.entity.HashtagFollow;
 import com.a304.intagral.db.entity.User;
 import com.a304.intagral.db.entity.UserFollow;
+import com.a304.intagral.db.repository.HashtagFollowRepository;
+import com.a304.intagral.db.repository.HashtagRepository;
 import com.a304.intagral.db.repository.UserFollowRepository;
 import com.a304.intagral.db.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,10 @@ public class FollowServiceImpl implements FollowService {
     UserRepository userRepository;
     @Autowired
     UserFollowRepository userFollowRepository;
+    @Autowired
+    HashtagRepository hashtagRepository;
+    @Autowired
+    HashtagFollowRepository hashtagFollowRepository;
 
     @Override
     public FollowUserPostDto toggleUserFollow(Long userId, String nickname) {
@@ -41,5 +50,31 @@ public class FollowServiceImpl implements FollowService {
                 .build();
 
         return followUserPostDto;
+    }
+
+    @Override
+    public FollowHashtagPostDto toggleHashtagFollow(Long userId, String hashtag) {
+        Hashtag targetHashtag = hashtagRepository.findByContent(hashtag).get();
+        Integer myUserId = userId.intValue();
+        Integer targetHashtagId = targetHashtag.getId().intValue();
+
+        boolean isFollow = hashtagFollowRepository.countByUserIdAndHashtagId(myUserId, targetHashtagId) != 0;
+
+        if(isFollow){
+            hashtagFollowRepository.deleteByUserIdAndHashtagId(myUserId, targetHashtagId);
+        } else {
+            HashtagFollow hashtagFollow = HashtagFollow.builder()
+                    .userId(myUserId)
+                    .hashtagId(targetHashtagId)
+                    .build();
+            hashtagFollowRepository.save(hashtagFollow);
+        }
+
+        FollowHashtagPostDto followHashtagPostDto = FollowHashtagPostDto.builder()
+                .isFollow(!isFollow)
+                .followerCnt(targetHashtag.getHashtagFollowList().size())
+                .build();
+
+        return followHashtagPostDto;
     }
 }
