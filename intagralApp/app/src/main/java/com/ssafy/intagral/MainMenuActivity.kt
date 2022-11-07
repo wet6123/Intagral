@@ -6,17 +6,17 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
-import android.view.inputmethod.InputMethodManager
-import androidx.appcompat.widget.SearchView
-import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
-import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationBarView
 import com.ssafy.intagral.data.ProfileDetail
+import com.ssafy.intagral.data.ProfileSimpleItem
 import com.ssafy.intagral.data.ProfileType
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
@@ -28,6 +28,7 @@ import com.ssafy.intagral.ui.upload.PhotoPicker
 import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
 import java.io.*
+import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 
 class MainMenuActivity : AppCompatActivity() {
 
@@ -36,6 +37,8 @@ class MainMenuActivity : AppCompatActivity() {
 
     lateinit var mModule : Module
     lateinit var classList : ArrayList<String>
+    private val profileDetailViewModel: ProfileDetailViewModel by viewModels()
+    private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,13 +61,24 @@ class MainMenuActivity : AppCompatActivity() {
             menuTopToolbar.inflateMenu(R.menu.top_bar)  //setSupportActionBar
             menuTopToolbar.setOnMenuItemClickListener(TopBarListener())
 
-            val searchItem = menuTopToolbar.menu.findItem(R.id.toolbar_search_icon).actionView as SearchView
-            searchItem.setOnQueryTextListener(SearchListener())
+            activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+                if(it.resultCode== RESULT_OK) {
+                    profileDetailViewModel.changeProfileDetail(it?.data?.getSerializableExtra("profileSimple") as ProfileSimpleItem)
+                }
+            }
+            profileDetailViewModel.getProfileDetail().observe(
+                this@MainMenuActivity
+            ){
+                it?.also {
+                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(it.type,it)).commit()
+                }
+            }
 //TODO : Search Fragment에서 Home으로 뒤로가기 했을 때 키보드 풀기
         }
 
         setHome()
     }
+
     private fun setHome() {
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
@@ -111,8 +125,7 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.toolbar_search_icon -> {
                     val intent = Intent(this@MainMenuActivity, SearchActivity::class.java)
-                    startActivity(intent)
-//                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
+                    activityResultLauncher.launch(intent)
                 }
                 R.id.toolbar_setting -> {
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SettingFragment()).commit()
@@ -125,19 +138,6 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 
-    inner class SearchListener : OnQueryTextListener{
-        override fun onQueryTextSubmit(query: String?): Boolean {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
-            // TODO: 뒤로가기
-            supportFragmentManager.setFragmentResult("search text", bundleOf("input text" to query))
-            return true
-        }
-        override fun onQueryTextChange(newText: String?): Boolean {
-            supportFragmentManager.setFragmentResult("search text", bundleOf("input text" to newText))
-            return true
-        }
-    }
     fun logout() {
         mGoogleSignInClient.signOut()
             .addOnCompleteListener(this) {
