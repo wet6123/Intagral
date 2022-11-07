@@ -1,5 +1,6 @@
 package com.a304.intagral.api.service;
 
+import com.a304.intagral.api.request.UserProfileUpdatePostReq;
 import com.a304.intagral.api.response.TokenRes;
 import com.a304.intagral.common.util.JwtTokenUtil;
 import com.a304.intagral.db.dto.HashtagProfileDto;
@@ -148,5 +149,17 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         return userProfileDto;
+    }
+
+    @Override
+    public void updateProfile(Long userId, UserProfileUpdatePostReq userProfileUpdatePostReq) {
+        User user = userRepository.findById(userId).get();
+        if("nickname".equals(userProfileUpdatePostReq.getType())){
+            user.setNickname(userProfileUpdatePostReq.getData());
+        } else {
+            user.setIntro(userProfileUpdatePostReq.getData());
+        }
+
+        userRepository.save(user);
     }
 }
