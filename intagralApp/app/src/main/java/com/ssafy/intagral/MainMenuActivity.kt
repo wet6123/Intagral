@@ -25,11 +25,13 @@ import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
+import dagger.hilt.android.AndroidEntryPoint
 import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
 import java.io.*
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 
+@AndroidEntryPoint
 class MainMenuActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainMenuBinding

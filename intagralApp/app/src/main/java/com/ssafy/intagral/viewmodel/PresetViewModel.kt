@@ -1,15 +1,21 @@
 package com.ssafy.intagral.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ssafy.intagral.data.Preset
+import androidx.lifecycle.viewModelScope
 import com.ssafy.intagral.data.PresetClassItem
-import com.ssafy.intagral.data.source.PresetRepository
+import com.ssafy.intagral.data.source.preset.PresetRepository
+import com.ssafy.intagral.data.source.preset.PresetResponse
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import javax.inject.Inject
 
-class PresetViewModel: ViewModel() {
-
-    // preset data repository
-    private val presetRepository: PresetRepository = PresetRepository()
+@HiltViewModel
+class PresetViewModel @Inject constructor(private val repository: PresetRepository): ViewModel() {
 
     private var presetList: MutableLiveData<ArrayList<PresetClassItem>> = MutableLiveData()
 
@@ -34,18 +40,34 @@ class PresetViewModel: ViewModel() {
     }
 
     private fun reloadPresetList() {
-        val preset: Preset = presetRepository.getPreset()
-        val presetClassItemList: ArrayList<PresetClassItem> = arrayListOf()
-        for(className in preset.classList){
-            presetClassItemList.add(
-                PresetClassItem(
-                    className,
-                    preset.tagMap[className] ?: listOf()
-                )
-            )
-        }
+        viewModelScope.launch{
+            val result: ArrayList<PresetClassItem> = arrayListOf()
 
-        presetList.value = presetClassItemList
+            repository.fetchPresetItemList().enqueue(object : Callback<PresetResponse> {
+                override fun onResponse(
+                    call: Call<PresetResponse>,
+                    response: Response<PresetResponse>
+                ) {
+                    if(response.isSuccessful){
+                        response.body()?.let {
+                            for(className in it.classList){
+                                result.add(PresetClassItem(
+                                    className,
+                                    it.data[className]!!
+                                ))
+                            }
+                            presetList.value = result
+                        }
+                    }else{
+                        Log.d("RETROFIT", "응답 에러 : ${response.code()}")
+                    }
+                }
+
+                override fun onFailure(call: Call<PresetResponse>, t: Throwable) {
+                    Log.d("RETROFIT", "onFailure 에러: " + t.message.toString());
+                }
+            })
+        }
     }
 
     init {
