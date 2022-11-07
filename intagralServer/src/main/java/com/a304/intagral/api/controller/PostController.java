@@ -64,19 +64,19 @@ public class PostController {
             throw new NullPointerException("type이 hashtag이거나 user일때는 키워드를 보내주어야 합니다.");
         }
 
-        List<PostDataDto> postList = null;
+        PostListDto res;
 
         if(type.equals("all")){
-            postList = postService.getNewPostList(page);
+            res = postService.getNewPostList(page);
         }else if(type.equals("follow")){
-            postList = postService.getPostListByFollow(page);
+            res = postService.getPostListByFollow(page);
         } else if (type.equals("hashtag")) {
-            postList = postService.getPostListByHashtag(keyword, page);
+            res = postService.getPostListByHashtag(keyword, page);
         } else if (type.equals("user")) {
-            postList = postService.getPostListByNickname(keyword, page);
+            res = postService.getPostListByNickname(keyword, page);
         } else {
             throw new IllegalArgumentException(type + "은 type에 존재하지 않습니다.");
         }
-        return new ResponseEntity<>(postList, HttpStatus.OK);
+        return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }

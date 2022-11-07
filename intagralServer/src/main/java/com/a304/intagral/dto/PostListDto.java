@@ -1,5 +1,6 @@
 package com.a304.intagral.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,7 +10,8 @@ import java.util.List;
 @Builder
 public class PostListDto {
     List<PostDataDto> data;
-    Long page;
+    int page;
+    @JsonProperty(value = "isNext")
     boolean isNext;
 }
 

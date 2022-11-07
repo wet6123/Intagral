@@ -9,7 +9,9 @@ import com.a304.intagral.db.repository.PostRepository;
 import com.a304.intagral.db.repository.UserRepository;
 import com.a304.intagral.dto.PostDataDto;
 import com.a304.intagral.dto.PostDto;
+import com.a304.intagral.dto.PostListDto;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -54,31 +56,56 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDataDto> getNewPostList(int page) {
-        List<PostDataDto> res = new ArrayList<>();
-        List<Post> postlist = postRepository.findAll();
-        for(Post post : postlist){
-            PostDataDto postData = null;
-            postData.setPostId(post.getId());
-            postData.setImgPath(post.getImgPath());
-            res.add(postData);
+    public PostListDto getNewPostList(int page) {
+        List<PostDataDto> list = new ArrayList<>();
+        List<Post> postlist = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        boolean isNext = false;
+
+        int len = postlist.size();
+        if(len - (page-1) * 10 > 0){
+            if(len - page * 10 > 10){
+                for(int i = (page-1)*10; i < page*10; i++){
+                    Post post = postlist.get(i);
+                    PostDataDto postData = PostDataDto.builder()
+                            .postId(post.getId())
+                            .imgPath(post.getImgPath())
+                            .build();
+                    list.add(postData);
+                    isNext = true;
+                }
+            }else {
+                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                    Post post = postlist.get(i);
+                    PostDataDto postData = PostDataDto.builder()
+                            .postId(post.getId())
+                            .imgPath(post.getImgPath())
+                            .build();
+                    list.add(postData);
+                    isNext = false;
+                }
+            }
         }
-        res.subList((page-1)*10, page*10);
+
+        PostListDto res = PostListDto.builder()
+                .data(list)
+                .page(page)
+                .isNext(isNext)
+                .build();
         return res;
     }
 
     @Override
-    public List<PostDataDto> getPostListByFollow(int page) {
+    public PostListDto getPostListByFollow(int page) {
         return null;
     }
 
     @Override
-    public List<PostDataDto> getPostListByHashtag(String hashtag, int page) {
+    public PostListDto getPostListByHashtag(String hashtag, int page) {
         return null;
     }
 
     @Override
-    public List<PostDataDto> getPostListByNickname(String nickname, int page) {
+    public PostListDto getPostListByNickname(String nickname, int page) {
         return null;
     }
 }

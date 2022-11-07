@@ -22,11 +22,11 @@ public interface PostService {
     public User getUserByPostId(Long PostId);
 
 // 최신 게시글 목록
-    public List<PostDataDto> getNewPostList(int page);
+    public PostListDto getNewPostList(int page);
 // 팔로우 정보로 게시글 목록 받기
-    public  List<PostDataDto> getPostListByFollow(int page);
+    public  PostListDto getPostListByFollow(int page);
 // 해시태그로 게시글 목록 받기
-    public  List<PostDataDto> getPostListByHashtag(String hashtag, int page);
+    public  PostListDto getPostListByHashtag(String hashtag, int page);
 // 닉네임으로 게시글 목록 받기 (개인 페이지 안 게시글 목록)
-    public List<PostDataDto> getPostListByNickname(String nickname, int page);
+    public PostListDto getPostListByNickname(String nickname, int page);
 }
