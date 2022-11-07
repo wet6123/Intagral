@@ -24,7 +24,6 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.replace
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentPhotoPickerBinding
@@ -45,7 +44,7 @@ import kotlin.coroutines.CoroutineContext
 
 /**
  * TODO
- *  - 수행 결과 클래스 이름으로 변환(db vs 파일)
+ *  - 수행 결과 클래스 1개? 여러개?
  */
 class PhotoPicker : Fragment(), CoroutineScope {
 
@@ -67,6 +66,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        job = Job()
 
         // 프로그레스 다이얼로그
         val progressBar = layoutInflater.inflate(R.layout.view_progress_model, null)
@@ -336,7 +336,9 @@ class PhotoPicker : Fragment(), CoroutineScope {
     private val mNmsLimit = 15
     // parse detection score
     private fun parseScore(outputs: FloatArray) : ArrayList<String>{
-        val result: ArrayList<String> = arrayListOf("default")
+        val classTargetList = (requireActivity() as MainMenuActivity).classList
+        val detectedSet: HashSet<String> = HashSet()
+        detectedSet.add("default")
         for (i in 0 until mOutputRow){
 
             if (outputs[i* mOutputColumn +4] > mThreshold) {
@@ -348,13 +350,12 @@ class PhotoPicker : Fragment(), CoroutineScope {
                         max = outputs[i* mOutputColumn +5+j]
                         cls = j
                     }
-                    // TODO: 클래스 이름으로 변환
-//                    println(cls)
                 }
+                detectedSet.add(classTargetList[cls])
             }
         }
 
-        return result
+        return ArrayList(detectedSet)
     }
 
     // 프레그먼트가 생성돼서 해당 프레그먼트가 액티비티에 추가되기 전에 인자를 첨부하기 위해 companion object 사용
