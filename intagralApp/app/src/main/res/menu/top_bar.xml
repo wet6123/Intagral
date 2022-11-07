@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/toolbar_logo"
+        android:title="intagral_logo"
+        android:icon="@drawable/intagral_logo"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/toolbar_search_icon"
+        android:title="search_icon"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:showAsAction="collapseActionView|ifRoom"
+        app:actionViewClass="androidx.appcompat.widget.SearchView"/>
+    <item
+        android:id="@+id/toolbar_setting"
+        android:title="setting_logo"
+        android:icon="@drawable/ic_baseline_settings_24"
+        app:showAsAction="always"/>
+</menu>
