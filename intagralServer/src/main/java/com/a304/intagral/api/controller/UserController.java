@@ -1,6 +1,7 @@
 package com.a304.intagral.api.controller;
 
 import com.a304.intagral.api.request.UserLoginPostReq;
+import com.a304.intagral.api.request.UserProfileImageUpdatePostReq;
 import com.a304.intagral.api.request.UserProfileUpdatePostReq;
 import com.a304.intagral.api.response.HashtagProfileRes;
 import com.a304.intagral.api.response.TokenRes;
@@ -73,6 +74,19 @@ public class UserController {
         } catch (RuntimeException e) {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
-
     }
+
+    @PostMapping("/profile/image")
+    public ResponseEntity<? extends BaseResponseBody> updateProfileImage(Authentication authentication, UserProfileImageUpdatePostReq userProfileImageUpdatePostReq) {
+        UserDetails userDetails = (UserDetails) authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+        try{
+            userService.updateProfileImage(userId, userProfileImageUpdatePostReq);
+
+            return ResponseEntity.ok(BaseResponseBody.of(200, "success"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
 }
