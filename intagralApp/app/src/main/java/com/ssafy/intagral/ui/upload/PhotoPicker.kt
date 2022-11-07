@@ -27,6 +27,7 @@ import androidx.fragment.app.activityViewModels
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentPhotoPickerBinding
+import com.ssafy.intagral.viewmodel.PresetViewModel
 import com.ssafy.intagral.viewmodel.UploadViewModel
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Default
@@ -63,6 +64,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
     private lateinit var imageView: ImageView
 
     private val uploadViewModel: UploadViewModel by activityViewModels()
+    private val presetViewModel: PresetViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,6 +85,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
         uploadViewModel.getImageBitmap().value = null
         uploadViewModel.getDetectedClassList().value = null
         uploadViewModel.getTagMap().value = null
+        presetViewModel.getPresetList().value
 
         arguments?.let {
         }
@@ -157,7 +160,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
                 requireActivity()
                     .supportFragmentManager
                     .beginTransaction()
-                    .addToBackStack("upload")
+                    .addToBackStack(null)
                     .add(
                         R.id.menu_frame_layout,
                         ResultTagListFragment.newInstance()

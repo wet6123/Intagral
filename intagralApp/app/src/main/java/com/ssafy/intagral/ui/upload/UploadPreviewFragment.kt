@@ -66,11 +66,7 @@ class UploadPreviewFragment : Fragment() {
                 R.id.back_button -> {
                     requireActivity()
                         .supportFragmentManager
-                        .beginTransaction()
-                        .replace(
-                            R.id.menu_frame_layout,
-                            ResultTagListFragment.newInstance()
-                        ).commit()
+                        .popBackStack()
                 }
                 R.id.publish_button -> {
                     requireActivity()

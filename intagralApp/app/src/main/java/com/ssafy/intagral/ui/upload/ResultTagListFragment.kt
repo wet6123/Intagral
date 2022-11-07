@@ -10,21 +10,16 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.google.android.material.chip.Chip
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.source.PresetRepository
 import com.ssafy.intagral.databinding.FragmentResultTagListBinding
+import com.ssafy.intagral.viewmodel.PresetViewModel
 import com.ssafy.intagral.viewmodel.UploadViewModel
 
-/**
- * TODO
- *  - presetRepository를 viewmodel로 빼기
- */
 class ResultTagListFragment : Fragment() {
-
-    private val presetRepository : PresetRepository = PresetRepository()
 
     private lateinit var binding: FragmentResultTagListBinding
 
     private val uploadViewModel: UploadViewModel by activityViewModels()
+    private val presetViewModel: PresetViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -73,15 +68,19 @@ class ResultTagListFragment : Fragment() {
         }
 
         uploadViewModel.getDetectedClassList().value?.also {
-            // TODO : repository viewmodel로 빼기
-            val preset = presetRepository.getPreset()
-            val tagMap = uploadViewModel.getTagMap().value ?: HashMap<String, Boolean>()
+            val tagMap = uploadViewModel.getTagMap().value ?: HashMap()
+            val presetItemList = presetViewModel.getPresetList().value
             for(cls in it){
                 if(cls != "default"){
                     tagMap[cls] = tagMap[cls] ?: false
                 }
-                preset.tagMap[cls]?.also {
-                    tagMap.putAll(it.map { it to (tagMap[it]?: false) }.toMap())
+
+                val presetList = presetItemList?.find {
+                    it.className == cls
+                }
+
+                presetList?.let {
+                    tagMap.putAll(it.tagList.map { it to (tagMap[it]?: false) }.toMap())
                 }
             }
             uploadViewModel.getTagMap().value = tagMap
@@ -118,7 +117,8 @@ class ResultTagListFragment : Fragment() {
                     requireActivity()
                         .supportFragmentManager
                         .beginTransaction()
-                        .replace(
+                        .addToBackStack(null)
+                        .add(
                             R.id.menu_frame_layout,
                             UploadPreviewFragment.newInstance()
                         ).commit()
