@@ -13,9 +13,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
+import com.ssafy.intagral.data.ProfileDetail
 import com.ssafy.intagral.data.ProfileSimpleItem
 import com.ssafy.intagral.data.ProfileType
 import com.ssafy.intagral.ui.common.profile.ProfileSimpleAdapter
+
+enum class ActivityType {
+    MainMenuActivity,
+    SearchActivity,
+}
 
 // Fragment used when searching and showing profile page
 class ProfileSimpleListFragment: Fragment() {
@@ -77,6 +83,12 @@ class ProfileSimpleListFragment: Fragment() {
                     override fun onClick(view: View, position: Int) {
                         val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                         imm.hideSoftInputFromWindow(activity?.currentFocus?.windowToken,0)
+
+                        activity?.javaClass?.simpleName?.equals(ActivityType.SearchActivity).let {
+                            val activity = activity as SearchActivity
+                            activity.changeActivity(1, profileSimpleList[position])
+                        }
+
 //                        val activity = activity as MainMenuActivity
 //                        activity.changeFragment(1)
                         Toast.makeText(it, "listener : $position", Toast.LENGTH_SHORT).show()
