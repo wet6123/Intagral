@@ -22,6 +22,7 @@ public class Hashtag extends BaseEntity {
 
     @Column(nullable = false, unique = true)
     String content;
+
     @Column(nullable = false)
     @ColumnDefault("0")
     Integer searchCnt;

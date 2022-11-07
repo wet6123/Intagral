@@ -1,9 +1,7 @@
 package com.a304.intagral.api.service;
 
-import com.a304.intagral.db.entity.Post;
-import com.a304.intagral.db.entity.PostHashtag;
-import com.a304.intagral.db.entity.PostLike;
-import com.a304.intagral.db.entity.User;
+import com.a304.intagral.db.entity.*;
+import com.a304.intagral.db.repository.HashtagRepository;
 import com.a304.intagral.db.repository.PostHashtagRepository;
 import com.a304.intagral.db.repository.PostRepository;
 import com.a304.intagral.db.repository.UserRepository;
@@ -27,6 +25,8 @@ public class PostServiceImpl implements PostService {
     UserRepository userRepository;
     @Autowired
     PostHashtagRepository postHashtagRepository;
+    @Autowired
+    HashtagRepository hashtagRepository;
 
     @Override
     public Post getPostByPostId(Long PostId) {
@@ -101,7 +101,44 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostListDto getPostListByHashtag(String hashtag, int page) {
-        return null;
+        List<PostDataDto> list = new ArrayList<>();
+        Integer hashtagId = hashtagRepository.findByContent(hashtag).get().getId().intValue();
+        List<PostHashtag> postHashtagList = postHashtagRepository.findByHashtagId(hashtagId, Sort.by(Sort.Direction.DESC, "id"));
+        boolean isNext = false;
+
+        List<PostDataDto> postlist = new ArrayList<>();
+        for(PostHashtag postHashtag : postHashtagList){
+            Post post = postHashtag.getPostHashtagToPost();
+
+            PostDataDto data = PostDataDto.builder()
+                    .postId(post.getId())
+                    .imgPath(post.getImgPath())
+                    .build();
+
+            postlist.add(data);
+        }
+
+        int len = postlist.size();
+        if(len - (page-1) * 10 > 0){
+            if(len - page * 10 > 10){
+                for(int i = (page-1)*10; i < page*10; i++){
+                    list.add(postlist.get(i));
+                    isNext = true;
+                }
+            }else {
+                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                    list.add(postlist.get(i));
+                    isNext = false;
+                }
+            }
+        }
+
+        PostListDto res = PostListDto.builder()
+                .data(list)
+                .page(page)
+                .isNext(isNext)
+                .build();
+        return res;
     }
 
     @Override
