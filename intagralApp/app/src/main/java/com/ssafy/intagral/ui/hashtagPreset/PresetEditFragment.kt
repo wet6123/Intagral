@@ -96,8 +96,15 @@ class PresetEditFragment : Fragment() {
                         binding.presetEditTagChipGroup.addView(chip)
                     }
                     binding.tagAddButton.setOnClickListener {
-                        presetViewModel.removeTag(this.className, binding.tagInput.text.toString())
-                        Toast.makeText(requireContext(), "${binding.tagInput.text} insert into ${this.className}", Toast.LENGTH_SHORT).show()
+                        val regex = """\s""".toRegex()
+                        val tag : String = regex.replace(binding.tagInput.text.toString(), "")
+
+                        if(!tag.equals("")){
+                            presetViewModel.addTag(this.className, tag)
+                            binding.tagInput.setText("")
+                        }else{
+                            Toast.makeText(requireContext(), "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }

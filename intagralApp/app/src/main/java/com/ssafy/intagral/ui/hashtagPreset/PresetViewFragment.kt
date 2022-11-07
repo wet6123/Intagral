@@ -14,9 +14,7 @@ import com.ssafy.intagral.data.PresetClassItem
 import com.ssafy.intagral.databinding.FragmentPresetViewBinding
 import com.ssafy.intagral.databinding.ItemPresetViewRecyclerBinding
 import com.ssafy.intagral.viewmodel.PresetViewModel
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class PresetViewFragment : Fragment() {
 
     private lateinit var binding: FragmentPresetViewBinding
