@@ -143,6 +143,42 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostListDto getPostListByNickname(String nickname, int page) {
-        return null;
+        List<PostDataDto> list = new ArrayList<>();
+        boolean isNext = false;
+
+        Integer userId = userRepository.findByNickname(nickname).get().getId().intValue();
+        List<Post> postlist = postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
+
+        int len = postlist.size();
+        if(len - (page-1) * 10 > 0){
+            if(len - page * 10 > 10){
+                for(int i = (page-1)*10; i < page*10; i++){
+                    Post post = postlist.get(i);
+                    PostDataDto postData = PostDataDto.builder()
+                            .postId(post.getId())
+                            .imgPath(post.getImgPath())
+                            .build();
+                    list.add(postData);
+                    isNext = true;
+                }
+            }else {
+                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                    Post post = postlist.get(i);
+                    PostDataDto postData = PostDataDto.builder()
+                            .postId(post.getId())
+                            .imgPath(post.getImgPath())
+                            .build();
+                    list.add(postData);
+                    isNext = false;
+                }
+            }
+        }
+
+        PostListDto res = PostListDto.builder()
+                .data(list)
+                .page(page)
+                .isNext(isNext)
+                .build();
+        return res;
     }
 }

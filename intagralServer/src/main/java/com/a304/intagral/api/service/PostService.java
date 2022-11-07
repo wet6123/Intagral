@@ -29,4 +29,7 @@ public interface PostService {
     public  PostListDto getPostListByHashtag(String hashtag, int page);
 // 닉네임으로 게시글 목록 받기 (개인 페이지 안 게시글 목록)
     public PostListDto getPostListByNickname(String nickname, int page);
+// 게시글 쓰기
+// 게시글 좋아요
+// 게시글 삭제
 }
