@@ -34,14 +34,14 @@ public class FollowServiceImpl implements FollowService {
         Integer myUserId = userId.intValue();
         Integer targetUserId = targetUser.getId().intValue();
 
-        boolean isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(myUserId, targetUserId) != 0;
+        boolean isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(targetUserId, myUserId) != 0;
 
         if(isFollow){
-            userFollowRepository.deleteByUserIdToAndUserIdFrom(myUserId, targetUserId);
+            userFollowRepository.deleteByUserIdToAndUserIdFrom(targetUserId, myUserId);
         } else {
             UserFollow userFollow = UserFollow.builder()
-                    .userIdTo(myUserId)
-                    .userIdFrom(targetUserId)
+                    .userIdTo(targetUserId)
+                    .userIdFrom(myUserId)
                     .build();
             userFollowRepository.save(userFollow);
         }
