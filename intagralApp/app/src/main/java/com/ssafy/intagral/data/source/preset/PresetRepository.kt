@@ -1,6 +1,8 @@
 package com.ssafy.intagral.data.source.preset
 
+import com.google.gson.JsonObject
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -36,4 +38,9 @@ class PresetRepository {
     }
 
     suspend fun fetchPresetItemList(): Call<PresetResponse> = presetService.getPresetList()
+
+    suspend fun addPresetTag(json: JsonObject): Call<ResponseBody> = presetService.addPreset(json)
+
+    suspend fun deletePresetTag(json: JsonObject): Call<ResponseBody> = presetService.deletePreset(json)
+
 }
