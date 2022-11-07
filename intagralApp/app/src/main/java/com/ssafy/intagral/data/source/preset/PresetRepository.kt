@@ -1,40 +1,20 @@
 package com.ssafy.intagral.data.source.preset
 
 import com.google.gson.JsonObject
-import okhttp3.OkHttpClient
+import com.ssafy.intagral.di.CommonService
 import okhttp3.ResponseBody
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
 
 class PresetRepository {
-    private val BASE_URL = "https://k7a304.p.ssafy.io"
-    var token: String = ""
 
+    @Inject
+    val commonService: Retrofit = CommonService.getCommonService()
     private var presetService: PresetService
 
     init {
-        val client: OkHttpClient = OkHttpClient.Builder()
-            .addInterceptor(HttpLoggingInterceptor())
-            .addInterceptor {
-                // Request
-                val request = it.request()
-                    .newBuilder()
-                    .addHeader("Authorization", "Bearer $token")
-                    .build()
-                // Response
-                val response = it.proceed(request)
-                response
-            }
-            .build()
-
-        presetService = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-            .create(PresetService::class.java)
+        presetService = commonService.create(PresetService::class.java)
     }
 
     suspend fun fetchPresetItemList(): Call<PresetResponse> = presetService.getPresetList()
