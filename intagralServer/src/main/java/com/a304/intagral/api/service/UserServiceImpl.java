@@ -1,13 +1,24 @@
 package com.a304.intagral.api.service;
 
+import com.a304.intagral.api.request.UserProfileImageUpdatePostReq;
+import com.a304.intagral.api.request.UserProfileUpdatePostReq;
 import com.a304.intagral.api.response.TokenRes;
+import com.a304.intagral.common.response.FileDetail;
+import com.a304.intagral.common.util.AmazonS3ResourceStorageUtil;
 import com.a304.intagral.common.util.JwtTokenUtil;
+import com.a304.intagral.db.dto.HashtagProfileDto;
+import com.a304.intagral.db.dto.UserProfileDto;
+import com.a304.intagral.db.entity.Hashtag;
 import com.a304.intagral.db.entity.User;
+import com.a304.intagral.db.repository.HashtagFollowRepository;
+import com.a304.intagral.db.repository.UserFollowRepository;
 import com.a304.intagral.db.repository.UserRepository;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,6 +33,12 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserFollowRepository userFollowRepository;
+    @Autowired
+    HashtagFollowRepository hashtagFollowRepository;
+    @Autowired
+    AmazonS3ResourceStorageUtil amazonS3ResourceStorageUtil;
 
     final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
     final java.util.Random rand = new java.util.Random();
@@ -115,6 +132,51 @@ public class UserServiceImpl implements UserService {
     public void logout(Long userId){
         User user = userRepository.findById(userId).get();
         user.setAuthToken(null);
+        userRepository.save(user);
+    }
+
+    @Override
+    public UserProfileDto getProfile(Long userId, String nickname) {
+        User user = userRepository.findByNickname(nickname).get();
+        Integer targetUserId = user.getId().intValue();
+
+        Long followingCnt = userFollowRepository.countByUserIdTo(targetUserId);
+        Long followerCnt = userFollowRepository.countByUserIdFrom(targetUserId);
+        Long hashtagFollowCnt = hashtagFollowRepository.countByUserId(targetUserId);
+        Long isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(userId.intValue(), targetUserId);
+
+        UserProfileDto userProfileDto = UserProfileDto.builder()
+                .nickname(nickname)
+                .intro(user.getIntro())
+                .following(followingCnt)
+                .follower(followerCnt)
+                .hashtag(hashtagFollowCnt)
+                .isFollow(isFollow != 0)
+                .build();
+
+        return userProfileDto;
+    }
+
+    @Override
+    public void updateProfile(Long userId, UserProfileUpdatePostReq userProfileUpdatePostReq) {
+        User user = userRepository.findById(userId).get();
+        if("nickname".equals(userProfileUpdatePostReq.getType())){
+            user.setNickname(userProfileUpdatePostReq.getData());
+        } else {
+            user.setIntro(userProfileUpdatePostReq.getData());
+        }
+
+        userRepository.save(user);
+    }
+
+    @Override
+    public void updateProfileImage(Long userId, UserProfileImageUpdatePostReq userProfileImageUpdatePostReq) {
+        MultipartFile multipartFile = userProfileImageUpdatePostReq.getData();
+        FileDetail fileDetail = FileDetail.multipartOf(multipartFile);
+        String resourceUrl = amazonS3ResourceStorageUtil.store(fileDetail.getPath(), multipartFile);
+
+        User user = userRepository.findById(userId).get();
+        user.setProfileImgPath(resourceUrl);
         userRepository.save(user);
     }
 }

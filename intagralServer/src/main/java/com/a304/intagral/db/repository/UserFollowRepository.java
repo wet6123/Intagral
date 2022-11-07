@@ -7,4 +7,9 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface UserFollowRepository extends JpaRepository<UserFollow, Long> {
 
+    Long countByUserIdTo(Integer targetUserId);
+
+    Long countByUserIdFrom(Integer targetUserId);
+
+    Long countByUserIdToAndUserIdFrom(int intValue, Integer targetUserId);
 }
