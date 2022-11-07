@@ -10,6 +10,10 @@ spring:
   config:
     import:
       - classpath:/credential-config.yaml
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
   jpa:
     hibernate:
       naming:
@@ -39,3 +43,6 @@ logging:
     com:
       a304:
         intagral: DEBUG
+      amazonaws:
+        util:
+          EC2MetadataUtils: ERROR

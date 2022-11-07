@@ -10,4 +10,6 @@ public interface HashtagFollowRepository extends JpaRepository<HashtagFollow, Lo
     Long countByUserIdAndHashtagId(int userId, Integer hashtagId);
 
     Long countByHashtagId(Integer hashtagId);
+
+    Long countByUserId(Integer targetUserId);
 }
