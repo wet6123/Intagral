@@ -9,6 +9,6 @@ import lombok.Setter;
 @Builder
 public class SearchUserDto {
     String name;
-    String profile_image;
+    String profileImage;
     boolean isFollow;
 }

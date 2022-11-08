@@ -14,6 +14,6 @@ public class FollowUserGetDto implements FollowListBase{
     String nickname;
     String intro;
     Integer followerCnt;
-    @JsonProperty("is_follow")
+    @JsonProperty("isFollow")
     boolean isFollow;
 }

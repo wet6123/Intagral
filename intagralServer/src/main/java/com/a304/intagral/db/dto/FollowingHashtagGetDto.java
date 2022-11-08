@@ -12,6 +12,6 @@ public class FollowingHashtagGetDto implements FollowListBase{
 
     String content;
     Integer followerCnt;
-    @JsonProperty("is_follow")
+    @JsonProperty("isFollow")
     boolean isFollow;
 }
