@@ -57,9 +57,11 @@ public class PostController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> newPostList(@RequestParam(value = "type") String type,
-                                         @RequestParam(value = "page") int page,
-                                         @RequestParam(value = "q", defaultValue="") String keyword)  {
+    public ResponseEntity<?> newPostList(
+            Authentication authentication,
+            @RequestParam(value = "type") String type,
+            @RequestParam(value = "page") int page,
+            @RequestParam(value = "q", defaultValue="") String keyword)  {
         if((type.equals("hashtag") || type.equals("user")) &&  keyword.equals("")){
             throw new NullPointerException("type이 hashtag이거나 user일때는 키워드를 보내주어야 합니다.");
         }
@@ -69,7 +71,9 @@ public class PostController {
         if(type.equals("all")){
             res = postService.getNewPostList(page);
         }else if(type.equals("follow")){
-            res = postService.getPostListByFollow(page);
+            UserDetails userDetails = (UserDetails)authentication.getDetails();
+            Long userId = Long.valueOf(userDetails.getUsername());
+            res = postService.getPostListByFollow(page, userId);
         } else if (type.equals("hashtag")) {
             res = postService.getPostListByHashtag(keyword, page);
         } else if (type.equals("user")) {

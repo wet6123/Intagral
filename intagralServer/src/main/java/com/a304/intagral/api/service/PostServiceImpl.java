@@ -10,6 +10,7 @@ import com.a304.intagral.dto.PostDto;
 import com.a304.intagral.dto.PostListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -95,8 +96,77 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostListDto getPostListByFollow(int page) {
-        return null;
+    public PostListDto getPostListByFollow(int page, Long userId) {
+        User targetUser = userRepository.findById(userId).get();
+        boolean isNext = false;
+
+//      팔로우 중인 유저 모두 불러옴
+        List<UserFollow> userFollowingList = targetUser.getUserFollowingList();
+        List<Long> userIdList = new ArrayList<>();
+        for (UserFollow userFollow : userFollowingList) {
+            userIdList.add(userFollow.getUserIdTo().longValue());
+        }
+
+//      팔로우 중인 태그 모두  불러옴
+        List<HashtagFollow> hashtagFollowList = targetUser.getHashtagFollowList();
+        List<Long> hashtagIdList = new ArrayList<>();
+        for (HashtagFollow hashtagFollow : hashtagFollowList) {
+            hashtagIdList.add(hashtagFollow.getHashtagId().longValue());
+        }
+
+//      post 불러와서 유저 or 태그 포함하는지 조사
+        List<Post> allList = postRepository.findAll(Sort.by(Sort.Direction.DESC, "id"));
+        List<Post> postlist = new ArrayList<>();
+        loop : for(Post post : allList){
+            for(Long uid : userIdList){
+                if(post.getUserId().intValue() == uid) {
+                    postlist.add(post);
+                    continue loop;
+                }
+            }
+            for(Long hashtagId : hashtagIdList){
+                List<PostHashtag> a = post.getPostHashtagList();
+                for(PostHashtag tag : a){
+                    if(tag.getHashtagId().intValue() == hashtagId){
+                        postlist.add(post);
+                        continue loop;
+                    }
+                }
+            }
+        }
+
+        List<PostDataDto> list = new ArrayList<>();
+        int len = postlist.size();
+        if(len - (page-1) * 10 > 0){
+            if(len - page * 10 > 10){
+                for(int i = (page-1)*10; i < page*10; i++){
+                    Post post = postlist.get(i);
+                    PostDataDto postData = PostDataDto.builder()
+                            .postId(post.getId())
+                            .imgPath(post.getImgPath())
+                            .build();
+                    list.add(postData);
+                    isNext = true;
+                }
+            }else {
+                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                    Post post = postlist.get(i);
+                    PostDataDto postData = PostDataDto.builder()
+                            .postId(post.getId())
+                            .imgPath(post.getImgPath())
+                            .build();
+                    list.add(postData);
+                    isNext = false;
+                }
+            }
+        }
+
+        PostListDto res = PostListDto.builder()
+                .data(list)
+                .page(page)
+                .isNext(isNext)
+                .build();
+        return res;
     }
 
     @Override
