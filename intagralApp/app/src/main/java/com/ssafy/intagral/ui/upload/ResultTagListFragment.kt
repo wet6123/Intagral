@@ -124,6 +124,7 @@ class ResultTagListFragment : Fragment() {
                         ).commit()
                 }
                 R.id.tag_result_publish_button -> {
+                    uploadViewModel.publishPost(requireContext().filesDir.path)
                     requireActivity()
                         .supportFragmentManager
                         .beginTransaction()
