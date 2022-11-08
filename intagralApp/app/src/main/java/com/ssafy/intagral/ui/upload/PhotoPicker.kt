@@ -29,6 +29,7 @@ import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentPhotoPickerBinding
 import com.ssafy.intagral.viewmodel.PresetViewModel
 import com.ssafy.intagral.viewmodel.UploadViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Default
 import kotlinx.coroutines.Dispatchers.Main
@@ -47,6 +48,7 @@ import kotlin.coroutines.CoroutineContext
  * TODO
  *  - 수행 결과 클래스 1개? 여러개?
  */
+@AndroidEntryPoint
 class PhotoPicker : Fragment(), CoroutineScope {
 
     // 코루틴 비동기를 위한 정의 : pytorch 모델을 비동기로..
