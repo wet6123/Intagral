@@ -6,8 +6,13 @@ import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.data.repository.UserRepository
 import com.ssafy.intagral.di.CommonRepository
-import okhttp3.RequestBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.Retrofit
+import java.io.File
 
 const val imgPath = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
 
@@ -37,6 +42,10 @@ class UserService {
         return null
     }
 
+    suspend fun checkValidName(name: String) = userRepository.checkValidName(name)
     suspend fun updateUserProfile(json: JsonObject) = userRepository.updateUserProfile(json)
-    suspend fun updateProfileImg(data: RequestBody) = userRepository.updateProfileImg(data) //??
+    suspend fun updateProfileImg(image: File): Response<ResponseBody> {
+        val imageFile = MultipartBody.Part.createFormData("image", image.name, image.asRequestBody("image/jpeg".toMediaTypeOrNull()))
+        return userRepository.updateProfileImg(imageFile)
+    }
 }

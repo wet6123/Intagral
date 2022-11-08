@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="210dp"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
     <RelativeLayout
         android:layout_width="match_parent"
@@ -87,14 +87,18 @@
     <androidx.appcompat.widget.LinearLayoutCompat
         android:background="@color/teal_700"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_gravity="left">
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:orientation="vertical">
+
         <LinearLayout
+            android:id="@+id/profile_info_view_container"
             android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
             android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -102,7 +106,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="갱얼쥐ggg"
-                android:textSize="16sp" />
+                android:textSize="16sp"/>
 
             <TextView
                 android:id="@+id/profile_detail_intro"
@@ -110,8 +114,46 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
                 android:text="갱얼쥐235uoieioauoisdjlfjkldsjklfjkdsjkldsjklfjkdsjkglhkalwjeklrsjkldfjksdjlkfjklsdjoigawjeoiruioweu918391724f"
-                android:textSize="12sp" />
+                android:textSize="12sp"/>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/profile_info_edit_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:hint="닉네임" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:hint="소개글" />
+            </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 
