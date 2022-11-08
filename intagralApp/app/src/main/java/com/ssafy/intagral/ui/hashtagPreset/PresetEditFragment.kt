@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.chip.Chip
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.PresetClassItem
+import com.ssafy.intagral.data.model.PresetClassItem
 import com.ssafy.intagral.databinding.FragmentPresetEditBinding
 import com.ssafy.intagral.databinding.ItemPresetEditRecyclerBinding
 import com.ssafy.intagral.viewmodel.PresetViewModel

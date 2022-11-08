@@ -5,19 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
-import com.ssafy.intagral.data.PresetClassItem
-import com.ssafy.intagral.data.source.preset.PresetRepository
-import com.ssafy.intagral.data.source.preset.PresetResponse
+import com.ssafy.intagral.data.model.PresetClassItem
+import com.ssafy.intagral.data.service.PresetService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
-class PresetViewModel @Inject constructor(private val repository: PresetRepository): ViewModel() {
+class PresetViewModel @Inject constructor(private val service: PresetService): ViewModel() {
 
     private var presetList: MutableLiveData<ArrayList<PresetClassItem>> = MutableLiveData()
 
@@ -30,7 +25,7 @@ class PresetViewModel @Inject constructor(private val repository: PresetReposito
             val json = JsonObject()
             json.addProperty("cls", targetClass)
             json.addProperty("data", tag)
-            val response = repository.addPresetTag(json)
+            val response = service.addPresetTag(json)
             if(response.isSuccessful){
                 reloadPresetList()
             }else{
@@ -44,7 +39,7 @@ class PresetViewModel @Inject constructor(private val repository: PresetReposito
             val json = JsonObject()
             json.addProperty("cls", targetClass)
             json.addProperty("data", tag)
-            val response = repository.deletePresetTag(json)
+            val response = service.deletePresetTag(json)
             if(response.isSuccessful){
                 reloadPresetList()
             }else{
@@ -56,14 +51,16 @@ class PresetViewModel @Inject constructor(private val repository: PresetReposito
     private fun reloadPresetList() {
         viewModelScope.launch{
             val result: ArrayList<PresetClassItem> = arrayListOf()
-            val response = repository.fetchPresetItemList()
+            val response = service.fetchPresetItemList()
             if(response.isSuccessful){
                 response.body()?.let {
                     for(className in it.classList){
-                        result.add(PresetClassItem(
+                        result.add(
+                            PresetClassItem(
                             className,
                             it.data[className]!!
-                        ))
+                        )
+                        )
                     }
                     presetList.value = result
                 }

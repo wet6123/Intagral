@@ -7,19 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.PostItem
-import com.ssafy.intagral.data.ProfileDetail
-import com.ssafy.intagral.data.ProfileType
+import com.ssafy.intagral.data.model.PostItem
+import com.ssafy.intagral.data.model.ProfileDetail
+import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
-import com.ssafy.intagral.databinding.FragmentUserProfileBinding
 import com.ssafy.intagral.ui.common.post.PostAdapter
-import com.ssafy.intagral.ui.home.HomeFragment
 
 private const val ARG_PARAM1 = "profileType" //user or hashtag
 private const val ARG_PARAM2 = "data" //profile data
@@ -108,7 +103,7 @@ class ProfilePageFragment : Fragment() {
 }
 
 //test input data
-val inputDataParam1:ProfileType = ProfileType.user
+val inputDataParam1: ProfileType = ProfileType.user
 val inputDataParam2 = ProfileDetail(ProfileType.user, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
 13,false,123,2,"dsfkdsjflkds")
 val inputDataParam3 = ProfileDetail(ProfileType.hashtag, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",

@@ -9,8 +9,7 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.os.bundleOf
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.ProfileDetail
-import com.ssafy.intagral.data.ProfileSimpleItem
+import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.databinding.ActivitySearchBinding
 
 
