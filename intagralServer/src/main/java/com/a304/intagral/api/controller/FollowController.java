@@ -81,7 +81,7 @@ public class FollowController {
     })
     @GetMapping("/list/user")
     public ResponseEntity<? extends BaseResponseBody> getUserFollowList(@ApiIgnore Authentication authentication,
-                                                                        @ApiParam(value = "가져올 리스트 종류", example = "following") @RequestParam String type,
+                                                                        @ApiParam(value = "가져올 리스트 종류", example = "[following | follower | hashtag]") @RequestParam String type,
                                                                         @ApiParam(value = "대상의 이름", example = "goodman") @RequestParam("q") String nickname){
         UserDetails userDetails = (UserDetails) authentication.getDetails();
         Long userId = userDetails.getId();
