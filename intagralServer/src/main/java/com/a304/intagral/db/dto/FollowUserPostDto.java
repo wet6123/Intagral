@@ -9,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class FollowUserPostDto {
+    @JsonProperty(value = "isFollow")
     boolean isFollow;
     Integer followerCnt;
 }

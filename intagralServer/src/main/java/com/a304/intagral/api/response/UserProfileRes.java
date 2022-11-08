@@ -15,7 +15,7 @@ public class UserProfileRes extends BaseResponseBody {
     Long following;
     Long follower;
     Long hashtag;
-    @JsonProperty(value = "is_follow")
+    @JsonProperty(value = "isFollow")
     boolean isFollow;
 
     static public UserProfileRes of(Integer statusCode, String message, UserProfileDto userProfileDto) {
