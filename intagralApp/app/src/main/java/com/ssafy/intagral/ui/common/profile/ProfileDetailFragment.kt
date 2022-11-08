@@ -40,7 +40,7 @@ class ProfileDetailFragment : Fragment() {
             // user profile
             view = inflater.inflate(R.layout.fragment_user_profile, container, false)
             val button: Button = view.findViewById<Button>(R.id.profile_detail_btn)
-            if(param2?.name == "yuyeon") {
+            if(param2?.name == "goodman") {
                 //TODO: 조건문 본인일 때로 수정
                 button.apply {
                     text = "setting"
