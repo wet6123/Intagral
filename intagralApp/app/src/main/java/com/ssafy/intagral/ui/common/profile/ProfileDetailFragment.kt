@@ -47,6 +47,15 @@ class ProfileDetailFragment : Fragment() {
                     setOnClickListener {
                         //TODO: profile setting Fragment로 교환
                         Toast.makeText(view.context, "setting fragment로 이동", Toast.LENGTH_SHORT).show()
+                        requireActivity()
+                            .supportFragmentManager
+                            .beginTransaction()
+                            .addToBackStack(null)
+                            .add(
+                                R.id.menu_frame_layout,
+                                ProfileEditFragment.newInstance()
+                            ).commit()
+
                     }
                 }
             } else {
