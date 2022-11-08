@@ -12,7 +12,7 @@ public class HashtagProfileRes extends BaseResponseBody {
     String type;
     String content;
     Integer follower;
-    @JsonProperty(value = "is_follow")
+    @JsonProperty(value = "isFollow")
     boolean isFollow;
 
     public static HashtagProfileRes of(int statusCode, String message, HashtagProfileDto hashtagProfileDto) {
