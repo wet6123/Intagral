@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 
 @Service("postService")
@@ -276,6 +277,27 @@ public class PostServiceImpl implements PostService {
         Post resPost = postRepository.save(post);
 
         Integer postId = resPost.getId().intValue();
+
+        for (String tag : postAddPostReq.getHashtags()) {
+            Hashtag hashtag = null;
+            try{
+                hashtag = hashtagRepository.findByContent(tag).get();
+                //처음 등록되는 해시태그 추가
+            } catch (NoSuchElementException e){
+                hashtag = Hashtag.builder()
+                        .content(tag)
+                        .searchCnt(0)
+                        .build();
+                hashtag = hashtagRepository.save(hashtag);
+            }
+
+            PostHashtag postHashtag = PostHashtag.builder()
+                    .postId(postId)
+                    .hashtagId(hashtag.getId().intValue())
+                    .build();
+
+            postHashtagRepository.save(postHashtag);
+        }
 
         PostAddPostRes res = new PostAddPostRes();
         res.setPostId(postId);
