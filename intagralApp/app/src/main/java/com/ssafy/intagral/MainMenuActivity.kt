@@ -174,7 +174,6 @@ class MainMenuActivity : AppCompatActivity() {
     }
 }
 
-val dummyData: ProfileDetail = ProfileDetail(ProfileType.user, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
-    200,false)
-val dummyData2: ProfileDetail = ProfileDetail(ProfileType.user, "한유연", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
-    200,false)
+val dummyData: ProfileDetail = ProfileDetail(ProfileType.user, "yuyeon",
+    200,false, "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png")
+val dummyData2: ProfileDetail = ProfileDetail(ProfileType.user, "한유연", 200,false)

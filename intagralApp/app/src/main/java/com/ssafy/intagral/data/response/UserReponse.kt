@@ -17,6 +17,9 @@ data class UserProfileResponse (
     @SerializedName(value="nickname")
     val nickname: String,
     @Expose
+    @SerializedName(value="imgPath")
+    val imgPath: String,
+    @Expose
     @SerializedName(value="intro")
     val intro: String,
     @Expose

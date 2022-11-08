@@ -104,9 +104,8 @@ class ProfilePageFragment : Fragment() {
 
 //test input data
 val inputDataParam1: ProfileType = ProfileType.user
-val inputDataParam2 = ProfileDetail(ProfileType.user, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
-13,false,123,2,"dsfkdsjflkds")
-val inputDataParam3 = ProfileDetail(ProfileType.hashtag, "yuyeon", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
-10, true)
-val inputDataParam4 = ProfileDetail(ProfileType.user, "yuyeo2222n", "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png",
+val inputDataParam2 = ProfileDetail(ProfileType.user, "yuyeon",
+13,false, null, 123)
+val inputDataParam3 = ProfileDetail(ProfileType.hashtag, "yuyeon", 1232, true)
+val inputDataParam4 = ProfileDetail(ProfileType.user, "yuyeo2222n",
     10, true)
