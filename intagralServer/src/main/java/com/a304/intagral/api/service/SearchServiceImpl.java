@@ -38,7 +38,7 @@ public class SearchServiceImpl implements SearchService{
         for(User searchedUser : userList){
             SearchUserDto searchUserDto = SearchUserDto.builder()
                     .name(searchedUser.getNickname())
-                    .profile_image(searchedUser.getProfileImgPath())
+                    .profileImage(searchedUser.getProfileImgPath())
                     .isFollow(false)
                     .build();
             if(followingIdList.contains(searchedUser.getId())){
@@ -61,8 +61,6 @@ public class SearchServiceImpl implements SearchService{
         List<Hashtag> hashtagList = hashtagRepository.findAllByContentContaining(target);
         List<SearchHashtagDto> searchHashtagDtoList = new ArrayList<>();
         for(Hashtag searchedHashtag : hashtagList){
-            searchedHashtag.setSearchCnt(searchedHashtag.getSearchCnt() + 1);
-
             SearchHashtagDto searchHashtagDto = SearchHashtagDto.builder()
                     .name(searchedHashtag.getContent())
                     .isFollow(false)
@@ -71,10 +69,19 @@ public class SearchServiceImpl implements SearchService{
                 searchHashtagDto.setFollow(true);
             }
             searchHashtagDtoList.add(searchHashtagDto);
-
-            hashtagRepository.save(searchedHashtag);
         }
 
         return searchHashtagDtoList;
+    }
+
+    @Override
+    public void countUpHashtagSearchCnt(String content) {
+        Hashtag hashtag = hashtagRepository.findByContent(content).get();
+        increaseHashtagSearchCnt(hashtag);
+    }
+
+    private void increaseHashtagSearchCnt(Hashtag hashtag){
+        hashtag.setSearchCnt(hashtag.getSearchCnt() + 1);
+        hashtagRepository.save(hashtag);
     }
 }

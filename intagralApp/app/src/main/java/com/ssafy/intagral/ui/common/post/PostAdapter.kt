@@ -4,11 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.PostItem
+import com.ssafy.intagral.data.model.PostItem
 
 class PostAdapter(context: Context, val postLists: MutableList<PostItem>)
     : RecyclerView.Adapter<PostViewHolder>() {

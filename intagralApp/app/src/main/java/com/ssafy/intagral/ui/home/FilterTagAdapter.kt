@@ -4,13 +4,10 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.FilterTagItem
-import com.ssafy.intagral.data.PostItem
-import com.ssafy.intagral.ui.common.post.PostViewHolder
+import com.ssafy.intagral.data.model.FilterTagItem
 
 class FilterTagAdapter(context: Context, val filterTagList: MutableList<FilterTagItem>)
     : RecyclerView.Adapter<FilterTagViewHolder>() {

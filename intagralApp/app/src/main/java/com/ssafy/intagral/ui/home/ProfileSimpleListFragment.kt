@@ -11,11 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.ProfileDetail
-import com.ssafy.intagral.data.ProfileSimpleItem
-import com.ssafy.intagral.data.ProfileType
+import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.ui.common.profile.ProfileSimpleAdapter
 
 enum class ActivityType {
@@ -52,7 +50,7 @@ class ProfileSimpleListFragment: Fragment() {
             profileSimpleList.add(
                 ProfileSimpleItem(
                     ProfileType.user,
-                    "한유연1",
+                    "goodman",
                     true,
                     "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp"
                 )
@@ -60,7 +58,7 @@ class ProfileSimpleListFragment: Fragment() {
             profileSimpleList.add(
                 ProfileSimpleItem(
                     ProfileType.hashtag,
-                    "한유연2",
+                    "4Leg",
                     false,
                     "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/images.jfif",
                 )
@@ -68,7 +66,7 @@ class ProfileSimpleListFragment: Fragment() {
             profileSimpleList.add(
                 ProfileSimpleItem(
                     ProfileType.user,
-                    "한유연3",
+                    "temp_LF7Z3Z",
                     true,
                     "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
                 )
@@ -88,10 +86,7 @@ class ProfileSimpleListFragment: Fragment() {
                             val activity = activity as SearchActivity
                             activity.changeActivity(1, profileSimpleList[position])
                         }
-
-//                        val activity = activity as MainMenuActivity
-//                        activity.changeFragment(1)
-                        Toast.makeText(it, "listener : $position", Toast.LENGTH_SHORT).show()
+                        //TODO: Following list 페이지, main menu activity에서 호출
                     }
                 }
             profileSimpleRecyclerView.apply {

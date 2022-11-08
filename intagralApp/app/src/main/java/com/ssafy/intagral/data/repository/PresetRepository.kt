@@ -1,11 +1,12 @@
-package com.ssafy.intagral.data.source.preset
+package com.ssafy.intagral.data.repository
 
 import com.google.gson.JsonObject
+import com.ssafy.intagral.data.response.PresetResponse
 import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.*
 
-interface PresetService {
+interface PresetRepository {
 
     @GET(value = "/api/preset/list")
     suspend fun getPresetList(

@@ -1,4 +1,4 @@
-package com.ssafy.intagral.data
+package com.ssafy.intagral.data.model
 
 data class FilterTagItem (
     val filterTagId: Int,

@@ -9,8 +9,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.ProfileSimpleItem
-import com.ssafy.intagral.data.ProfileType
+import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.model.ProfileType
 
 class ProfileSimpleAdapter(context: Context, val profileSimpleLists: MutableList<ProfileSimpleItem>)
     :RecyclerView.Adapter<ProfileSimpleViewHolder>() {
