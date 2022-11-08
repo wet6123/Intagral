@@ -20,6 +20,12 @@ public class PostHashtag extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "post_id", nullable = false)
+    Integer postId;
+
+    @Column(name = "hashtag_id", nullable = false)
+    Integer hashtagId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "post_id", nullable = false, insertable = false, updatable = false)
     Post postHashtagToPost;

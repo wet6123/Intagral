@@ -20,6 +20,9 @@ public class PostLike extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "user_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    Long userId;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false, insertable = false, updatable = false)
     User postLikeToUser;
