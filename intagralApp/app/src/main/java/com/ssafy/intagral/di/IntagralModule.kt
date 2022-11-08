@@ -1,6 +1,6 @@
 package com.ssafy.intagral.di
 
-import com.ssafy.intagral.data.repository.PresetRepository
+import com.ssafy.intagral.data.service.PresetService
 import com.ssafy.intagral.util.AuthInterceptor
 import dagger.Module
 import dagger.Provides
@@ -14,7 +14,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CommonService {
+object CommonRepository {
     private val BASE_URL = "https://k7a304.p.ssafy.io"
 
     private val client: OkHttpClient = OkHttpClient.Builder()
@@ -24,7 +24,7 @@ object CommonService {
 
     @Singleton
     @Provides
-    fun getCommonService(): Retrofit {
+    fun getCommonRepository(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(client)
@@ -35,9 +35,9 @@ object CommonService {
 
 @Module
 @InstallIn(SingletonComponent::class)
-object PresetRepositoryModule {
+object PresetServiceModule {
 
     @Singleton
     @Provides
-    fun providePresetRepository(): PresetRepository = PresetRepository()
+    fun providePresetService(): PresetService = PresetService()
 }

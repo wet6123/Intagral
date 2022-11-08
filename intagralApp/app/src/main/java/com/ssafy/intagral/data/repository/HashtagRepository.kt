@@ -1,18 +1,15 @@
 package com.ssafy.intagral.data.repository
 
-import com.ssafy.intagral.data.service.HashtagService
-import com.ssafy.intagral.di.CommonService
-import retrofit2.Retrofit
+import com.ssafy.intagral.data.response.HashtagProfileResponse
+import com.ssafy.intagral.data.response.HotHashtagResponse
+import retrofit2.Response
+import retrofit2.http.GET
+import retrofit2.http.Query
 
-class HashtagRepository {
+interface HashtagRepository {
+    @GET("/api/hashtag/profile")
+    suspend fun getHashtagProfile(@Query("q") q: String): Response<HashtagProfileResponse>
 
-    var commonService: Retrofit = CommonService.getCommonService()
-    private var hashtagService: HashtagService
-
-    init {
-        hashtagService = commonService.create(HashtagService::class.java)
-    }
-
-    suspend fun getHashtagProfile(q: String) = hashtagService.getHashtagProfile(q)
-
+    @GET("api/hashtag/list/hot")
+    suspend fun getHotHashtag(): Response<HotHashtagResponse>
 }
