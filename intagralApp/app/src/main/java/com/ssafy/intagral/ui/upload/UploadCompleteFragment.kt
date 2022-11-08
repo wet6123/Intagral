@@ -10,12 +10,9 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentUploadCompleteBinding
+import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.viewmodel.UploadViewModel
 
-/**
- * TODO
- *  - 홈으로 이동하기
- */
 class UploadCompleteFragment : Fragment() {
 
     private lateinit var binding: FragmentUploadCompleteBinding
@@ -47,6 +44,13 @@ class UploadCompleteFragment : Fragment() {
             when(p0?.id){
                 R.id.to_main -> {
                     Toast.makeText(requireContext(), "to home!!!", Toast.LENGTH_SHORT).show()
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.menu_frame_layout,
+                            HomeFragment()
+                        ).commit()
                 }
             }
         }

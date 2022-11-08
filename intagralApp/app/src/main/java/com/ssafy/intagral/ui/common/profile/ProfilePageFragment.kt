@@ -26,7 +26,7 @@ private const val ARG_PARAM2 = "data" //profile data
 
 class ProfilePageFragment : Fragment() {
     private var param1: ProfileType? = ProfileType.user //default user
-    private var param2: String? = null //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
+    private var param2: ProfileDetail? = null //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
 
     //post list
     private lateinit var postRecyclerView: RecyclerView
@@ -39,7 +39,7 @@ class ProfilePageFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getSerializable(ARG_PARAM1) as ProfileType
-            param2 = it.getString(ARG_PARAM2)
+            param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail
         }
     }
 
@@ -97,11 +97,11 @@ class ProfilePageFragment : Fragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(param1: ProfileType, param2: String) =
+        fun newInstance(param1: ProfileType, param2: ProfileDetail) =
             ProfilePageFragment().apply {
                 arguments = Bundle().apply {
                     putSerializable(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+                    putSerializable(ARG_PARAM2, param2)
                 }
             }
     }

@@ -15,4 +15,6 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
     List<Hashtag> findAllByContentContaining(String target);
 
     List<Hashtag> findTop5ByOrderBySearchCntDesc();
+
+    List<Hashtag> findByIdIn(List<Long> hashtagIdList);
 }
