@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class FollowHashtagPostRes extends BaseResponseBody {
-    @JsonProperty(value = "is_follow")
+    @JsonProperty(value = "isFollow")
     boolean isFollow;
     Integer followerCnt;
 

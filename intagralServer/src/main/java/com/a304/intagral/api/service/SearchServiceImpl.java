@@ -38,7 +38,7 @@ public class SearchServiceImpl implements SearchService{
         for(User searchedUser : userList){
             SearchUserDto searchUserDto = SearchUserDto.builder()
                     .name(searchedUser.getNickname())
-                    .profile_image(searchedUser.getProfileImgPath())
+                    .profileImage(searchedUser.getProfileImgPath())
                     .isFollow(false)
                     .build();
             if(followingIdList.contains(searchedUser.getId())){
