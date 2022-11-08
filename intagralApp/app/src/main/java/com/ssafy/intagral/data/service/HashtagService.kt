@@ -22,7 +22,7 @@ class HashtagService {
             var profileDetail: ProfileDetail
             response.body()?.let {
                 profileDetail = ProfileDetail(
-                    ProfileType.user, it.content!!, it.follower ?:0,it.isFollow ?:false)
+                    ProfileType.hashtag, it.content!!, it.follower ?:0,it.isFollow ?:false)
                 return profileDetail
             }
         } else {
