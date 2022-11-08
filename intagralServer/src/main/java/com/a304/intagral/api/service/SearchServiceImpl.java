@@ -25,6 +25,9 @@ public class SearchServiceImpl implements SearchService{
 
     @Override
     public List<SearchUserDto> searchUser(Long userId, String target) {
+        if("".equals(target)){
+            return new ArrayList<>();
+        }
         //유저가 팔로우하고 있는 계정의 ID 리스트 생성
         User user = userRepository.findById(userId).get();
         List<UserFollow> userFollowingList = user.getUserFollowingList();
@@ -52,6 +55,9 @@ public class SearchServiceImpl implements SearchService{
 
     @Override
     public List<SearchHashtagDto> searchHashtag(Long userId, String target) {
+        if("".equals(target)){
+            return new ArrayList<>();
+        }
         User user = userRepository.findById(userId).get();
         List<HashtagFollow> hashtagFollowList = user.getHashtagFollowList();
         List<Long> followingIdList = new ArrayList<>();
