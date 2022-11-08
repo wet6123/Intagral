@@ -42,7 +42,6 @@ public class UserServiceImpl implements UserService {
 
     final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
     final java.util.Random rand = new java.util.Random();
-    final Set<String> identifiers = new HashSet<String>();
 
     @Override
     public User getUserByUserId(Long userId) {
@@ -97,7 +96,7 @@ public class UserServiceImpl implements UserService {
             for(int i = 0; i < length; i++) {
                 builder.append(lexicon.charAt(rand.nextInt(lexicon.length())));
             }
-            if(identifiers.contains(builder.toString())) {
+            if(isDuplicateNickname(builder.toString())) {
                 builder = new StringBuilder("temp_");
             }
         }
