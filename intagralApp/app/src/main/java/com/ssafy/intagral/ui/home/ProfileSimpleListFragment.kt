@@ -7,7 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +17,7 @@ import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.ui.common.profile.ProfileSimpleAdapter
+import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 
 enum class ActivityType {
     MainMenuActivity,
@@ -27,6 +30,9 @@ class ProfileSimpleListFragment: Fragment() {
     private lateinit var profileSimpleRecyclerView: RecyclerView
     private lateinit var profileSimpleAdapter : ProfileSimpleAdapter
     private lateinit var profileSimpleList : ArrayList<ProfileSimpleItem>
+
+    private val profileSimpleViewModel: ProfileSimpleViewModel by activityViewModels()
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile_simple_list, container, false)
 
@@ -44,35 +50,8 @@ class ProfileSimpleListFragment: Fragment() {
     }
 
     fun bindProfileList(inputText: String?) {
-        profileSimpleList = ArrayList<ProfileSimpleItem>()
-        if (inputText != "") {
-            //TODO : api 호출
-            profileSimpleList.add(
-                ProfileSimpleItem(
-                    ProfileType.user,
-                    "goodman",
-                    true,
-                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp"
-                )
-            )
-            profileSimpleList.add(
-                ProfileSimpleItem(
-                    ProfileType.hashtag,
-                    "4Leg",
-                    false,
-                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/images.jfif",
-                )
-            )
-            profileSimpleList.add(
-                ProfileSimpleItem(
-                    ProfileType.user,
-                    "temp_LF7Z3Z",
-                    true,
-                    "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png",
-                )
-            )
+        profileSimpleList = profileSimpleViewModel.getProfileSimpleList().value ?: ArrayList()
 
-        }
         //TODO: null일 경우 처리
         context?.also {
             profileSimpleAdapter = ProfileSimpleAdapter(it, profileSimpleList)

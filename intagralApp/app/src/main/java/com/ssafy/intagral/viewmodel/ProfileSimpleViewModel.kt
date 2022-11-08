@@ -1,0 +1,31 @@
+package com.ssafy.intagral.viewmodel
+
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.service.SearchService
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class ProfileSimpleViewModel @Inject constructor(private val searchService: SearchService): ViewModel(){
+    private var profileSimpleList: MutableLiveData<ArrayList<ProfileSimpleItem>> = MutableLiveData(ArrayList())
+
+    fun getProfileSimpleList(): MutableLiveData<ArrayList<ProfileSimpleItem>>{
+        return profileSimpleList
+    }
+
+    fun search(q: String) {
+        viewModelScope.launch {
+            profileSimpleList.value = searchService.search(q) ?: profileSimpleList.value
+        }
+    }
+
+    //TODO: use in post detail
+    //      just get first element of list
+    fun getProfileSimple(q: String) {
+
+    }
+}
