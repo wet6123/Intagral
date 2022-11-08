@@ -1,18 +1,23 @@
 package com.a304.intagral.api.service;
 
+import com.a304.intagral.api.request.PostAddPostReq;
+import com.a304.intagral.api.response.PostAddPostRes;
+import com.a304.intagral.api.response.PostLikePostRes;
+import com.a304.intagral.common.response.FileDetail;
+import com.a304.intagral.common.util.AmazonS3ResourceStorageUtil;
 import com.a304.intagral.db.entity.*;
 import com.a304.intagral.db.repository.HashtagRepository;
 import com.a304.intagral.db.repository.PostHashtagRepository;
 import com.a304.intagral.db.repository.PostRepository;
 import com.a304.intagral.db.repository.UserRepository;
 import com.a304.intagral.dto.PostDataDto;
-import com.a304.intagral.dto.PostDto;
 import com.a304.intagral.dto.PostListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
-import org.springframework.security.core.parameters.P;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +33,9 @@ public class PostServiceImpl implements PostService {
     PostHashtagRepository postHashtagRepository;
     @Autowired
     HashtagRepository hashtagRepository;
+
+    @Autowired
+    AmazonS3ResourceStorageUtil amazonS3ResourceStorageUtil;
 
     @Override
     public Post getPostByPostId(Long PostId) {
@@ -250,5 +258,37 @@ public class PostServiceImpl implements PostService {
                 .isNext(isNext)
                 .build();
         return res;
+    }
+
+    @Override
+    public PostAddPostRes postAdd(Long userId, PostAddPostReq postAddPostReq) {
+        MultipartFile multipartFile = postAddPostReq.getImage();
+        FileDetail fileDetail = FileDetail.multipartOf(multipartFile);
+        String resourceUrl = amazonS3ResourceStorageUtil.store(fileDetail.getPath(), multipartFile);
+
+        Post post = Post.builder()
+                .userId(userId.intValue())
+                .postDate(LocalDateTime.now())
+                .imgPath(resourceUrl)
+                .likeCnt(0)
+                .build();
+
+        Post resPost = postRepository.save(post);
+
+        Integer postId = resPost.getId().intValue();
+
+        PostAddPostRes res = new PostAddPostRes();
+        res.setPostId(postId);
+        return res;
+    }
+
+    @Override
+    public PostLikePostRes postLike(Long userId) {
+        return null;
+    }
+
+    @Override
+    public void postDelete(Long userId) {
+
     }
 }

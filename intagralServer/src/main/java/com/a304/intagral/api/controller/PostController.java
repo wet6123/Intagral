@@ -1,5 +1,7 @@
 package com.a304.intagral.api.controller;
 
+import com.a304.intagral.api.request.PostAddPostReq;
+import com.a304.intagral.api.response.PostAddPostRes;
 import com.a304.intagral.api.response.PostDetailRes;
 import com.a304.intagral.api.service.PostService;
 import com.a304.intagral.common.auth.UserDetails;
@@ -81,6 +83,16 @@ public class PostController {
         } else {
             throw new IllegalArgumentException(type + "은 type에 존재하지 않습니다.");
         }
+        return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("/publish")
+    public ResponseEntity<?> addPost(Authentication authentication, PostAddPostReq postAddPostReq) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+
+        PostAddPostRes res = postService.postAdd(userId, postAddPostReq);
+
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
 }
