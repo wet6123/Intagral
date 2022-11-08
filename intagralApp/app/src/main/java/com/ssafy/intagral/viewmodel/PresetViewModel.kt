@@ -30,23 +30,12 @@ class PresetViewModel @Inject constructor(private val repository: PresetReposito
             val json = JsonObject()
             json.addProperty("cls", targetClass)
             json.addProperty("data", tag)
-            repository.addPresetTag(json).enqueue(object : Callback<ResponseBody>{
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    if(response.isSuccessful){
-                        reloadPresetList()
-                    }else{
-                        Log.d("RETROFIT /api/preset/add", "응답 에러 : ${response.code()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.d("RETROFIT /api/preset/add", "onFailure 에러: " + t.message.toString());
-                }
-
-            })
+            val response = repository.addPresetTag(json)
+            if(response.isSuccessful){
+                reloadPresetList()
+            }else{
+                Log.d("RETROFIT /api/preset/add", "응답 에러 : ${response.code()}")
+            }
         }
     }
 
@@ -55,54 +44,32 @@ class PresetViewModel @Inject constructor(private val repository: PresetReposito
             val json = JsonObject()
             json.addProperty("cls", targetClass)
             json.addProperty("data", tag)
-            repository.deletePresetTag(json).enqueue(object : Callback<ResponseBody>{
-                override fun onResponse(
-                    call: Call<ResponseBody>,
-                    response: Response<ResponseBody>
-                ) {
-                    if(response.isSuccessful){
-                        reloadPresetList()
-                    }else{
-                        Log.d("RETROFIT /api/preset/delete", "응답 에러 : ${response.code()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    Log.d("RETROFIT /api/preset/delete", "onFailure 에러: " + t.message.toString());
-                }
-
-            })
+            val response = repository.deletePresetTag(json)
+            if(response.isSuccessful){
+                reloadPresetList()
+            }else{
+                Log.d("RETROFIT /api/preset/delete", "응답 에러 : ${response.code()}")
+            }
         }
     }
 
     private fun reloadPresetList() {
         viewModelScope.launch{
             val result: ArrayList<PresetClassItem> = arrayListOf()
-
-            repository.fetchPresetItemList().enqueue(object : Callback<PresetResponse> {
-                override fun onResponse(
-                    call: Call<PresetResponse>,
-                    response: Response<PresetResponse>
-                ) {
-                    if(response.isSuccessful){
-                        response.body()?.let {
-                            for(className in it.classList){
-                                result.add(PresetClassItem(
-                                    className,
-                                    it.data[className]!!
-                                ))
-                            }
-                            presetList.value = result
-                        }
-                    }else{
-                        Log.d("RETROFIT /api/preset/list", "응답 에러 : ${response.code()}")
+            val response = repository.fetchPresetItemList()
+            if(response.isSuccessful){
+                response.body()?.let {
+                    for(className in it.classList){
+                        result.add(PresetClassItem(
+                            className,
+                            it.data[className]!!
+                        ))
                     }
+                    presetList.value = result
                 }
-
-                override fun onFailure(call: Call<PresetResponse>, t: Throwable) {
-                    Log.d("RETROFIT /api/preset/list", "onFailure 에러: " + t.message.toString());
-                }
-            })
+            }else{
+                Log.d("RETROFIT /api/preset/list", "응답 에러 : ${response.code()}")
+            }
         }
     }
 
