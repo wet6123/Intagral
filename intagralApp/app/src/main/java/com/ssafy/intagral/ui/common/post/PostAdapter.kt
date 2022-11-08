@@ -17,7 +17,6 @@ class PostAdapter(context: Context, val postLists: MutableList<PostItem>)
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(R.layout.fragment_postitem, parent, false)
 
-        println("onCreateViewHolder : ViewHolder 객체 생성")
         return PostViewHolder(itemView)
     }
 

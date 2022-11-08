@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -22,6 +23,7 @@ import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
 import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
 import com.ssafy.intagral.ui.home.HomeFragment
+import com.ssafy.intagral.ui.home.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
@@ -168,6 +170,16 @@ class MainMenuActivity : AppCompatActivity() {
                 os.flush()
             }
             return file.absolutePath
+        }
+    }
+
+    fun changeProfileDetail(index: Int, profileSimple: ProfileSimpleItem) {
+        when(index) {
+            1 -> {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+                profileDetailViewModel.changeProfileDetail(profileSimple)
+            }
         }
     }
 }
