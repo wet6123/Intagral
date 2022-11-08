@@ -1,27 +1,23 @@
 package com.ssafy.intagral.data.service
 
 import com.google.gson.JsonObject
-import com.ssafy.intagral.data.response.PresetResponse
-import okhttp3.ResponseBody
-import retrofit2.Response
-import retrofit2.http.*
+import com.ssafy.intagral.data.repository.PresetRepository
+import com.ssafy.intagral.di.CommonRepository
+import retrofit2.Retrofit
 
-interface PresetService {
+class PresetService {
 
-    @GET(value = "/api/preset/list")
-    suspend fun getPresetList(
-        @Query(value="type", encoded = true) type: String = "all"
-    ): Response<PresetResponse>
+    var commonRepository: Retrofit = CommonRepository.getCommonRepository()
+    private var presetRepository: PresetRepository
 
-    @POST(value = "/api/preset/add")
-    @Headers("Content-Type:application/json; charset=UTF-8")
-    suspend fun addPreset(
-        @Body json: JsonObject
-    ): Response<ResponseBody>
+    init {
+        presetRepository = commonRepository.create(PresetRepository::class.java)
+    }
 
-    @POST(value = "/api/preset/delete")
-    @Headers("Content-Type:application/json; charset=UTF-8")
-    suspend fun deletePreset(
-        @Body json: JsonObject
-    ): Response<ResponseBody>
+    suspend fun fetchPresetItemList() = presetRepository.getPresetList()
+
+    suspend fun addPresetTag(json: JsonObject) = presetRepository.addPreset(json)
+
+    suspend fun deletePresetTag(json: JsonObject) = presetRepository.deletePreset(json)
+
 }
