@@ -80,9 +80,29 @@ class ProfileDetailFragment : Fragment() {
             Glide.with(view.context).load(param2?.profileImg ?:"https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp")
                 .into(view.findViewById(R.id.user_profile_img))
             //TODO: follow 목록 페이지로 이동하는 리스너 등록
+
+            //follower
             view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
+            view.findViewById<LinearLayout>(R.id.follower_btn).apply {
+                setOnClickListener {
+                    Toast.makeText(it.context, "ddd", Toast.LENGTH_SHORT).show()
+                }
+            }
+            //following
             view.findViewById<TextView>(R.id.following_cnt).text = param2?.following?.toString() ?: "0"
+            view.findViewById<LinearLayout>(R.id.following_btn).apply {
+                setOnClickListener {
+                    Toast.makeText(it.context, "dddddd", Toast.LENGTH_SHORT).show()
+                }
+            }
+            //hashtag
             view.findViewById<TextView>(R.id.hashtag_cnt).text = param2?.hashtag?.toString() ?: "0"
+            view.findViewById<LinearLayout>(R.id.hashtag_btn).apply {
+                setOnClickListener {
+                    Toast.makeText(it.context, "ddddddddddd", Toast.LENGTH_SHORT).show()
+                }
+            }
+
             view.findViewById<TextView>(R.id.profile_detail_nickname).text = param2?.name ?: ""
             view.findViewById<TextView>(R.id.profile_detail_intro).text = param2?.intro ?:""
         } else {
