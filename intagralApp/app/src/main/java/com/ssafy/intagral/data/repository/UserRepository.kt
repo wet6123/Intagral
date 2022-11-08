@@ -1,9 +1,11 @@
 package com.ssafy.intagral.data.repository
 
 import com.google.gson.JsonObject
+import com.ssafy.intagral.data.response.NicknameValidCheckResponse
 import com.ssafy.intagral.data.response.UserLoginReponse
 import com.ssafy.intagral.data.response.UserProfileResponse
-import okhttp3.RequestBody
+import okhttp3.MultipartBody
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -19,9 +21,11 @@ interface UserRepository {
     suspend fun logout()
     @GET(value="/api/user/profile")
     suspend fun getUserProfile(@Query("q") q: String): Response<UserProfileResponse>
+    @GET(value="/api/user/check")
+    suspend fun checkValidName(@Query("nickname") nickname: String): Response<NicknameValidCheckResponse>
     @POST(value="/api/user/profile/info")
-    suspend fun updateUserProfile(@Body json: JsonObject)
+    suspend fun updateUserProfile(@Body json: JsonObject): Response<ResponseBody>
     @Multipart
     @POST(value="/api/user/profile/image")
-    suspend fun updateProfileImg(@Part("data") data: RequestBody)
+    suspend fun updateProfileImg(@Part data: MultipartBody.Part): Response<ResponseBody>
 }
