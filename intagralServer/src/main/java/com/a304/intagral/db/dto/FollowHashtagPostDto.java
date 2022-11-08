@@ -1,5 +1,6 @@
 package com.a304.intagral.db.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 @Setter
 @Builder
 public class FollowHashtagPostDto {
+    @JsonProperty(value = "isFollow")
     boolean isFollow;
     Integer followerCnt;
 }

@@ -11,11 +11,12 @@ import lombok.Setter;
 public class UserProfileRes extends BaseResponseBody {
     String type;
     String nickname;
+    String imgPath;
     String intro;
     Long following;
     Long follower;
     Long hashtag;
-    @JsonProperty(value = "is_follow")
+    @JsonProperty(value = "isFollow")
     boolean isFollow;
 
     static public UserProfileRes of(Integer statusCode, String message, UserProfileDto userProfileDto) {
@@ -24,6 +25,7 @@ public class UserProfileRes extends BaseResponseBody {
         res.setMessage(message);
         res.setType("user");
         res.setNickname(userProfileDto.getNickname());
+        res.setImgPath(userProfileDto.getImgPath());
         res.setIntro(userProfileDto.getIntro());
         res.setFollowing(userProfileDto.getFollowing());
         res.setFollower(userProfileDto.getFollower());
