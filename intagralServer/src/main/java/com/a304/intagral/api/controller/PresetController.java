@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +26,7 @@ public class PresetController {
     PresetService presetService;
 
     @GetMapping("/list")
-    public ResponseEntity<? extends BaseResponseBody> logout(Authentication authentication, @RequestParam String type, @RequestParam(required = false, defaultValue = "all") String q) {
+    public ResponseEntity<? extends BaseResponseBody> logout(@ApiIgnore Authentication authentication, @RequestParam String type, @RequestParam(required = false, defaultValue = "all") String q) {
 
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
@@ -48,7 +49,7 @@ public class PresetController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<? extends  BaseResponseBody> addPreset(Authentication authentication, @RequestBody PresetAddPostReq presetAddPostReq){
+    public ResponseEntity<? extends  BaseResponseBody> addPreset(@ApiIgnore Authentication authentication, @RequestBody PresetAddPostReq presetAddPostReq){
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try{
@@ -61,7 +62,7 @@ public class PresetController {
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<? extends  BaseResponseBody> deleteTag(Authentication authentication, @RequestBody PresetDeletePostReq presetDeletePostReq){
+    public ResponseEntity<? extends  BaseResponseBody> deleteTag(@ApiIgnore Authentication authentication, @RequestBody PresetDeletePostReq presetDeletePostReq){
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try{

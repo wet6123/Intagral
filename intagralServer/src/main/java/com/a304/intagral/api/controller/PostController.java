@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class PostController {
     PostService postService;
 
     @GetMapping("/{post_id}")
-    public ResponseEntity<? extends BaseResponseBody> getPostDetail(Authentication authentication, @PathVariable("post_id") Long postId){
+    public ResponseEntity<? extends BaseResponseBody> getPostDetail(@ApiIgnore Authentication authentication, @PathVariable("post_id") Long postId){
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
 
@@ -60,7 +61,7 @@ public class PostController {
 
     @GetMapping("/list")
     public ResponseEntity<?> newPostList(
-            Authentication authentication,
+            @ApiIgnore Authentication authentication,
             @RequestParam(value = "type") String type,
             @RequestParam(value = "page") int page,
             @RequestParam(value = "q", defaultValue="") String keyword)  {
@@ -87,7 +88,7 @@ public class PostController {
     }
 
     @PostMapping("/publish")
-    public ResponseEntity<?> addPost(Authentication authentication, PostAddPostReq postAddPostReq) {
+    public ResponseEntity<?> addPost(@ApiIgnore Authentication authentication, PostAddPostReq postAddPostReq) {
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
 

@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 @Slf4j
 @RestController
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @GetMapping("/logout")
-    public ResponseEntity<? extends BaseResponseBody> logout(Authentication authentication) {
+    public ResponseEntity<? extends BaseResponseBody> logout(@ApiIgnore Authentication authentication) {
         log.debug("logout Controller");
         //로그인 처리
         UserDetails userDetails = (UserDetails) authentication.getDetails();
@@ -51,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/profile")
-    public ResponseEntity<? extends BaseResponseBody> getUserProfile(Authentication authentication, @RequestParam(value = "q") String nickname) {
+    public ResponseEntity<? extends BaseResponseBody> getUserProfile(@ApiIgnore Authentication authentication, @RequestParam(value = "q") String nickname) {
         UserDetails userDetails = (UserDetails) authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try {
@@ -64,7 +65,7 @@ public class UserController {
     }
 
     @PostMapping("/profile/info")
-    public ResponseEntity<? extends BaseResponseBody> updateProfile(Authentication authentication, @RequestBody UserProfileUpdatePostReq userProfileUpdatePostReq) {
+    public ResponseEntity<? extends BaseResponseBody> updateProfile(@ApiIgnore Authentication authentication, @RequestBody UserProfileUpdatePostReq userProfileUpdatePostReq) {
         UserDetails userDetails = (UserDetails) authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try{
@@ -77,7 +78,7 @@ public class UserController {
     }
 
     @PostMapping("/profile/image")
-    public ResponseEntity<? extends BaseResponseBody> updateProfileImage(Authentication authentication, UserProfileImageUpdatePostReq userProfileImageUpdatePostReq) {
+    public ResponseEntity<? extends BaseResponseBody> updateProfileImage(@ApiIgnore Authentication authentication, UserProfileImageUpdatePostReq userProfileImageUpdatePostReq) {
         UserDetails userDetails = (UserDetails) authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try{

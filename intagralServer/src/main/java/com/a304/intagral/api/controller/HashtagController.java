@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -30,7 +31,7 @@ public class HashtagController {
     HashtagService hashTagService;
 
     @GetMapping("/profile")
-    public ResponseEntity<? extends BaseResponseBody> searchId(Authentication authentication, @RequestParam(value = "q") String target) {
+    public ResponseEntity<? extends BaseResponseBody> searchId(@ApiIgnore Authentication authentication, @RequestParam(value = "q") String target) {
         UserDetails userDetails = (UserDetails) authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try {

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class SearchController {
     SearchService searchService;
 
     @GetMapping("")
-    public ResponseEntity<? extends BaseResponseBody> searchId(Authentication authentication, @RequestParam(value = "q") String target) {
+    public ResponseEntity<? extends BaseResponseBody> searchId(@ApiIgnore Authentication authentication, @RequestParam(value = "q") String target) {
         UserDetails userDetails = (UserDetails) authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
         try {
