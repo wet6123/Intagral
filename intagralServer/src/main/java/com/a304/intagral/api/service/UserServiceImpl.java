@@ -147,6 +147,7 @@ public class UserServiceImpl implements UserService {
 
         UserProfileDto userProfileDto = UserProfileDto.builder()
                 .nickname(nickname)
+                .imgPath(user.getProfileImgPath())
                 .intro(user.getIntro())
                 .following(followingCnt)
                 .follower(followerCnt)

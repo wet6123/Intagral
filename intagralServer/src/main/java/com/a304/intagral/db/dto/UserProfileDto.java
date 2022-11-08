@@ -11,6 +11,7 @@ import lombok.Setter;
 public class UserProfileDto {
     String type;
     String nickname;
+    String imgPath;
     String intro;
     Long following;
     Long follower;

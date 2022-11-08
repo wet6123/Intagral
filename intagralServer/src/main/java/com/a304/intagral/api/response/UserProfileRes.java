@@ -11,6 +11,7 @@ import lombok.Setter;
 public class UserProfileRes extends BaseResponseBody {
     String type;
     String nickname;
+    String imgPath;
     String intro;
     Long following;
     Long follower;
@@ -24,6 +25,7 @@ public class UserProfileRes extends BaseResponseBody {
         res.setMessage(message);
         res.setType("user");
         res.setNickname(userProfileDto.getNickname());
+        res.setImgPath(userProfileDto.getImgPath());
         res.setIntro(userProfileDto.getIntro());
         res.setFollowing(userProfileDto.getFollowing());
         res.setFollower(userProfileDto.getFollower());
