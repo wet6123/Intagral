@@ -1,5 +1,7 @@
-package com.ssafy.intagral.data.source.hashtag
+package com.ssafy.intagral.data.service
 
+import com.ssafy.intagral.data.response.HashtagProfileResponse
+import com.ssafy.intagral.data.response.HotHashtagResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

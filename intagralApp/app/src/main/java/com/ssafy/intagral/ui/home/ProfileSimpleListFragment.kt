@@ -11,11 +11,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.ProfileDetail
-import com.ssafy.intagral.data.ProfileSimpleItem
-import com.ssafy.intagral.data.ProfileType
+import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.ui.common.profile.ProfileSimpleAdapter
 
 enum class ActivityType {

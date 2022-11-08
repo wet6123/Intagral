@@ -1,9 +1,8 @@
-package com.ssafy.intagral.data.source.preset
+package com.ssafy.intagral.data.repository
 
 import com.google.gson.JsonObject
+import com.ssafy.intagral.data.service.PresetService
 import com.ssafy.intagral.di.CommonService
-import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Retrofit
 
 class PresetRepository {

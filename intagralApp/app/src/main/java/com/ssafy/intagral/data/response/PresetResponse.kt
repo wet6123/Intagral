@@ -1,4 +1,4 @@
-package com.ssafy.intagral.data.source.preset
+package com.ssafy.intagral.data.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

@@ -2,9 +2,9 @@ package com.ssafy.intagral.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ssafy.intagral.data.ProfileDetail
-import com.ssafy.intagral.data.ProfileSimpleItem
-import com.ssafy.intagral.data.ProfileType
+import com.ssafy.intagral.data.model.ProfileDetail
+import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.model.ProfileType
 
 const val imgPath = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
 class ProfileDetailViewModel: ViewModel() {
