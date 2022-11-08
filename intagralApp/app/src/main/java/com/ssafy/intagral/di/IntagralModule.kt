@@ -2,6 +2,7 @@ package com.ssafy.intagral.di
 
 import com.ssafy.intagral.data.service.HashtagService
 import com.ssafy.intagral.data.service.PresetService
+import com.ssafy.intagral.data.service.SearchService
 import com.ssafy.intagral.data.service.UserService
 import com.ssafy.intagral.util.AuthInterceptor
 import dagger.Module
@@ -59,4 +60,13 @@ object HashtagServiceModule {
     @Singleton
     @Provides
     fun provideHashtagService(): HashtagService = HashtagService()
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+object SearchServiceModule {
+
+    @Singleton
+    @Provides
+    fun provideSearchService(): SearchService = SearchService()
 }
