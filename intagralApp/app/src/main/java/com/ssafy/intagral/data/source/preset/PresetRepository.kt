@@ -15,10 +15,10 @@ class PresetRepository {
         presetService = commonService.create(PresetService::class.java)
     }
 
-    suspend fun fetchPresetItemList(): Call<PresetResponse> = presetService.getPresetList()
+    suspend fun fetchPresetItemList() = presetService.getPresetList()
 
-    suspend fun addPresetTag(json: JsonObject): Call<ResponseBody> = presetService.addPreset(json)
+    suspend fun addPresetTag(json: JsonObject) = presetService.addPreset(json)
 
-    suspend fun deletePresetTag(json: JsonObject): Call<ResponseBody> = presetService.deletePreset(json)
+    suspend fun deletePresetTag(json: JsonObject) = presetService.deletePreset(json)
 
 }
