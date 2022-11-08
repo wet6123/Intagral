@@ -1,4 +1,4 @@
-package com.ssafy.intagral.data
+package com.ssafy.intagral.data.model
 
 data class ProfileDetail ( //TODO: 본인인지 확인하는 변수 필요한지 생각해보기
     val type: ProfileType,

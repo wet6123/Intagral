@@ -2,20 +2,16 @@ package com.ssafy.intagral.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import android.widget.Toolbar.OnMenuItemClickListener
-import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.FilterTagItem
-import com.ssafy.intagral.data.PostItem
+import com.ssafy.intagral.data.model.FilterTagItem
+import com.ssafy.intagral.data.model.PostItem
 import com.ssafy.intagral.ui.common.post.PostAdapter
 
 class HomeFragment : Fragment() {

@@ -10,8 +10,8 @@ import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.ProfileDetail
-import com.ssafy.intagral.data.ProfileType
+import com.ssafy.intagral.data.model.ProfileDetail
+import com.ssafy.intagral.data.model.ProfileType
 
 private const val ARG_PARAM1 = "profileType"
 private const val ARG_PARAM2 = "profileData"

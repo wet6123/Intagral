@@ -1,5 +1,6 @@
-package com.ssafy.intagral.data.source.hashtag
+package com.ssafy.intagral.data.repository
 
+import com.ssafy.intagral.data.service.HashtagService
 import com.ssafy.intagral.di.CommonService
 import retrofit2.Retrofit
 

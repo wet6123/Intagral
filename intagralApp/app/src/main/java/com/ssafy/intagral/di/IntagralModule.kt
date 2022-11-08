@@ -1,12 +1,11 @@
 package com.ssafy.intagral.di
 
-import com.ssafy.intagral.data.source.preset.PresetRepository
+import com.ssafy.intagral.data.repository.PresetRepository
 import com.ssafy.intagral.util.AuthInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

@@ -5,15 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
-import com.ssafy.intagral.data.PresetClassItem
-import com.ssafy.intagral.data.source.preset.PresetRepository
-import com.ssafy.intagral.data.source.preset.PresetResponse
+import com.ssafy.intagral.data.model.PresetClassItem
+import com.ssafy.intagral.data.repository.PresetRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,10 +55,12 @@ class PresetViewModel @Inject constructor(private val repository: PresetReposito
             if(response.isSuccessful){
                 response.body()?.let {
                     for(className in it.classList){
-                        result.add(PresetClassItem(
+                        result.add(
+                            PresetClassItem(
                             className,
                             it.data[className]!!
-                        ))
+                        )
+                        )
                     }
                     presetList.value = result
                 }
