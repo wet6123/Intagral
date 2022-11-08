@@ -20,4 +20,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
     List<User> findAllByNicknameContaining(String target);
 
     List<User> findByIdIn(List<Long> userIdList);
+
+    Integer countByNickname(String nickname);
 }

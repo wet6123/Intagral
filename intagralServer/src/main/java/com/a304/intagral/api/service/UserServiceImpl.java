@@ -180,4 +180,13 @@ public class UserServiceImpl implements UserService {
         user.setProfileImgPath(resourceUrl);
         userRepository.save(user);
     }
+
+    @Override
+    public boolean checkNicknameDuplication(String nickname) {
+        return !isDuplicateNickname(nickname);
+    }
+
+    private boolean isDuplicateNickname(String nickname){
+        return userRepository.countByNickname(nickname) != 0;
+    }
 }
