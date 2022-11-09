@@ -42,7 +42,6 @@ public class FollowController {
             @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  FollowUserPostRes.class))),
             @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
-    @GetMapping("/hello")
     @PostMapping("/user/{nickname}")
     public ResponseEntity<? extends BaseResponseBody> updateUserFollow(@ApiIgnore Authentication authentication,
                                                                        @ApiParam(value="대상 사용자의 닉네임", required = true, example = "goodman") @PathVariable String nickname){
