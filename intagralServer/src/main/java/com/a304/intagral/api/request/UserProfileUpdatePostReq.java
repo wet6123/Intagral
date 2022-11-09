@@ -1,16 +1,16 @@
 package com.a304.intagral.api.request;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("사용자 소개글 업데이트 Request")
+@Schema(description = "사용자 소개글 업데이트 Request")
 @Getter
 @Setter
 public class UserProfileUpdatePostReq {
-    @ApiModelProperty(name = "변경할 대상", example = "[nickname, intro]")
+    @Schema(name = "변경할 대상", allowableValues = {"nickname", "intro"})
     String type;
-    @ApiModelProperty(name = "변경 내용", example = "김테스트")
+    @Schema(name = "변경 내용", example = "김테스트")
     String data;
 }

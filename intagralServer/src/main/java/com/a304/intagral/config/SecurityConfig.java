@@ -57,7 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(new JwtAuthenticationFilter(authenticationManager(), userService))
                 .authorizeRequests()
-                .antMatchers(new String[]{"/api/user/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**"}).permitAll()
+                .antMatchers(new String[]{"/api/user/login", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-resources/**", "/swagger/**"}).permitAll()
                 .anyRequest().authenticated()
                 .and().cors();
     }

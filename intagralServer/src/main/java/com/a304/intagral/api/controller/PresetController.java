@@ -8,9 +8,12 @@ import com.a304.intagral.common.auth.UserDetails;
 import com.a304.intagral.common.response.BaseResponseBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +26,7 @@ import java.util.List;
 import java.util.Map;
 
 @Slf4j
-@Api("프리셋 API")
+@Schema(description = "프리셋 API")
 @RestController
 @RequestMapping("/api/preset")
 public class PresetController {
@@ -32,9 +35,9 @@ public class PresetController {
     PresetService presetService;
 
     @Operation(summary = "사용자의 프리셋 목록", description = "현재 로그인한 사용자의 프리셋을 반환")
-    @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "success", content = @Content(schema = @Schema(implementation = PresetListRes.class))),
+            @ApiResponse(responseCode = "500", description = "INTERNAL SERVER ERROR")
     })
     @GetMapping("/list")
     public ResponseEntity<? extends BaseResponseBody> logout(@ApiIgnore Authentication authentication,
@@ -63,8 +66,8 @@ public class PresetController {
 
     @Operation(summary = "프리셋 추가", description = "프리셋에 태그를 추가")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  PresetListRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @PostMapping("/add")
     public ResponseEntity<? extends  BaseResponseBody> addPreset(@ApiIgnore Authentication authentication,
@@ -81,8 +84,8 @@ public class PresetController {
     }
     @Operation(summary = "프리셋 삭제", description = "프리셋에서 태그를 삭제")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  PresetListRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
 
     @PostMapping("/delete")

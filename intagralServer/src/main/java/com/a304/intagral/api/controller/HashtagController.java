@@ -12,9 +12,12 @@ import com.a304.intagral.db.dto.SearchHashtagDto;
 import com.a304.intagral.db.dto.SearchUserDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,7 +31,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 
 @Slf4j
-@Api("해시태그 API")
+@Schema(description = "해시태그 API")
 @RestController
 @RequestMapping("/api/hashtag")
 public class HashtagController {
@@ -38,8 +41,8 @@ public class HashtagController {
 
     @Operation(summary = "해시태그 프로필", description = "해시태그의 프로필(팔로워, 게시글) 정보를 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  HashtagProfileRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/profile")
     public ResponseEntity<? extends BaseResponseBody> searchId(@ApiIgnore Authentication authentication,
@@ -57,8 +60,8 @@ public class HashtagController {
 
     @Operation(summary = "인기있는 해시태그 리스트", description = "검색 횟수가 많은 5개의 해시태그 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  HashtagHotListRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/list/hot")
     public ResponseEntity<? extends BaseResponseBody> getHotList(){

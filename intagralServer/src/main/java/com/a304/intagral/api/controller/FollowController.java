@@ -12,9 +12,11 @@ import com.a304.intagral.db.dto.FollowListBase;
 import com.a304.intagral.db.dto.FollowUserPostDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import org.checkerframework.checker.units.qual.A;
@@ -27,7 +29,7 @@ import springfox.documentation.annotations.ApiIgnore;
 import java.util.List;
 
 @Slf4j
-@Api("팔로우 API")
+@Schema(description = "팔로우 API")
 @RestController
 @RequestMapping("/api/follow")
 public class FollowController {
@@ -37,8 +39,8 @@ public class FollowController {
 
     @Operation(summary = "사용자 팔로우 토글", description = "대상 사용자를 팔로우/언팔로우")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  FollowUserPostRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/hello")
     @PostMapping("/user/{nickname}")
@@ -57,8 +59,8 @@ public class FollowController {
 
     @Operation(summary = "해시태그 팔로우 토글", description = "대상 해시태그를 팔로우/언팔로우")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  FollowHashtagPostRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @PostMapping("/hashtag/{hashtag}")
     public ResponseEntity<? extends BaseResponseBody> updateHashtagFollow(@ApiIgnore Authentication authentication,
@@ -76,8 +78,8 @@ public class FollowController {
 
     @Operation(summary = "사용자의 팔로우 리스트", description = "팔로잉, 팔로워, 해시태그 리스트를 type에 맞춰 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  FollowListGetRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/list/user")
     public ResponseEntity<? extends BaseResponseBody> getUserFollowList(@ApiIgnore Authentication authentication,
@@ -103,8 +105,8 @@ public class FollowController {
 
     @Operation(summary = "해시태그 팔로워 리스트", description = "해시태그의 팔로워 리스트를 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  FollowListGetRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/list/hashtag")
     public ResponseEntity<? extends BaseResponseBody> getHashtagFollowList(@ApiIgnore Authentication authentication,

@@ -1,5 +1,7 @@
 package com.a304.intagral.config;
 
+import com.a304.intagral.api.response.*;
+import com.fasterxml.classmate.TypeResolver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
@@ -13,6 +15,7 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
 
+import java.lang.reflect.Type;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
@@ -21,8 +24,22 @@ import static com.google.common.collect.Lists.newArrayList;
 public class SwaggerConfig {
 
     @Bean
-    public Docket api() {
+    public Docket api(TypeResolver typeResolver) {
         return new Docket(DocumentationType.OAS_30)
+                .additionalModels(
+                        typeResolver.resolve(FollowHashtagPostRes.class),
+                        typeResolver.resolve(FollowListGetRes.class),
+                        typeResolver.resolve(FollowUserPostRes.class),
+                        typeResolver.resolve(HashtagHotListRes.class),
+                        typeResolver.resolve(HashtagProfileRes.class),
+                        typeResolver.resolve(PostAddPostRes.class),
+                        typeResolver.resolve(PostDetailRes.class),
+                        typeResolver.resolve(PostLikePostRes.class),
+                        typeResolver.resolve(PresetListRes.class),
+                        typeResolver.resolve(SearchRes.class),
+                        typeResolver.resolve(TokenRes.class),
+                        typeResolver.resolve(UserLoginPostRes.class),
+                        typeResolver.resolve(UserProfileRes.class))
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.a304.intagral.api"))
@@ -51,7 +68,7 @@ public class SwaggerConfig {
                 .build();
     }
 
-    public static final String SECURITY_SCHEMA_NAME = "JWT";
+    public static final String SECURITY_SCHEMA_NAME = "Authorization";
     public static final String AUTHORIZATION_SCOPE_GLOBAL = "global";
     public static final String AUTHORIZATION_SCOPE_GLOBAL_DESC = "accessEverything";
 

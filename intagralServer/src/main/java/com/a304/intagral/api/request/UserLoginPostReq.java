@@ -1,14 +1,14 @@
 package com.a304.intagral.api.request;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
-@ApiModel("사용자 로그인 Request")
+@Schema(description = "사용자 로그인 Request")
 @Getter
 @Setter
 public class UserLoginPostReq {
-	@ApiModelProperty(name = "id token", example = "D64654DASD654")
+	@Schema(name = "id token", example = "D64654DASD654")
 	private String idToken;
 }

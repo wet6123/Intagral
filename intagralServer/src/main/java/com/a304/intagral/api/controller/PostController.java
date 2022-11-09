@@ -13,9 +13,12 @@ import com.a304.intagral.dto.PostDataDto;
 import com.a304.intagral.dto.PostListDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +28,7 @@ import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
 
-@Api("게시글 API")
+@Schema(description = "게시글 API")
 @RestController
 @RequestMapping("/api/post")
 public class PostController {
@@ -34,8 +37,8 @@ public class PostController {
 
     @Operation(summary = "게시글 상세 정보", description = "게시글에 대한 정보들을 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success", content = @Content(schema = @Schema(implementation =  PostDetailRes.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/{post_id}")
     public ResponseEntity<? extends BaseResponseBody> getPostDetail(@ApiIgnore Authentication authentication,
@@ -73,8 +76,8 @@ public class PostController {
 
     @Operation(summary = "게시물 목록", description = "게시물을 최신순으로 반환")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success"),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/list")
     public ResponseEntity<?> newPostList(
@@ -106,8 +109,8 @@ public class PostController {
 
     @Operation(summary = "게시글 작성", description = "이미지와 해시태그로 게시물을 생성")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "success"),
-            @ApiResponse(code = 500, message = "INTERNAL SERVER ERROR")
+            @ApiResponse(responseCode = "200", description =  "success"),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @PostMapping("/publish")
     public ResponseEntity<?> addPost(@ApiIgnore Authentication authentication,
