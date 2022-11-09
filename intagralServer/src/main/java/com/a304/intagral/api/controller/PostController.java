@@ -112,4 +112,19 @@ public class PostController {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
     }
+
+    @PostMapping("/delete/{postId}")
+    public ResponseEntity<?> deleteResponse(Authentication authentication, @PathVariable("postId") Long postId ) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+
+        try {
+            String res = postService.postDelete(userId, postId);
+            return ResponseEntity.ok( BaseResponseBody.of(200,res));
+        }catch (RuntimeException e)
+        {
+            return ResponseEntity.
+                    status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
 }
