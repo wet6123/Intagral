@@ -8,6 +8,7 @@ import com.a304.intagral.api.service.UserService;
 import com.a304.intagral.common.auth.UserDetails;
 import com.a304.intagral.common.response.BaseResponseBody;
 import com.a304.intagral.db.dto.HashtagProfileDto;
+import com.a304.intagral.db.dto.UserMyProfileDto;
 import com.a304.intagral.db.dto.UserProfileDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -135,4 +136,21 @@ public class UserController {
         }
     }
 
+    @Operation(summary = "현재 사용자 프로필", description = "현재 사용자의 정보를 반환")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description =  "success",content = @Content(schema = @Schema(implementation =  UserMyProfileDto.class))),
+            @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
+    })
+    @GetMapping("/info")
+    public ResponseEntity<? extends BaseResponseBody> getUserProfile(@ApiIgnore Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+        try {
+            UserMyProfileDto userMyProfileDto = userService.getMyProfile(userId);
+
+            return ResponseEntity.ok(UserMyProfileRes.of(200, "success", userMyProfileDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
 }
