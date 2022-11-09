@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileSimpleViewModel @Inject constructor(private val searchService: SearchService, private val followService: FollowService): ViewModel(){
-    private var profileSimpleList: MutableLiveData<ArrayList<ProfileSimpleItem>> = MutableLiveData(ArrayList())
+    private var profileSimpleList: MutableLiveData<ArrayList<ProfileSimpleItem>> = MutableLiveData()
 
     fun getProfileSimpleList(): MutableLiveData<ArrayList<ProfileSimpleItem>>{
         return profileSimpleList
@@ -24,8 +24,7 @@ class ProfileSimpleViewModel @Inject constructor(private val searchService: Sear
         }
     }
 
-    //TODO: use in post detail
-    //      just get first element of list
+    //TODO: use in post detail page
     fun getProfileSimple(q: String) {
 
     }

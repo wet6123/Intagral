@@ -17,9 +17,12 @@ import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 
 private const val ARG_PARAM1 = "profileType"
 private const val ARG_PARAM2 = "profileData"
+
+//TODO: param 대신 viewModel 이용해서 profileDetail 내용 넣기
 
 /**
  * A simple [Fragment] subclass.
@@ -28,10 +31,13 @@ private const val ARG_PARAM2 = "profileData"
  */
 @AndroidEntryPoint
 class ProfileDetailFragment : Fragment() {
+
+    private val profileSimpleViewModel: ProfileSimpleViewModel by activityViewModels()
+    private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
+
     private var param1: ProfileType = ProfileType.user //default user
     private var param2: ProfileDetail? = null
     private lateinit var binding: Any // TODO: 동적으로 type 설정 가능한지 확인
-    private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,21 +91,27 @@ class ProfileDetailFragment : Fragment() {
             view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
             view.findViewById<LinearLayout>(R.id.follower_btn).apply {
                 setOnClickListener {
-                    Toast.makeText(it.context, "ddd", Toast.LENGTH_SHORT).show()
+                    profileDetailViewModel.getProfileDetail().value?.name.let {
+                        profileSimpleViewModel.getOnesFollowList("follower", profileDetailViewModel.getProfileDetail().value!!.name)
+                    }
                 }
             }
             //following
             view.findViewById<TextView>(R.id.following_cnt).text = param2?.following?.toString() ?: "0"
             view.findViewById<LinearLayout>(R.id.following_btn).apply {
                 setOnClickListener {
-                    Toast.makeText(it.context, "dddddd", Toast.LENGTH_SHORT).show()
+                    profileDetailViewModel.getProfileDetail().value?.name.let {
+                        profileSimpleViewModel.getOnesFollowList("following", profileDetailViewModel.getProfileDetail().value!!.name)
+                    }
                 }
             }
             //hashtag
             view.findViewById<TextView>(R.id.hashtag_cnt).text = param2?.hashtag?.toString() ?: "0"
             view.findViewById<LinearLayout>(R.id.hashtag_btn).apply {
                 setOnClickListener {
-                    Toast.makeText(it.context, "ddddddddddd", Toast.LENGTH_SHORT).show()
+                    profileDetailViewModel.getProfileDetail().value?.name.let {
+                        profileSimpleViewModel.getOnesFollowList("hashtag", profileDetailViewModel.getProfileDetail().value!!.name)
+                    }
                 }
             }
 

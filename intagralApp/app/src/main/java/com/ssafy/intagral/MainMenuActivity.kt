@@ -32,6 +32,7 @@ import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
 import java.io.*
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
+import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 
 @AndroidEntryPoint
 class MainMenuActivity : AppCompatActivity() {
@@ -42,6 +43,8 @@ class MainMenuActivity : AppCompatActivity() {
     lateinit var mModule : Module
     lateinit var classList : ArrayList<String>
     private val profileDetailViewModel: ProfileDetailViewModel by viewModels()
+    private val profileSimpleViewModel: ProfileSimpleViewModel by viewModels()
+
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,6 +78,12 @@ class MainMenuActivity : AppCompatActivity() {
             ){
                 it?.also {
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(it.type,it)).commit()
+                }
+            }
+
+            profileSimpleViewModel.getProfileSimpleList().observe(this@MainMenuActivity){
+                it?.also{
+                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
                 }
             }
         }
