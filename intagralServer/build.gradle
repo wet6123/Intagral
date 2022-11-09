@@ -38,6 +38,7 @@ dependencies {
 	annotationProcessor("jakarta.annotation:jakarta.annotation-api")
 	implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 }
 
 tasks.named('test') {
