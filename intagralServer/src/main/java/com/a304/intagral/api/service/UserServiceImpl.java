@@ -140,8 +140,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByNickname(nickname).get();
         Integer targetUserId = user.getId().intValue();
 
-        Long followingCnt = userFollowRepository.countByUserIdTo(targetUserId);
-        Long followerCnt = userFollowRepository.countByUserIdFrom(targetUserId);
+        Long followerCnt = userFollowRepository.countByUserIdTo(targetUserId);
+        Long followingCnt = userFollowRepository.countByUserIdFrom(targetUserId);
         Long hashtagFollowCnt = hashtagFollowRepository.countByUserId(targetUserId);
         Long isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(userId.intValue(), targetUserId);
 
