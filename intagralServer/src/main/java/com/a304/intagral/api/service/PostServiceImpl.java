@@ -6,11 +6,9 @@ import com.a304.intagral.api.response.PostLikePostRes;
 import com.a304.intagral.common.response.FileDetail;
 import com.a304.intagral.common.util.AmazonS3ResourceStorageUtil;
 import com.a304.intagral.db.entity.*;
-import com.a304.intagral.db.repository.HashtagRepository;
-import com.a304.intagral.db.repository.PostHashtagRepository;
-import com.a304.intagral.db.repository.PostRepository;
-import com.a304.intagral.db.repository.UserRepository;
+import com.a304.intagral.db.repository.*;
 import com.a304.intagral.dto.PostDataDto;
+import com.a304.intagral.dto.PostLikePostDto;
 import com.a304.intagral.dto.PostListDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -34,6 +32,8 @@ public class PostServiceImpl implements PostService {
     PostHashtagRepository postHashtagRepository;
     @Autowired
     HashtagRepository hashtagRepository;
+    @Autowired
+    PostLikeRepository postLikeRepository;
 
     @Autowired
     AmazonS3ResourceStorageUtil amazonS3ResourceStorageUtil;
@@ -305,8 +305,26 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public PostLikePostRes postLike(Long userId) {
-        return null;
+    public PostLikePostDto postLike(Long userId, Long postId) {
+        Integer cntLike = postLikeRepository.countByUserIdAndPostId(userId, postId);
+        boolean isLike = cntLike != 0;
+
+        if(isLike){
+            postLikeRepository.deleteByUserIdAndPostId(userId, postId);
+        }else{
+            PostLike postLike = PostLike.builder()
+                    .postId(postId)
+                    .userId(userId)
+                    .build();
+            postLikeRepository.save(postLike);
+        }
+
+        PostLikePostDto postLikePostDto = PostLikePostDto.builder()
+                .isLike(!isLike)
+                .likeCnt(cntLike)
+                .build();
+
+        return postLikePostDto;
     }
 
     @Override
