@@ -29,7 +29,7 @@ class ProfileDetailFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
             param1 = it.getSerializable(ARG_PARAM1) as ProfileType
-            param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
+            param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail
         }
     }
 
@@ -40,13 +40,22 @@ class ProfileDetailFragment : Fragment() {
             // user profile
             view = inflater.inflate(R.layout.fragment_user_profile, container, false)
             val button: Button = view.findViewById<Button>(R.id.profile_detail_btn)
-            if(param2?.name == "yuyeon") {
+            if(param2?.name == "goodman") {
                 //TODO: 조건문 본인일 때로 수정
                 button.apply {
                     text = "setting"
                     setOnClickListener {
                         //TODO: profile setting Fragment로 교환
                         Toast.makeText(view.context, "setting fragment로 이동", Toast.LENGTH_SHORT).show()
+                        requireActivity()
+                            .supportFragmentManager
+                            .beginTransaction()
+                            .addToBackStack(null)
+                            .add(
+                                R.id.menu_frame_layout,
+                                ProfileEditFragment.newInstance()
+                            ).commit()
+
                     }
                 }
             } else {
@@ -58,12 +67,14 @@ class ProfileDetailFragment : Fragment() {
                     }
                 }
             }
-            Glide.with(view.context).load("https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp")
+            Glide.with(view.context).load(param2?.profileImg ?:"https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp")
                 .into(view.findViewById(R.id.user_profile_img))
             //TODO: follow 목록 페이지로 이동하는 리스너 등록
             view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
             view.findViewById<TextView>(R.id.following_cnt).text = param2?.following?.toString() ?: "0"
             view.findViewById<TextView>(R.id.hashtag_cnt).text = param2?.hashtag?.toString() ?: "0"
+            view.findViewById<TextView>(R.id.profile_detail_nickname).text = param2?.name ?: ""
+            view.findViewById<TextView>(R.id.profile_detail_intro).text = param2?.intro ?:""
         } else {
             // hashtag fragment
             view = inflater.inflate(R.layout.fragment_hashtag_profile, container, false)
@@ -75,10 +86,12 @@ class ProfileDetailFragment : Fragment() {
                     Toast.makeText(view.context, "follow API 호출", Toast.LENGTH_SHORT).show()
                 }
             }
-            Glide.with(view.context).load("https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png")
+            Glide.with(view.context).load(param2?.profileImg ?:"https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png")
                 .into(view.findViewById(R.id.hashtag_profile_img))
             //TODO: follow 목록 페이지로 이동하는 리스너 등록
             view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
+            view.findViewById<TextView>(R.id.profile_detail_nickname).text = param2?.name ?: ""
+            view.findViewById<TextView>(R.id.profile_detail_intro).text = param2?.intro ?:""
         }
         return view
     }
