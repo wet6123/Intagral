@@ -28,7 +28,7 @@ class ProfileSimpleViewModel @Inject constructor(private val searchService: Sear
     fun getProfileSimple(q: String) {
 
     }
-
+//TODO: array size 0일 때
     fun getOnesFollowList(type: String, q: String) {
         viewModelScope.launch {
             profileSimpleList.value = followService.getOnesFollowingList(type, q)

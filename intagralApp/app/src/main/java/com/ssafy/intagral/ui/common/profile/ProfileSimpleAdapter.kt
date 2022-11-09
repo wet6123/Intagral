@@ -53,15 +53,11 @@ class ProfileSimpleAdapter(context: Context, val profileSimpleLists: MutableList
 
     override fun getItemCount(): Int = profileSimpleLists.size
 
-    interface OnItemClickListener {
-        fun onClick(view: View,position:Int)
-    }
-//    lateinit var onItemClickListener: OnItemClickListener // TODO: profile page로 이동
 }
 
 class ProfileSimpleViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
     fun bindProfileSimple(profileSimple: ProfileSimpleItem) {
-        val imgPath: String
+        var imgPath: String = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
         val followBtnText: String
         if(profileSimple.type == ProfileType.user) {
             //TODO: check when imgPath is null
