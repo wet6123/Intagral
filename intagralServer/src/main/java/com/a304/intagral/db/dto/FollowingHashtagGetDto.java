@@ -10,7 +10,7 @@ import lombok.Setter;
 @Builder
 public class FollowingHashtagGetDto implements FollowListBase{
 
-    String content;
+    String nickname;
     Integer followerCnt;
     @JsonProperty("isFollow")
     boolean isFollow;
