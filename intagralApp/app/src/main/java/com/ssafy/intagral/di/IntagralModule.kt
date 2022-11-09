@@ -76,3 +76,10 @@ object PostServiceModule {
     @Provides
     fun providePostService(): PostService = PostService()
 }
+
+object FollowServiceModule {
+
+    @Singleton
+    @Provides
+    fun provideFollowService(): FollowService = FollowService()
+}
