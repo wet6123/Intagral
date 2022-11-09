@@ -6,12 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputLayout
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileType
+import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 private const val ARG_PARAM1 = "profileType"
 private const val ARG_PARAM2 = "profileData"
@@ -21,10 +26,13 @@ private const val ARG_PARAM2 = "profileData"
  * Use the [ProfileDetailFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+@AndroidEntryPoint
 class ProfileDetailFragment : Fragment() {
     private var param1: ProfileType = ProfileType.user //default user
     private var param2: ProfileDetail? = null
     private lateinit var binding: Any // TODO: 동적으로 type 설정 가능한지 확인
+    private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -45,17 +53,19 @@ class ProfileDetailFragment : Fragment() {
                 button.apply {
                     text = "setting"
                     setOnClickListener {
-                        //TODO: profile setting Fragment로 교환
-                        Toast.makeText(view.context, "setting fragment로 이동", Toast.LENGTH_SHORT).show()
-                        requireActivity()
-                            .supportFragmentManager
-                            .beginTransaction()
-                            .addToBackStack(null)
-                            .add(
-                                R.id.menu_frame_layout,
-                                ProfileEditFragment.newInstance()
-                            ).commit()
+                        var btn = this as Button
+                        if(btn.text.toString() == "setting"){
+                            profileDetailViewModel.getEditStatus().value = ProfileDetailViewModel.EditStatus.ACTIVE
+                        } else if(btn.text.toString() == "done") {
+                            val regex = """\s""".toRegex()
+                            var name = view.findViewById<TextInputLayout>(R.id.input_nickname).editText!!.text.toString()
+                            name = regex.replace(name, "")
+                            val intro = view.findViewById<TextInputLayout>(R.id.input_intro).editText!!.text.toString().trim()
 
+                            if(name != ""){
+                                profileDetailViewModel.editProfileData(name, intro)
+                            }
+                        }
                     }
                 }
             } else {
@@ -93,8 +103,41 @@ class ProfileDetailFragment : Fragment() {
             view.findViewById<TextView>(R.id.profile_detail_nickname).text = param2?.name ?: ""
             view.findViewById<TextView>(R.id.profile_detail_intro).text = param2?.intro ?:""
         }
+
+        profileDetailViewModel.getEditStatus().observe(
+            viewLifecycleOwner
+        ){
+            when(it){
+                ProfileDetailViewModel.EditStatus.DUPLICATED_NAME -> {
+                    val textLayout = view.findViewById<TextInputLayout>(R.id.input_nickname)
+                    textLayout.error = null
+                    textLayout.isErrorEnabled = false
+                    textLayout.error = "닉네임 중복"
+                }
+                ProfileDetailViewModel.EditStatus.INAVTIVE -> {
+                    view.findViewById<Button>(R.id.profile_detail_btn).text = "setting"
+                    view.findViewById<LinearLayout>(R.id.profile_info_view_container).visibility = View.VISIBLE
+                    view.findViewById<LinearLayout>(R.id.profile_info_edit_container).visibility = View.GONE
+                }
+                ProfileDetailViewModel.EditStatus.ERROR -> {
+                    profileDetailViewModel.getEditStatus().value = ProfileDetailViewModel.EditStatus.INAVTIVE
+                }
+                ProfileDetailViewModel.EditStatus.ACTIVE -> {
+                    view.findViewById<Button>(R.id.profile_detail_btn).text = "done"
+                    view.findViewById<LinearLayout>(R.id.profile_info_view_container).visibility = View.GONE
+                    view.findViewById<LinearLayout>(R.id.profile_info_edit_container).visibility = View.VISIBLE
+
+                    view.findViewById<TextInputLayout>(R.id.input_nickname).editText!!.setText(profileDetailViewModel.getProfileDetail().value?.name ?: "")
+                    view.findViewById<TextInputLayout>(R.id.input_intro).editText!!.setText(profileDetailViewModel.getProfileDetail().value?.intro ?: "")
+                }
+                else -> {
+
+                }
+            }
+        }
         return view
     }
+
 
     companion object {
         @JvmStatic
