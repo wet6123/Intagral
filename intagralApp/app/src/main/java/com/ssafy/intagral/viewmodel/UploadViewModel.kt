@@ -41,7 +41,7 @@ class UploadViewModel @Inject constructor(private val service: PostService): Vie
                         it.value
                     }.keys.toList()
                 }
-                val response = service.publishPost(file, arrayListOf("test", "hashtag"))
+                val response = service.publishPost(file, hashtags)
                 if(response.isSuccessful){
                     Log.d("RETROFIT /api/post/publish", "${file.name} 업로드 성공")
                 } else {
