@@ -77,6 +77,8 @@ object PostServiceModule {
     fun providePostService(): PostService = PostService()
 }
 
+@Module
+@InstallIn(SingletonComponent::class)
 object FollowServiceModule {
 
     @Singleton
