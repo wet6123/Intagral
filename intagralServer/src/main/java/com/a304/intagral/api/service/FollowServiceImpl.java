@@ -152,7 +152,7 @@ public class FollowServiceImpl implements FollowService {
         for (Hashtag hashtag : hashtagList) {
             boolean isFollow = hashtagFollowRepository.countByUserIdAndHashtagId(userId.intValue(), hashtag.getId().intValue()) != 0;
             FollowingHashtagGetDto followingHashtagGetDto = FollowingHashtagGetDto.builder()
-                    .content(hashtag.getContent())
+                    .nickname(hashtag.getContent())
                     .followerCnt(hashtag.getHashtagFollowList().size())
                     .isFollow(isFollow)
                     .build();
