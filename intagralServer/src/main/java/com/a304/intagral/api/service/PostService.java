@@ -34,5 +34,5 @@ public interface PostService {
 // 게시글 좋아요
     public PostLikePostRes postLike(Long userId);
 // 게시글 삭제
-    public void postDelete(Long userId);
+    public String postDelete(Long userId, Long postId);
 }
