@@ -45,6 +45,8 @@ from copy import deepcopy
 from datetime import datetime
 from pathlib import Path
 
+
+
 import numpy as np
 import torch
 import torch.distributed as dist
@@ -60,7 +62,6 @@ ROOT = FILE.parents[0]  # YOLOv5 root directory
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 ROOT = Path(os.path.relpath(ROOT, Path.cwd()))  # relative
-
 
 # https://pytorch.org/docs/stable/elastic/run.html
 LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))
