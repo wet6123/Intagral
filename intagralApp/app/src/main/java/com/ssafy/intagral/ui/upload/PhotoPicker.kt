@@ -87,6 +87,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
         uploadViewModel.getImageBitmap().value = null
         uploadViewModel.getDetectedClassList().value = null
         uploadViewModel.getTagMap().value = null
+        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.PHOTO_PICKER
         presetViewModel.getPresetList().value
 
         arguments?.let {
@@ -167,6 +168,28 @@ class PhotoPicker : Fragment(), CoroutineScope {
                         R.id.menu_frame_layout,
                         ResultTagListFragment.newInstance()
                     ).commit()
+            }
+        }
+        uploadViewModel.getuploadStep().observe(
+            viewLifecycleOwner
+        ){
+            when(it){
+                UploadViewModel.UploadStep.PHOTO_PICKER -> {
+                    uploadViewModel.getDetectedClassList().value = null
+                    uploadViewModel.getTagMap().value = null
+                }
+                UploadViewModel.UploadStep.COMPLETE -> {
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .replace(
+                            R.id.menu_frame_layout,
+                            UploadCompleteFragment.newInstance()
+                        ).commit()
+                }
+                else -> {
+
+                }
             }
         }
 

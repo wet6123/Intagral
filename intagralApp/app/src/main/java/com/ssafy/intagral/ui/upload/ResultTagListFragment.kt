@@ -26,6 +26,8 @@ class ResultTagListFragment : Fragment() {
 
         arguments?.also {
         }
+
+        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.TAG_RESULT
     }
 
     override fun onCreateView(
@@ -89,7 +91,7 @@ class ResultTagListFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        uploadViewModel.getDetectedClassList().value = null
+        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.PHOTO_PICKER
     }
 
     inner class ResultTagListButtonClickListener: OnClickListener{
@@ -125,13 +127,6 @@ class ResultTagListFragment : Fragment() {
                 }
                 R.id.tag_result_publish_button -> {
                     uploadViewModel.publishPost(requireContext().filesDir.path)
-                    requireActivity()
-                        .supportFragmentManager
-                        .beginTransaction()
-                        .replace(
-                            R.id.menu_frame_layout,
-                            UploadCompleteFragment.newInstance()
-                        ).commit()
                 }
                 else -> {
 
