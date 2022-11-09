@@ -3,10 +3,10 @@ package com.a304.intagral.api.service;
 
 import com.a304.intagral.api.request.PostAddPostReq;
 import com.a304.intagral.api.response.PostAddPostRes;
-import com.a304.intagral.api.response.PostLikePostRes;
 import com.a304.intagral.db.entity.Post;
 import com.a304.intagral.db.entity.PostLike;
 import com.a304.intagral.db.entity.User;
+import com.a304.intagral.dto.PostLikePostDto;
 import com.a304.intagral.dto.PostListDto;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public interface PostService {
 // 게시글 쓰기
     public PostAddPostRes postAdd(Long userId, PostAddPostReq postAddPostReq);
 // 게시글 좋아요
-    public PostLikePostRes postLike(Long userId);
+    public PostLikePostDto postLike(Long userId, Long postId);
 // 게시글 삭제
-    public void postDelete(Long userId);
+    public String postDelete(Long userId, Long postId);
 }

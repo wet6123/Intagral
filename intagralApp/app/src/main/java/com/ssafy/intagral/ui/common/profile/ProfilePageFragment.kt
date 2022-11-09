@@ -55,7 +55,7 @@ class ProfilePageFragment : Fragment() {
 
         //TODO: param2에서 필요한 data 뽑아서 profile detail fragment 생성
         parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
-            inputDataParam1, inputDataParam2)).commit()
+            param1 ?:ProfileType.user, param2 ?: dummyProfile)).commit()
 
         //TODO: hashtag인지 user인지 따라서 게시글 목록 요청하는 API 호출
         for(i in 1..9){
@@ -109,3 +109,7 @@ val inputDataParam2 = ProfileDetail(ProfileType.user, "yuyeon",
 val inputDataParam3 = ProfileDetail(ProfileType.hashtag, "yuyeon", 1232, true)
 val inputDataParam4 = ProfileDetail(ProfileType.user, "yuyeo2222n",
     10, true)
+
+//dummy ProfileDetail
+val dummyProfile = ProfileDetail(ProfileType.user, "yuyeon2",
+    1024,true, null, 123, 17, "hi")

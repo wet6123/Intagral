@@ -20,6 +20,9 @@ public class PostLike extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
+    @Column(name = "post_id", columnDefinition = "INT UNSIGNED", nullable = false)
+    Long postId;
+
     @Column(name = "user_id", columnDefinition = "INT UNSIGNED", nullable = false)
     Long userId;
 

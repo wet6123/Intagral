@@ -20,4 +20,6 @@ public interface UserService {
     void updateProfile(Long userId, UserProfileUpdatePostReq userProfileUpdatePostReq);
 
     void updateProfileImage(Long userId, UserProfileImageUpdatePostReq userProfileImageUpdatePostReq);
+
+    boolean checkNicknameDuplication(String nickname);
 }

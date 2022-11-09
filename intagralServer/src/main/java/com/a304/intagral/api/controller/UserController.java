@@ -3,10 +3,7 @@ package com.a304.intagral.api.controller;
 import com.a304.intagral.api.request.UserLoginPostReq;
 import com.a304.intagral.api.request.UserProfileImageUpdatePostReq;
 import com.a304.intagral.api.request.UserProfileUpdatePostReq;
-import com.a304.intagral.api.response.HashtagProfileRes;
-import com.a304.intagral.api.response.TokenRes;
-import com.a304.intagral.api.response.UserLoginPostRes;
-import com.a304.intagral.api.response.UserProfileRes;
+import com.a304.intagral.api.response.*;
 import com.a304.intagral.api.service.UserService;
 import com.a304.intagral.common.auth.UserDetails;
 import com.a304.intagral.common.response.BaseResponseBody;
@@ -122,6 +119,17 @@ public class UserController {
             userService.updateProfileImage(userId, userProfileImageUpdatePostReq);
 
             return ResponseEntity.ok(BaseResponseBody.of(200, "success"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @GetMapping("/check")
+    public ResponseEntity<? extends BaseResponseBody> checkNicknameDuplication(@RequestParam String nickname) {
+        try{
+            boolean isAvailable = userService.checkNicknameDuplication(nickname);
+
+            return ResponseEntity.ok(UserCheckNicknameGetRes.of(200, "success", isAvailable));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }

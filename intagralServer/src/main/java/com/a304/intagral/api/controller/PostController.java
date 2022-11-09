@@ -1,15 +1,19 @@
 package com.a304.intagral.api.controller;
 
 import com.a304.intagral.api.request.PostAddPostReq;
+import com.a304.intagral.api.response.FollowHashtagPostRes;
 import com.a304.intagral.api.response.PostAddPostRes;
 import com.a304.intagral.api.response.PostDetailRes;
+import com.a304.intagral.api.response.PostLikePostRes;
 import com.a304.intagral.api.service.PostService;
 import com.a304.intagral.common.auth.UserDetails;
 import com.a304.intagral.common.response.BaseResponseBody;
+import com.a304.intagral.db.dto.FollowHashtagPostDto;
 import com.a304.intagral.db.entity.Post;
 import com.a304.intagral.db.entity.PostLike;
 import com.a304.intagral.db.entity.User;
 import com.a304.intagral.dto.PostDataDto;
+import com.a304.intagral.dto.PostLikePostDto;
 import com.a304.intagral.dto.PostListDto;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiParam;
@@ -121,5 +125,33 @@ public class PostController {
         PostAddPostRes res = postService.postAdd(userId, postAddPostReq);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
+    }
+
+    @PostMapping("/like/{postId}")
+    public ResponseEntity<?> likePost(Authentication authentication, @PathVariable(value = "postId") Long postId){
+        UserDetails userDetails = (UserDetails) authentication.getDetails();
+        Long userId = userDetails.getId();
+        try {
+            PostLikePostDto postLikePostDto = postService.postLike(userId, postId);
+
+            return ResponseEntity.ok(PostLikePostRes.of(200, "success", postLikePostDto));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
+    }
+
+    @PostMapping("/delete/{postId}")
+    public ResponseEntity<?> deleteResponse(Authentication authentication, @PathVariable("postId") Long postId ) {
+        UserDetails userDetails = (UserDetails)authentication.getDetails();
+        Long userId = Long.valueOf(userDetails.getUsername());
+
+        try {
+            String res = postService.postDelete(userId, postId);
+            return ResponseEntity.ok( BaseResponseBody.of(200,res));
+        }catch (RuntimeException e)
+        {
+            return ResponseEntity.
+                    status(500).body(BaseResponseBody.of(500, e.getMessage()));
+        }
     }
 }

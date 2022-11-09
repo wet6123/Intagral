@@ -1,10 +1,8 @@
 package com.ssafy.intagral.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.JsonObject
 import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.model.ProfileType

@@ -75,7 +75,6 @@ class MainMenuActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(it.type,it)).commit()
                 }
             }
-//TODO : Search Fragment에서 Home으로 뒤로가기 했을 때 키보드 풀기
         }
 
         setHome()
@@ -104,9 +103,8 @@ class MainMenuActivity : AppCompatActivity() {
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
                 }
                 R.id.nav_mypage -> {
-                    transaction.replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(
-                        ProfileType.user,
-                        dummyData)).commit()
+                    //TODO: change user name
+                    profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(ProfileType.user, "goodman", false, ""))
                     println("mypage selected!")
                 }
                 else -> {
