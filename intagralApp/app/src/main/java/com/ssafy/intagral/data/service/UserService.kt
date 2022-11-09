@@ -14,9 +14,9 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import java.io.File
 
-const val imgPath = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
 
 class UserService {
+    val imgPath = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
     var commonRepository: Retrofit = CommonRepository.getCommonRepository()
     private var userRepository: UserRepository
     init{

@@ -4,14 +4,15 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.service.FollowService
 import com.ssafy.intagral.data.service.SearchService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileSimpleViewModel @Inject constructor(private val searchService: SearchService): ViewModel(){
-    private var profileSimpleList: MutableLiveData<ArrayList<ProfileSimpleItem>> = MutableLiveData(ArrayList())
+class ProfileSimpleViewModel @Inject constructor(private val searchService: SearchService, private val followService: FollowService): ViewModel(){
+    private var profileSimpleList: MutableLiveData<ArrayList<ProfileSimpleItem>> = MutableLiveData()
 
     fun getProfileSimpleList(): MutableLiveData<ArrayList<ProfileSimpleItem>>{
         return profileSimpleList
@@ -23,9 +24,20 @@ class ProfileSimpleViewModel @Inject constructor(private val searchService: Sear
         }
     }
 
-    //TODO: use in post detail
-    //      just get first element of list
+    //TODO: use in post detail page
     fun getProfileSimple(q: String) {
 
+    }
+//TODO: array size 0일 때
+    fun getOnesFollowList(type: String, q: String) {
+        viewModelScope.launch {
+            profileSimpleList.value = followService.getOnesFollowingList(type, q)
+        }
+    }
+
+    fun getHashtagFollowerList(q: String) {
+        viewModelScope.launch {
+            profileSimpleList.value = followService.getHashtagFollowerList("follower", q)
+        }
     }
 }

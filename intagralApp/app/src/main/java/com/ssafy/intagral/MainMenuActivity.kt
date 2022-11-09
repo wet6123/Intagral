@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import android.content.Intent
+import android.view.inputmethod.InputMethodManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
@@ -22,6 +23,7 @@ import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
 import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
 import com.ssafy.intagral.ui.home.HomeFragment
+import com.ssafy.intagral.ui.home.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
@@ -30,6 +32,7 @@ import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
 import java.io.*
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
+import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 
 @AndroidEntryPoint
 class MainMenuActivity : AppCompatActivity() {
@@ -40,6 +43,8 @@ class MainMenuActivity : AppCompatActivity() {
     lateinit var mModule : Module
     lateinit var classList : ArrayList<String>
     private val profileDetailViewModel: ProfileDetailViewModel by viewModels()
+    private val profileSimpleViewModel: ProfileSimpleViewModel by viewModels()
+
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -73,6 +78,12 @@ class MainMenuActivity : AppCompatActivity() {
             ){
                 it?.also {
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(it.type,it)).commit()
+                }
+            }
+
+            profileSimpleViewModel.getProfileSimpleList().observe(this@MainMenuActivity){
+                it?.also{
+                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
                 }
             }
         }
@@ -168,6 +179,16 @@ class MainMenuActivity : AppCompatActivity() {
                 os.flush()
             }
             return file.absolutePath
+        }
+    }
+
+    fun changeProfileDetail(index: Int, profileSimple: ProfileSimpleItem) {
+        when(index) {
+            1 -> {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+                profileDetailViewModel.changeProfileDetail(profileSimple)
+            }
         }
     }
 }
