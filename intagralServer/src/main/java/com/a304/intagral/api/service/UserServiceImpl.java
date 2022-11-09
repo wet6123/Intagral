@@ -7,6 +7,7 @@ import com.a304.intagral.common.response.FileDetail;
 import com.a304.intagral.common.util.AmazonS3ResourceStorageUtil;
 import com.a304.intagral.common.util.JwtTokenUtil;
 import com.a304.intagral.db.dto.HashtagProfileDto;
+import com.a304.intagral.db.dto.UserMyProfileDto;
 import com.a304.intagral.db.dto.UserProfileDto;
 import com.a304.intagral.db.entity.Hashtag;
 import com.a304.intagral.db.entity.User;
@@ -139,8 +140,8 @@ public class UserServiceImpl implements UserService {
         User user = userRepository.findByNickname(nickname).get();
         Integer targetUserId = user.getId().intValue();
 
-        Long followingCnt = userFollowRepository.countByUserIdTo(targetUserId);
-        Long followerCnt = userFollowRepository.countByUserIdFrom(targetUserId);
+        Long followerCnt = userFollowRepository.countByUserIdTo(targetUserId);
+        Long followingCnt = userFollowRepository.countByUserIdFrom(targetUserId);
         Long hashtagFollowCnt = hashtagFollowRepository.countByUserId(targetUserId);
         Long isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(userId.intValue(), targetUserId);
 
@@ -183,6 +184,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkNicknameDuplication(String nickname) {
         return !isDuplicateNickname(nickname);
+    }
+
+    @Override
+    public UserMyProfileDto getMyProfile(Long userId) {
+
+        User user = userRepository.findById(userId).get();
+
+        UserMyProfileDto userMyProfileDto = UserMyProfileDto.builder()
+                .nickname(user.getNickname())
+                .imgPath(user.getProfileImgPath())
+                .intro(user.getIntro())
+                .build();
+
+        return userMyProfileDto;
     }
 
     private boolean isDuplicateNickname(String nickname){
