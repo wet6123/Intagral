@@ -133,6 +133,12 @@ class ProfileDetailFragment : Fragment() {
             //TODO: follow 목록 페이지로 이동하는 리스너 등록
             view.findViewById<TextView>(R.id.follower_cnt).text = param2?.follower?.toString() ?: "0"
             view.findViewById<TextView>(R.id.profile_detail_nickname).text = param2?.name ?: ""
+            view.findViewById<LinearLayout>(R.id.profile_detail_follower).setOnClickListener {
+                profileDetailViewModel.getProfileDetail().value?.name.let {
+                    profileSimpleViewModel.getHashtagFollowerList(profileDetailViewModel.getProfileDetail().value!!.name)
+                }
+            }
+
             view.findViewById<TextView>(R.id.profile_detail_intro).text = param2?.intro ?:""
         }
 
