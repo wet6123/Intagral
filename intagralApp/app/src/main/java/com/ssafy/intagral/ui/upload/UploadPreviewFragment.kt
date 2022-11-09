@@ -24,6 +24,8 @@ class UploadPreviewFragment : Fragment() {
         super.onCreate(savedInstanceState)
         arguments?.let {
         }
+
+        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.PREVIEW
     }
 
     override fun onCreateView(
@@ -60,6 +62,11 @@ class UploadPreviewFragment : Fragment() {
         binding.postDetail.postContent.text = content
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.PHOTO_PICKER
+    }
+
     inner class UploadPreviewButtonListener: View.OnClickListener {
         override fun onClick(p0: View?) {
             when(p0?.id){
@@ -69,13 +76,7 @@ class UploadPreviewFragment : Fragment() {
                         .popBackStack()
                 }
                 R.id.publish_button -> {
-                    requireActivity()
-                        .supportFragmentManager
-                        .beginTransaction()
-                        .replace(
-                            R.id.menu_frame_layout,
-                            UploadCompleteFragment.newInstance()
-                        ).commit()
+                    uploadViewModel.publishPost(requireContext().filesDir.path)
                 }
             }
         }

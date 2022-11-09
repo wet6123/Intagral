@@ -24,8 +24,21 @@ class UploadViewModel @Inject constructor(private val service: PostService): Vie
     // 파일
     private var imageBitmap: MutableLiveData<Bitmap> = MutableLiveData()
 
+    private var uploadStep: MutableLiveData<UploadStep> = MutableLiveData()
+
+    enum class UploadStep{
+        PHOTO_PICKER,
+        TAG_RESULT,
+        PREVIEW,
+        COMPLETE
+    }
+
     fun getImageBitmap(): MutableLiveData<Bitmap> {
         return imageBitmap
+    }
+
+    fun getuploadStep(): MutableLiveData<UploadStep>{
+        return uploadStep
     }
 
     fun publishPost(filePath: String){
@@ -44,6 +57,7 @@ class UploadViewModel @Inject constructor(private val service: PostService): Vie
                 val response = service.publishPost(file, hashtags)
                 if(response.isSuccessful){
                     Log.d("RETROFIT /api/post/publish", "${file.name} 업로드 성공")
+                    uploadStep.value = UploadStep.COMPLETE
                 } else {
                     Log.d("RETROFIT /api/post/publish", "응답 에러 : ${response.code()}")
                 }
