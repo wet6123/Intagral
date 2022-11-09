@@ -7,6 +7,7 @@ import com.a304.intagral.common.response.FileDetail;
 import com.a304.intagral.common.util.AmazonS3ResourceStorageUtil;
 import com.a304.intagral.common.util.JwtTokenUtil;
 import com.a304.intagral.db.dto.HashtagProfileDto;
+import com.a304.intagral.db.dto.UserMyProfileDto;
 import com.a304.intagral.db.dto.UserProfileDto;
 import com.a304.intagral.db.entity.Hashtag;
 import com.a304.intagral.db.entity.User;
@@ -183,6 +184,20 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean checkNicknameDuplication(String nickname) {
         return !isDuplicateNickname(nickname);
+    }
+
+    @Override
+    public UserMyProfileDto getMyProfile(Long userId) {
+
+        User user = userRepository.findById(userId).get();
+
+        UserMyProfileDto userMyProfileDto = UserMyProfileDto.builder()
+                .nickname(user.getNickname())
+                .imgPath(user.getProfileImgPath())
+                .intro(user.getIntro())
+                .build();
+
+        return userMyProfileDto;
     }
 
     private boolean isDuplicateNickname(String nickname){
