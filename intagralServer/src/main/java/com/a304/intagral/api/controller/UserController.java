@@ -138,7 +138,7 @@ public class UserController {
 
     @Operation(summary = "현재 사용자 프로필", description = "현재 사용자의 정보를 반환")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", description =  "success",content = @Content(schema = @Schema(implementation =  UserProfileRes.class))),
+            @ApiResponse(responseCode = "200", description =  "success",content = @Content(schema = @Schema(implementation =  UserMyProfileDto.class))),
             @ApiResponse(responseCode = "500", description =  "INTERNAL SERVER ERROR")
     })
     @GetMapping("/info")
