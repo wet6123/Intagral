@@ -34,7 +34,7 @@ class HomeFragment : Fragment() {
         
         //TODO: tag선택 따라서 PostListViewModel 변경
         postListViewModel.getPostList().value = ArrayList<PostItem>()
-        postListViewModel.fetchPostList("all", 1, null)
+        postListViewModel.initPage("all", 1, null)
 
         parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment()).commit()
 
