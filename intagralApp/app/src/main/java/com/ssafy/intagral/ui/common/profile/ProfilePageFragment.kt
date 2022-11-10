@@ -33,7 +33,7 @@ class ProfilePageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        postListViewModel.getPostList().value = ArrayList<PostItem>()
+//        postListViewModel.getPostList().value = ArrayList<PostItem>()
 
         arguments?.let {
             param1 = it.getSerializable(ARG_PARAM1) as ProfileType
