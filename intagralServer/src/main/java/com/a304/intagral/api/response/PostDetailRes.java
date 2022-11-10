@@ -18,6 +18,7 @@ public class PostDetailRes extends BaseResponseBody {
     @Schema(name = "게시글 좋아요 수", example = "18")
     Long likCount;
     @Schema(name = "팔로우 여부", example = "false")
+    @JsonProperty(value = "isLike")
     boolean isLike;
     @Schema(name = "작성자", example = "goodman")
     String writer;
