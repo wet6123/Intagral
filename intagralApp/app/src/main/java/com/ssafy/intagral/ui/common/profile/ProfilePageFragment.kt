@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
@@ -15,6 +16,8 @@ import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
 import com.ssafy.intagral.ui.common.post.PostAdapter
+
+import com.ssafy.intagral.viewmodel.PostListViewModel
 
 private const val ARG_PARAM1 = "profileType" //user or hashtag
 private const val ARG_PARAM2 = "data" //profile data
@@ -27,11 +30,14 @@ class ProfilePageFragment : Fragment() {
     private lateinit var postRecyclerView: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private var postList = mutableListOf<PostItem>()
+    private val postListViewModel: PostListViewModel by activityViewModels()
 
     private lateinit var binding: FragmentProfilePageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        postListViewModel.getPostList().value = ArrayList<PostItem>()
+
         arguments?.let {
             param1 = it.getSerializable(ARG_PARAM1) as ProfileType
             param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail
