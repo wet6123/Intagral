@@ -35,4 +35,6 @@ public interface PostService {
     public PostLikePostDto postLike(Long userId, Long postId);
 // 게시글 삭제
     public String postDelete(Long userId, Long postId);
+
+    boolean isFollowWriter(Long userId, Long writerId);
 }

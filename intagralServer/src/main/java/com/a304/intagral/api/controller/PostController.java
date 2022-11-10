@@ -72,7 +72,9 @@ public class PostController {
         String writer = user.getNickname();
         String writerImgPath = user.getProfileImgPath();
 
-        return ResponseEntity.ok(PostDetailRes.of(200, "success", imgPath, tags, likeCount, isLike, writer, writerImgPath));
+        boolean isFollow = postService.isFollowWriter(userId, user.getId());
+
+        return ResponseEntity.ok(PostDetailRes.of(200, "success", imgPath, tags, likeCount, isLike, writer, writerImgPath, isFollow));
         } catch (RuntimeException e){
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
