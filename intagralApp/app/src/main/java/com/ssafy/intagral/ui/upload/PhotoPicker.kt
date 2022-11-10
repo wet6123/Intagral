@@ -229,6 +229,10 @@ class PhotoPicker : Fragment(), CoroutineScope {
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
+        uploadViewModel.getImageBitmap().value = null
+        uploadViewModel.getDetectedClassList().value = null
+        uploadViewModel.getTagMap().value = null
+        uploadViewModel.getuploadStep().value = null
     }
 
     override fun onCreateContextMenu(
