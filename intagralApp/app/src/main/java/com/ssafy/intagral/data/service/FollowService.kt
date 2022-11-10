@@ -14,8 +14,8 @@ class FollowService {
         followRepository = commonRepository.create(FollowRepository::class.java)
     }
 
-    suspend fun followUser(name: String) = followRepository.followUser(name)
-    suspend fun followHashtag(tag: String) = followRepository.followHashtag(tag)
+    suspend fun toggleFollowUser(name: String) = followRepository.toggleFollowUser(name)
+    suspend fun toggleFollowHashtag(tag: String) = followRepository.toggleFollowHashtag(tag)
     suspend fun getOnesFollowingList(type: String, q: String): ArrayList<ProfileSimpleItem>? {
         val response = followRepository.getOnesFollowingList(type, q)
         val arr = ArrayList<ProfileSimpleItem>()

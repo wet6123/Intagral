@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -35,6 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_margin="10dp"
+                android:gravity="center_vertical"
                 android:orientation="horizontal">
 
                 <TextView
@@ -42,12 +42,19 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="numberSigned"
-                    android:text="0" />
+                    android:text="0"
+                    android:textSize="20dp"/>
 
-                <Switch
-                    android:id="@+id/toggle_like"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
+                <ToggleButton
+                    android:id="@+id/button_like"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/button_like"
+                    android:checked="false"
+                    android:text=""
+                    android:textOff=""
+                    android:textOn=""
+                    android:layout_marginStart="10dp"/>
             </LinearLayout>
 
             <TextView

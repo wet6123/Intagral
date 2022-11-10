@@ -10,9 +10,9 @@ import retrofit2.http.Query
 
 interface FollowRepository {
     @POST("/api/follow/user/{nickname}")
-    suspend fun followUser(@Path("nickname") name: String): Response<ResponseBody>
+    suspend fun toggleFollowUser(@Path("nickname") name: String): Response<ResponseBody>
     @POST("/api/follow/hashtag/{hashtag}")
-    suspend fun followHashtag(@Path("hashtag") tag: String): Response<ResponseBody>
+    suspend fun toggleFollowHashtag(@Path("hashtag") tag: String): Response<ResponseBody>
     @GET("/api/follow/list/user")
     suspend fun getOnesFollowingList(@Query("type") type: String, @Query("q") q: String): Response<OnesFollowResponse>
     @GET("/api/follow/list/hashtag")
