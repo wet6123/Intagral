@@ -62,7 +62,7 @@ class UploadPreviewFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.PHOTO_PICKER
+        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.TAG_RESULT
     }
 
     inner class UploadPreviewButtonListener: View.OnClickListener {
