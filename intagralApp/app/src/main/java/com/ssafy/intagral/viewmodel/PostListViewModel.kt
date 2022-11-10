@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ssafy.intagral.data.model.PostItem
+import com.ssafy.intagral.data.response.PostListResponse
 import com.ssafy.intagral.data.service.PostService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,33 +13,49 @@ import javax.inject.Inject
 @HiltViewModel
 class PostListViewModel @Inject constructor(private val postService: PostService): ViewModel() {
     private var postList: MutableLiveData<ArrayList<PostItem>> = MutableLiveData()
-    private var page: Int = 1
-    private var isNext: Boolean = true
+
+    data class PageInfo (
+        var type: String = "all",
+        var page: Int = 1,
+        var isNext: Boolean = true,
+        var q: String?
+    )
+
+    private lateinit var pageInfo: PageInfo
 
     fun getPostList(): MutableLiveData<ArrayList<PostItem>> {
         return postList
     }
 
-    fun fetchPostList(type: String, page: Int, q: String?) {
-        println(112123)
-        if(!isNext) return
-        println(1212312576)
+    fun getPageInfo(): PageInfo = pageInfo
+
+    fun fetchPostList() {
+        if(!pageInfo.isNext) return
         viewModelScope.launch {
-            val response = postService.getPostList(type, page, q)
-            println(55)
+            val response = postService.getPostList(pageInfo.type, ++pageInfo.page, pageInfo.q)
             if(response.isSuccessful) {
-                println(99999)
                 response.body()?.let {
-                    println(1)
                     if(it.data.size == 0){
-                        isNext = false
-                        println(2)
+                        pageInfo.isNext = false
                         return@launch
                     }
-                    println(3)
                     postList.value = it.data
-                    this@PostListViewModel.page = it.page
-                    isNext = it.isNext
+                }
+            }
+        }
+    }
+
+    fun initPage(type: String, page: Int, q: String?) {
+        viewModelScope.launch {
+            val response = postService.getPostList(type, page, q)
+            if(response.isSuccessful) {
+                response.body()?.let {
+                    if(it.data.size == 0){
+                        pageInfo.isNext = false
+                        return@launch
+                    }
+                    postList.value = it.data
+                    pageInfo = PageInfo(type, page, it.isNext, q)
                 }
             }
         }

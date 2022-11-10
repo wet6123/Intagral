@@ -22,7 +22,6 @@ class PostListFragment: Fragment() {
     lateinit var binding: FragmentPostListBinding
 
     //post list
-    private lateinit var postRecyclerView: RecyclerView
     private lateinit var postAdapter: PostAdapter
     private var postList = ArrayList<PostItem>()
 
@@ -37,6 +36,14 @@ class PostListFragment: Fragment() {
                 postListRecyclerView.apply {
                     adapter = postAdapter
                     layoutManager = GridLayoutManager(it, 3)
+                    addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                        override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                            super.onScrolled(recyclerView, dx, dy)
+                            if (!canScrollVertically(1) && postListViewModel.getPageInfo().isNext) {
+                                postListViewModel.fetchPostList()
+                            }
+                        }
+                    })
                 }
             }
         }
