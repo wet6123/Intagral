@@ -1,6 +1,8 @@
 package com.ssafy.intagral.data.service
 
+import com.ssafy.intagral.data.model.PostItem
 import com.ssafy.intagral.data.repository.PostRepository
+import com.ssafy.intagral.data.response.PostListResponse
 import com.ssafy.intagral.di.CommonRepository
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
@@ -26,5 +28,12 @@ class PostService {
             hashtags.add(MultipartBody.Part.createFormData("hashtags", tag))
         }
         return postRepository.publishPost(imageFile, hashtags)
+    }
+
+    suspend fun getPostList(type: String, page: Int, q: String?): Response<PostListResponse> {
+        //TODO
+        // 1. null일 경우 처리
+        // 2. infinite scroll
+        return postRepository.getPostList(type, page, q)
     }
 }
