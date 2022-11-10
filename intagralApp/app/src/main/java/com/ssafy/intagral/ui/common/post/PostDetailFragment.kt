@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.ViewPostDetailBinding
 import com.ssafy.intagral.viewmodel.PostDetailViewModel
 
@@ -30,7 +31,7 @@ class PostDetailFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = ViewPostDetailBinding.inflate(inflater, container, false)
-        
+
         binding.include.profileSimpleFollowbtn.setOnClickListener {
             postDetailViewModel.toggleWriterFollow(paramPostId!!)
         }
@@ -38,13 +39,16 @@ class PostDetailFragment: Fragment() {
         binding.buttonLike.setOnClickListener{
             postDetailViewModel.togglePostLike(paramPostId!!)
         }
+        
+        // TODO : 유저페이지로 이동하는 클릭 이벤트리스너
 
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        binding.viewPostDetail.background =  requireContext().getDrawable(R.drawable.bg_gradation)
+        binding.viewPostDetail.visibility = View.GONE
         postDetailViewModel.getPostDetail().observe(
             viewLifecycleOwner
         ){
@@ -64,10 +68,13 @@ class PostDetailFragment: Fragment() {
                     .load(it.imgPath)
                     .into(binding.postImage)
                 binding.postLikeCount.text = "${it.likeCount}"
-                if(it.tags.size > 0){
-                    binding.postContent.text = it.tags.reduce { acc, s -> "$acc #$s" }
+                if(it.tags.isNotEmpty()){
+                    binding.postContent.text = it.tags.map { "#${it}" }.reduce { acc, s -> "$acc $s" }
                 }
                 binding.buttonLike.isChecked = it.isLike
+
+
+                binding.viewPostDetail.visibility = View.VISIBLE
             }
         }
 
