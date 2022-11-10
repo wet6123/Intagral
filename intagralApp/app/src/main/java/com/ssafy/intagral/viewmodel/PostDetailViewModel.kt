@@ -57,6 +57,4 @@ class PostDetailViewModel @Inject constructor(private val postService: PostServi
             }
         }
     }
-
-    // TODO : 좋아요
 }
