@@ -124,7 +124,12 @@ public class PostController {
         UserDetails userDetails = (UserDetails)authentication.getDetails();
         Long userId = Long.valueOf(userDetails.getUsername());
 
-        PostAddPostRes res = postService.postAdd(userId, postAddPostReq);
+        PostAddPostRes res = null;
+        try {
+           res = postService.postAdd(userId, postAddPostReq);
+        } catch (IllegalArgumentException e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
