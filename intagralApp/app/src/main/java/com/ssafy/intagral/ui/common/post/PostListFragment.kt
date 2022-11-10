@@ -14,7 +14,6 @@ import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.PostItem
 import com.ssafy.intagral.databinding.FragmentPostListBinding
-import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.viewmodel.PostListViewModel
 
 class PostListFragment: Fragment() {
@@ -74,6 +73,14 @@ class PostListFragment: Fragment() {
                 bindPost(this@PostListFragment.postList[position])
                 itemView.setOnClickListener{
                     Toast.makeText(context, "post detail로 이동 $position", Toast.LENGTH_SHORT).show()
+                    requireActivity()
+                        .supportFragmentManager
+                        .beginTransaction()
+                        .addToBackStack(null)
+                        .add(
+                            R.id.menu_frame_layout,
+                            PostDetailFragment.newInstance(postList[position].postId)
+                        ).commit()
                 }
             }
 

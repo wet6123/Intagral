@@ -21,6 +21,10 @@ class PostService {
         postRepository = commonRepository.create(PostRepository::class.java)
     }
 
+    suspend fun getPostDetail(postId: Int) = postRepository.getPostDetail(postId)
+
+    suspend fun toggleLike(postId: Int) = postRepository.toggleLike(postId)
+
     suspend fun publishPost(image: File, tagList: List<String>): Response<ResponseBody>{
         val imageFile = MultipartBody.Part.createFormData("image", image.name, image.asRequestBody("image/jpeg".toMediaTypeOrNull()))
         val hashtags = ArrayList<MultipartBody.Part>()
