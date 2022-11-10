@@ -28,13 +28,6 @@ class PostListFragment: Fragment() {
 
     private val postListViewModel: PostListViewModel by activityViewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        postListViewModel.getPostList().value = ArrayList<PostItem>()
-        postListViewModel.fetchPostList("all", 1, null)
-        println("여기")
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
 
