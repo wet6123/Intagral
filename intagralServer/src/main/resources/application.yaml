@@ -37,7 +37,8 @@ logging:
     root: INFO
     org:
       springframework:
-        boot: DEBUG
+        boot:
+          autoconfigure: ERROR
         security: DEBUG
       hibernate:
         type:
