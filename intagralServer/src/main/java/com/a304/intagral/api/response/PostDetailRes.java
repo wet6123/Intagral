@@ -1,6 +1,7 @@
 package com.a304.intagral.api.response;
 
 import com.a304.intagral.common.response.BaseResponseBody;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,8 +23,10 @@ public class PostDetailRes extends BaseResponseBody {
     String writer;
     @Schema(name = "작성자이미지", example = "https://intagral-bucket-amazon.com")
     String writerImgPath;
-
-    public static  PostDetailRes of(int statusCode, String message, String imgPath, List<String> tags, Long likCount, boolean isLike, String writer, String writerImgPath){
+    @Schema(name = "작성자 팔로우 여부", example = "true")
+    @JsonProperty(value = "isFollow")
+    boolean isFollow;
+    public static  PostDetailRes of(int statusCode, String message, String imgPath, List<String> tags, Long likCount, boolean isLike, String writer, String writerImgPath, boolean isFollow){
         PostDetailRes res = new PostDetailRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
@@ -33,6 +36,7 @@ public class PostDetailRes extends BaseResponseBody {
         res.setLike(isLike);
         res.setWriter(writer);
         res.setWriterImgPath(writerImgPath);
+        res.setFollow(isFollow);
         return res;
     }
 }
