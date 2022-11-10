@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@drawable/bg_gradation"
-    tools:context=".ui.upload.PhotoPicker">
+    tools:context=".ui.upload.PhotoPicker"
+    android:clickable="true">
 
     <ImageView
         android:id="@+id/imageView2"
@@ -15,7 +16,7 @@
         android:adjustViewBounds="true"
         android:layout_margin="50dp"
         android:layout_weight="1"
-        android:src="@drawable/intagral_logo" />
+        android:src="@drawable/intagral_logo"/>
 
     <Button
         android:id="@+id/button"
