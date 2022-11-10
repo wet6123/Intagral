@@ -117,6 +117,38 @@ class ProfileDetailFragment : Fragment() {
 
             view.findViewById<TextView>(R.id.profile_detail_nickname).text = param2?.name ?: ""
             view.findViewById<TextView>(R.id.profile_detail_intro).text = param2?.intro ?:""
+
+            profileDetailViewModel.getEditStatus().observe(
+                viewLifecycleOwner
+            ){
+                when(it){
+                    ProfileDetailViewModel.EditStatus.DUPLICATED_NAME -> {
+                        val textLayout = view.findViewById<TextInputLayout>(R.id.input_nickname)
+                        textLayout.error = null
+                        textLayout.isErrorEnabled = false
+                        textLayout.error = "닉네임 중복"
+                    }
+                    ProfileDetailViewModel.EditStatus.INAVTIVE -> {
+                        view.findViewById<Button>(R.id.profile_detail_btn).text = "setting"
+                        view.findViewById<LinearLayout>(R.id.profile_info_view_container).visibility = View.VISIBLE
+                        view.findViewById<LinearLayout>(R.id.profile_info_edit_container).visibility = View.GONE
+                    }
+                    ProfileDetailViewModel.EditStatus.ERROR -> {
+                        profileDetailViewModel.getEditStatus().value = ProfileDetailViewModel.EditStatus.INAVTIVE
+                    }
+                    ProfileDetailViewModel.EditStatus.ACTIVE -> {
+                        view.findViewById<Button>(R.id.profile_detail_btn).text = "done"
+                        view.findViewById<LinearLayout>(R.id.profile_info_view_container).visibility = View.GONE
+                        view.findViewById<LinearLayout>(R.id.profile_info_edit_container).visibility = View.VISIBLE
+
+                        view.findViewById<TextInputLayout>(R.id.input_nickname).editText!!.setText(profileDetailViewModel.getProfileDetail().value?.name ?: "")
+                        view.findViewById<TextInputLayout>(R.id.input_intro).editText!!.setText(profileDetailViewModel.getProfileDetail().value?.intro ?: "")
+                    }
+                    else -> {
+
+                    }
+                }
+            }
         } else {
             // hashtag fragment
             view = inflater.inflate(R.layout.fragment_hashtag_profile, container, false)
@@ -140,39 +172,10 @@ class ProfileDetailFragment : Fragment() {
             }
 
             view.findViewById<TextView>(R.id.profile_detail_intro).text = param2?.intro ?:""
+
         }
 
-        profileDetailViewModel.getEditStatus().observe(
-            viewLifecycleOwner
-        ){
-            when(it){
-                ProfileDetailViewModel.EditStatus.DUPLICATED_NAME -> {
-                    val textLayout = view.findViewById<TextInputLayout>(R.id.input_nickname)
-                    textLayout.error = null
-                    textLayout.isErrorEnabled = false
-                    textLayout.error = "닉네임 중복"
-                }
-                ProfileDetailViewModel.EditStatus.INAVTIVE -> {
-                    view.findViewById<Button>(R.id.profile_detail_btn).text = "setting"
-                    view.findViewById<LinearLayout>(R.id.profile_info_view_container).visibility = View.VISIBLE
-                    view.findViewById<LinearLayout>(R.id.profile_info_edit_container).visibility = View.GONE
-                }
-                ProfileDetailViewModel.EditStatus.ERROR -> {
-                    profileDetailViewModel.getEditStatus().value = ProfileDetailViewModel.EditStatus.INAVTIVE
-                }
-                ProfileDetailViewModel.EditStatus.ACTIVE -> {
-                    view.findViewById<Button>(R.id.profile_detail_btn).text = "done"
-                    view.findViewById<LinearLayout>(R.id.profile_info_view_container).visibility = View.GONE
-                    view.findViewById<LinearLayout>(R.id.profile_info_edit_container).visibility = View.VISIBLE
 
-                    view.findViewById<TextInputLayout>(R.id.input_nickname).editText!!.setText(profileDetailViewModel.getProfileDetail().value?.name ?: "")
-                    view.findViewById<TextInputLayout>(R.id.input_intro).editText!!.setText(profileDetailViewModel.getProfileDetail().value?.intro ?: "")
-                }
-                else -> {
-
-                }
-            }
-        }
         return view
     }
 
