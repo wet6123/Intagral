@@ -36,6 +36,9 @@ public class PostServiceImpl implements PostService {
     PostLikeRepository postLikeRepository;
 
     @Autowired
+    UserFollowRepository userFollowRepository;
+
+    @Autowired
     AmazonS3ResourceStorageUtil amazonS3ResourceStorageUtil;
 
     @Override
@@ -338,5 +341,10 @@ public class PostServiceImpl implements PostService {
             res = "delete failed not your post";
         }
         return res;
+    }
+
+    @Override
+    public boolean isFollowWriter(Long userId, Long writerId) {
+        return userFollowRepository.countByUserIdToAndUserIdFrom(writerId.intValue(), userId.intValue()) != 0;
     }
 }
