@@ -83,6 +83,7 @@ class PresetViewFragment : Fragment() {
             with(holder){
                 with(presetClassItemList[position]){
                     binding.className.text = this.className
+                    binding.presetViewTagChipGroup.removeAllViews()
                     for(tag in this.tagList){
                         val chip = layoutInflater.inflate(R.layout.view_preset_view_chip, binding.presetViewTagChipGroup, false) as Chip
                         chip.text = "#$tag"
