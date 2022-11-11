@@ -59,8 +59,8 @@ class PostListViewModel @Inject constructor(private val postService: PostService
     }
 
     fun initPage(type: String, page: Int, q: String?) {
-        postList.value = ArrayList()
         pageInfo = PageInfo(type, page, true, StateInfo.INIT, q)
+        postList.value = ArrayList()
         viewModelScope.launch {
             val response = postService.getPostList(type, page, q)
             if(response.isSuccessful) {
