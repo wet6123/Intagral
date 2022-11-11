@@ -6,7 +6,8 @@ import okhttp3.Response
 
 class AuthInterceptor: Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
-        var value: String = if(IntagralApplication.prefs.token!=null) "Bearer "+IntagralApplication.prefs.token else ""
+        var value: String = if(IntagralApplication.prefs.token != "")
+            "Bearer "+IntagralApplication.prefs.token else ""
         var req = chain.request().newBuilder().addHeader("Authorization", value).build()
         return chain.proceed(req)
     }

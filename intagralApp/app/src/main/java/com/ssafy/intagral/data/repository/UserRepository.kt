@@ -1,6 +1,7 @@
 package com.ssafy.intagral.data.repository
 
 import com.google.gson.JsonObject
+import com.ssafy.intagral.data.response.MyInfoResponse
 import com.ssafy.intagral.data.response.NicknameValidCheckResponse
 import com.ssafy.intagral.data.response.UserLoginReponse
 import com.ssafy.intagral.data.response.UserProfileResponse
@@ -28,4 +29,6 @@ interface UserRepository {
     @Multipart
     @POST(value="/api/user/profile/image")
     suspend fun updateProfileImg(@Part data: MultipartBody.Part): Response<ResponseBody>
+    @GET(value="/api/user/info")
+    suspend fun getMyInfo(): Response<MyInfoResponse>
 }

@@ -1,5 +1,6 @@
 package com.ssafy.intagral
 
+import android.app.Activity
 import android.content.Context
 
 import android.os.Bundle
@@ -12,6 +13,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -27,6 +29,7 @@ import com.ssafy.intagral.ui.home.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
+import com.ssafy.intagral.util.LiveSharedPreferences
 import com.ssafy.intagral.viewmodel.PostListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import org.pytorch.LiteModuleLoader
@@ -34,6 +37,7 @@ import org.pytorch.Module
 import java.io.*
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
+import com.ssafy.intagral.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class MainMenuActivity : AppCompatActivity() {
@@ -46,11 +50,25 @@ class MainMenuActivity : AppCompatActivity() {
     private val profileDetailViewModel: ProfileDetailViewModel by viewModels()
     private val profileSimpleViewModel: ProfileSimpleViewModel by viewModels()
     private val postListViewModel: PostListViewModel by viewModels()
+    private val userViewModel: UserViewModel by viewModels()
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val sharedPreference =
+            getSharedPreferences("intagral", Context.MODE_PRIVATE)
+        val liveSharedPreference = LiveSharedPreferences(sharedPreference)
+
+        // Observer 달아주는 과정
+        liveSharedPreference
+            .getString("token", "")
+            .observe(this, Observer<String> { result ->
+                if(result == "EXPIRED"){
+                    this@MainMenuActivity.finish()
+                }
+            })
 
         // asset init
         mModule = LiteModuleLoader.load(assetFilePath(this, "best.opti.ptl"))
@@ -75,9 +93,7 @@ class MainMenuActivity : AppCompatActivity() {
                     profileDetailViewModel.changeProfileDetail(it?.data?.getSerializableExtra("profileSimple") as ProfileSimpleItem)
                 }
             }
-            profileDetailViewModel.getProfileDetail().observe(
-                this@MainMenuActivity
-            ){
+            profileDetailViewModel.getProfileDetail().observe(this@MainMenuActivity){
                 it?.also {
                     //post list init함수 호출
                     postListViewModel.initPage(it.type.toString(), 1, it.name)
@@ -91,6 +107,11 @@ class MainMenuActivity : AppCompatActivity() {
                 }
             }
         }
+
+        userViewModel.getMyInfo().observe(this@MainMenuActivity){
+            IntagralApplication.prefs.nickname = it.nickname
+        }
+        userViewModel.getInfo()
 
         setHome()
     }
@@ -120,7 +141,8 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.nav_mypage -> {
                     //TODO: change user name
-                    profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(ProfileType.user, "goodman", false, ""))
+                    var test = IntagralApplication.prefs.nickname
+                    profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(ProfileType.user, IntagralApplication.prefs.nickname!!, false, ""))
                     println("mypage selected!")
                 }
                 else -> {
