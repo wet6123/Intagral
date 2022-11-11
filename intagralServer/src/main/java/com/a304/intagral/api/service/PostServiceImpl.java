@@ -24,6 +24,11 @@ import java.util.NoSuchElementException;
 @Service("postService")
 public class PostServiceImpl implements PostService {
 
+<<<<<<< Updated upstream
+=======
+        int numOfPosts = 21;
+
+>>>>>>> Stashed changes
     @Autowired
     PostRepository postRepository;
     @Autowired
@@ -75,9 +80,15 @@ public class PostServiceImpl implements PostService {
         boolean isNext = false;
 
         int len = postlist.size();
+<<<<<<< Updated upstream
         if(len - (page-1) * 10 > 0){
             if(len - page * 10 > 10){
                 for(int i = (page-1)*10; i < page*10; i++){
+=======
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > 0){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
+>>>>>>> Stashed changes
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -149,9 +160,15 @@ public class PostServiceImpl implements PostService {
 
         List<PostDataDto> list = new ArrayList<>();
         int len = postlist.size();
+<<<<<<< Updated upstream
         if(len - (page-1) * 10 > 0){
             if(len - page * 10 > 10){
                 for(int i = (page-1)*10; i < page*10; i++){
+=======
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > 0){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
+>>>>>>> Stashed changes
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -201,9 +218,15 @@ public class PostServiceImpl implements PostService {
         }
 
         int len = postlist.size();
+<<<<<<< Updated upstream
         if(len - (page-1) * 10 > 0){
             if(len - page * 10 > 10){
                 for(int i = (page-1)*10; i < page*10; i++){
+=======
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > 0){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
+>>>>>>> Stashed changes
                     list.add(postlist.get(i));
                     isNext = true;
                 }
@@ -232,9 +255,15 @@ public class PostServiceImpl implements PostService {
         List<Post> postlist = postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
 
         int len = postlist.size();
+<<<<<<< Updated upstream
         if(len - (page-1) * 10 > 0){
             if(len - page * 10 > 10){
                 for(int i = (page-1)*10; i < page*10; i++){
+=======
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > 0){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
+>>>>>>> Stashed changes
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
