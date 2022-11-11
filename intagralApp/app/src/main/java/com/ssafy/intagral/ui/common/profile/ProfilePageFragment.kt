@@ -7,83 +7,37 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
 import com.ssafy.intagral.ui.common.post.PostListFragment
 
 import com.ssafy.intagral.viewmodel.PostListViewModel
+import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 
-private const val ARG_PARAM1 = "profileType" //user or hashtag
-private const val ARG_PARAM2 = "data" //profile data
 
 class ProfilePageFragment : Fragment() {
-    private var param1: ProfileType? = ProfileType.user //default user
-    private var param2: ProfileDetail? = null //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
 
     private lateinit var binding: FragmentProfilePageBinding
 
     private val postListViewModel: PostListViewModel by activityViewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            param1 = it.getSerializable(ARG_PARAM1) as ProfileType
-            param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail
-        }
-    }
+    private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
 
-//TODO: refactor to binding
-/***
-        binding = FragmentProfilePageBinding.inflate(layoutInflater).apply {
-            requireActivity().supportFragmentManager.beginTransaction()
-                .replace(this@ProfilePageFragment.id, ProfileDetailFragment.newInstance(
-                    inputDataParam1, inputDataParam2)).commit()
-        }
-***/
-        val view = inflater.inflate(R.layout.fragment_profile_page,container,false)
+        binding = FragmentProfilePageBinding.inflate(inflater, container, false)
 
-
-        //TODO: tag선택 따라서 PostListViewModel 변경
-        postListViewModel.initPage(param1.toString(), 1, param2?.name)
+        postListViewModel.initPage(profileDetailViewModel.getProfileDetail().value!!.type.toString(), 1, profileDetailViewModel.getProfileDetail().value!!.name)
         parentFragmentManager.beginTransaction().replace(R.id.fragment_profile_page_post_list, PostListFragment()).commit()
 
-        //TODO: PageFragment에서도 view model 참조
-        if(param1?.ordinal == 0){
+        if(profileDetailViewModel.getProfileDetail().value!!.type == ProfileType.user){
             parentFragmentManager.beginTransaction().replace(R.id.profile_detail, UserProfileDetailFragment()).commit()
         } else {
             parentFragmentManager.beginTransaction().replace(R.id.profile_detail, HashtagProfileDetailFragment()).commit()
         }
 
-        return view
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance(param1: ProfileType, param2: ProfileDetail) =
-            ProfilePageFragment().apply {
-                arguments = Bundle().apply {
-                    putSerializable(ARG_PARAM1, param1)
-                    putSerializable(ARG_PARAM2, param2)
-                }
-            }
+        return binding.root
     }
 }
-
-//test input data
-val inputDataParam1: ProfileType = ProfileType.user
-val inputDataParam2 = ProfileDetail(ProfileType.user, "yuyeon",
-13,false, null, 123)
-val inputDataParam3 = ProfileDetail(ProfileType.hashtag, "yuyeon", 1232, true)
-val inputDataParam4 = ProfileDetail(ProfileType.user, "yuyeo2222n",
-    10, true)
-
-//dummy ProfileDetail
-val dummyProfile = ProfileDetail(ProfileType.user, "yuyeon2",
-    1024,true, null, 123, 17, "hi")
