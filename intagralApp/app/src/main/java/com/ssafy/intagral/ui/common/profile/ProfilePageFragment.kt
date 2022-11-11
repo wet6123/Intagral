@@ -54,14 +54,12 @@ class ProfilePageFragment : Fragment() {
         postListViewModel.initPage(param1.toString(), 1, param2?.name)
         parentFragmentManager.beginTransaction().replace(R.id.fragment_profile_page_post_list, PostListFragment()).commit()
 
-        //TODO: param2에서 필요한 data 뽑아서 profile detail fragment 생성
-
+        //TODO: PageFragment에서도 view model 참조
         if(param1?.ordinal == 0){
             parentFragmentManager.beginTransaction().replace(R.id.profile_detail, UserProfileDetailFragment()).commit()
-            return view
+        } else {
+            parentFragmentManager.beginTransaction().replace(R.id.profile_detail, HashtagProfileDetailFragment()).commit()
         }
-        parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
-            param1 ?:ProfileType.user, param2 ?: dummyProfile)).commit()
 
         return view
     }

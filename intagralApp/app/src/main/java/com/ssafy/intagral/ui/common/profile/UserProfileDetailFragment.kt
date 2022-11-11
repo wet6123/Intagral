@@ -60,8 +60,7 @@ class UserProfileDetailFragment: Fragment() {
                 Glide.with(it).load(
                     profileDetailViewModel.getProfileDetail().value?.profileImg
                         ?: "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/car-967387__480.webp"
-                )
-                    .into(this.userProfileImg)
+                ).into(this.userProfileImg)
                 //TODO: follow 목록 페이지로 이동하는 리스너 등록
             }
 
@@ -110,9 +109,6 @@ class UserProfileDetailFragment: Fragment() {
             profileDetailNickname.text = profileDetailViewModel.getProfileDetail().value?.name
             profileDetailIntro.text = profileDetailViewModel.getProfileDetail().value?.intro
 
-            //여기
-            if(profileDetailViewModel.getProfileDetail().value?.name != "goodman"){ return@apply }
-            
             profileDetailViewModel.getEditStatus().observe(
                 viewLifecycleOwner
             ) {
@@ -151,5 +147,10 @@ class UserProfileDetailFragment: Fragment() {
             }
         }
         return binding.root
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        profileDetailViewModel.getEditStatus().value = null
     }
 }
