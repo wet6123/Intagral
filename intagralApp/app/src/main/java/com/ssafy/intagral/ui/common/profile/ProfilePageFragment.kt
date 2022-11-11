@@ -5,17 +5,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
-import com.ssafy.intagral.data.model.PostItem
 import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
-import com.ssafy.intagral.ui.common.post.PostAdapter
 import com.ssafy.intagral.ui.common.post.PostListFragment
 
 import com.ssafy.intagral.viewmodel.PostListViewModel
@@ -61,6 +55,11 @@ class ProfilePageFragment : Fragment() {
         parentFragmentManager.beginTransaction().replace(R.id.fragment_profile_page_post_list, PostListFragment()).commit()
 
         //TODO: param2에서 필요한 data 뽑아서 profile detail fragment 생성
+
+        if(param1?.ordinal == 0){
+            parentFragmentManager.beginTransaction().replace(R.id.profile_detail, UserProfileDetailFragment()).commit()
+            return view
+        }
         parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
             param1 ?:ProfileType.user, param2 ?: dummyProfile)).commit()
 
