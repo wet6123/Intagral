@@ -24,6 +24,8 @@ import java.util.NoSuchElementException;
 @Service("postService")
 public class PostServiceImpl implements PostService {
 
+    int numOfPosts = 21;
+
     @Autowired
     PostRepository postRepository;
     @Autowired
@@ -75,9 +77,9 @@ public class PostServiceImpl implements PostService {
         boolean isNext = false;
 
         int len = postlist.size();
-        if(len - (page-1) * 10 > 0){
-            if(len - page * 10 > 10){
-                for(int i = (page-1)*10; i < page*10; i++){
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > numOfPosts){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -87,7 +89,7 @@ public class PostServiceImpl implements PostService {
                     isNext = true;
                 }
             }else {
-                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -149,9 +151,9 @@ public class PostServiceImpl implements PostService {
 
         List<PostDataDto> list = new ArrayList<>();
         int len = postlist.size();
-        if(len - (page-1) * 10 > 0){
-            if(len - page * 10 > 10){
-                for(int i = (page-1)*10; i < page*10; i++){
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > numOfPosts){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -161,7 +163,7 @@ public class PostServiceImpl implements PostService {
                     isNext = true;
                 }
             }else {
-                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -201,14 +203,14 @@ public class PostServiceImpl implements PostService {
         }
 
         int len = postlist.size();
-        if(len - (page-1) * 10 > 0){
-            if(len - page * 10 > 10){
-                for(int i = (page-1)*10; i < page*10; i++){
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > numOfPosts){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     list.add(postlist.get(i));
                     isNext = true;
                 }
             }else {
-                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
                     list.add(postlist.get(i));
                     isNext = false;
                 }
@@ -232,9 +234,9 @@ public class PostServiceImpl implements PostService {
         List<Post> postlist = postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
 
         int len = postlist.size();
-        if(len - (page-1) * 10 > 0){
-            if(len - page * 10 > 10){
-                for(int i = (page-1)*10; i < page*10; i++){
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > numOfPosts){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -244,7 +246,7 @@ public class PostServiceImpl implements PostService {
                     isNext = true;
                 }
             }else {
-                for(int i = (page-1)*10; i < (page-1)*10 + len%10; i++){
+                for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
