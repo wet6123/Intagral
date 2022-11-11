@@ -96,6 +96,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun setHome() {
+        postListViewModel.initPage("all", 1, null)
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
     }
