@@ -24,6 +24,7 @@ import java.util.NoSuchElementException;
 @Service("postService")
 public class PostServiceImpl implements PostService {
 
+
     int numOfPosts = 21;
 
     @Autowired
@@ -78,7 +79,7 @@ public class PostServiceImpl implements PostService {
 
         int len = postlist.size();
         if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > numOfPosts){
+            if(len - page * numOfPosts > 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
@@ -152,7 +153,7 @@ public class PostServiceImpl implements PostService {
         List<PostDataDto> list = new ArrayList<>();
         int len = postlist.size();
         if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > numOfPosts){
+            if(len - page * numOfPosts > 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
@@ -204,7 +205,7 @@ public class PostServiceImpl implements PostService {
 
         int len = postlist.size();
         if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > numOfPosts){
+            if(len - page * numOfPosts > 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     list.add(postlist.get(i));
                     isNext = true;
@@ -235,7 +236,7 @@ public class PostServiceImpl implements PostService {
 
         int len = postlist.size();
         if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > numOfPosts){
+            if(len - page * numOfPosts > 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
