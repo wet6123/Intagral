@@ -25,6 +25,9 @@ public class FileDetail {
     public static FileDetail multipartOf(MultipartFile multipartFile) {
         final String fileId = MultipartUtil.createFileId();
         final String format = MultipartUtil.getFormat(multipartFile.getContentType());
+        if(format == null){
+            throw new IllegalArgumentException("No Image");
+        }
         return FileDetail.builder()
                 .id(fileId)
                 .name(multipartFile.getOriginalFilename())

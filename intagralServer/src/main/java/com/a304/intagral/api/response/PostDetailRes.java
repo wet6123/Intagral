@@ -16,7 +16,7 @@ public class PostDetailRes extends BaseResponseBody {
     @Schema(name = "글에 달린 태그들")
     List<String> tags;
     @Schema(name = "게시글 좋아요 수", example = "18")
-    Long likCount;
+    Long likeCount;
     @Schema(name = "팔로우 여부", example = "false")
     @JsonProperty(value = "isLike")
     boolean isLike;
@@ -27,13 +27,13 @@ public class PostDetailRes extends BaseResponseBody {
     @Schema(name = "작성자 팔로우 여부", example = "true")
     @JsonProperty(value = "isFollow")
     boolean isFollow;
-    public static  PostDetailRes of(int statusCode, String message, String imgPath, List<String> tags, Long likCount, boolean isLike, String writer, String writerImgPath, boolean isFollow){
+    public static  PostDetailRes of(int statusCode, String message, String imgPath, List<String> tags, Long likeCount, boolean isLike, String writer, String writerImgPath, boolean isFollow){
         PostDetailRes res = new PostDetailRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
         res.setImgPath(imgPath);
         res.setTags(tags);
-        res.setLikCount(likCount);
+        res.setLikeCount(likeCount);
         res.setLike(isLike);
         res.setWriter(writer);
         res.setWriterImgPath(writerImgPath);

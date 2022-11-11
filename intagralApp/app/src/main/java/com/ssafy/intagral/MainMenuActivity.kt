@@ -27,6 +27,7 @@ import com.ssafy.intagral.ui.home.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
+import com.ssafy.intagral.viewmodel.PostListViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
@@ -44,6 +45,7 @@ class MainMenuActivity : AppCompatActivity() {
     lateinit var classList : ArrayList<String>
     private val profileDetailViewModel: ProfileDetailViewModel by viewModels()
     private val profileSimpleViewModel: ProfileSimpleViewModel by viewModels()
+    private val postListViewModel: PostListViewModel by viewModels()
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -77,6 +79,8 @@ class MainMenuActivity : AppCompatActivity() {
                 this@MainMenuActivity
             ){
                 it?.also {
+                    //post list init함수 호출
+                    postListViewModel.initPage(it.type.toString(), 1, it.name)
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(it.type,it)).commit()
                 }
             }
@@ -92,6 +96,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     private fun setHome() {
+        postListViewModel.initPage("all", 1, null)
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
     }

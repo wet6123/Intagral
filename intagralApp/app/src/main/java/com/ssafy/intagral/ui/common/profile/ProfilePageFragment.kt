@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
@@ -15,6 +16,9 @@ import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
 import com.ssafy.intagral.ui.common.post.PostAdapter
+import com.ssafy.intagral.ui.common.post.PostListFragment
+
+import com.ssafy.intagral.viewmodel.PostListViewModel
 
 private const val ARG_PARAM1 = "profileType" //user or hashtag
 private const val ARG_PARAM2 = "data" //profile data
@@ -23,15 +27,13 @@ class ProfilePageFragment : Fragment() {
     private var param1: ProfileType? = ProfileType.user //default user
     private var param2: ProfileDetail? = null //TODO: response json -> ProfileDetail로 변경 어디서할지 생각해보기
 
-    //post list
-    private lateinit var postRecyclerView: RecyclerView
-    private lateinit var postAdapter: PostAdapter
-    private var postList = mutableListOf<PostItem>()
-
     private lateinit var binding: FragmentProfilePageBinding
+
+    private val postListViewModel: PostListViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.let {
             param1 = it.getSerializable(ARG_PARAM1) as ProfileType
             param2 = it.getSerializable(ARG_PARAM2) as ProfileDetail
@@ -53,40 +55,15 @@ class ProfilePageFragment : Fragment() {
 ***/
         val view = inflater.inflate(R.layout.fragment_profile_page,container,false)
 
+
+        //TODO: tag선택 따라서 PostListViewModel 변경
+        postListViewModel.initPage(param1.toString(), 1, param2?.name)
+        parentFragmentManager.beginTransaction().replace(R.id.fragment_profile_page_post_list, PostListFragment()).commit()
+
         //TODO: param2에서 필요한 data 뽑아서 profile detail fragment 생성
         parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
             param1 ?:ProfileType.user, param2 ?: dummyProfile)).commit()
 
-        //TODO: hashtag인지 user인지 따라서 게시글 목록 요청하는 API 호출
-        for(i in 1..9){
-            postList.add(PostItem(i, "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"))
-        }
-
-        //TODO: refactor to binding
-        postRecyclerView = view.findViewById(R.id.profile_post_list)
-        context?.also {
-            postAdapter = PostAdapter(it, postList)
-            postAdapter.onItemClickListener = object : PostAdapter.OnItemClickListener {
-                override fun onClick(view: View, position: Int) {
-                    //TODO: post detail page로 이동
-                    Toast.makeText(it,"listener : $position", Toast.LENGTH_SHORT).show()
-                }
-            }
-            postRecyclerView.apply {
-                adapter = postAdapter
-                layoutManager = GridLayoutManager(it,3)
-            }
-        }
-
-        //test dummy button
-        view.findViewById<Button>(R.id.temporary_btn1).setOnClickListener{
-            parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
-                ProfileType.hashtag, inputDataParam3)).commit()
-        }
-        view.findViewById<Button>(R.id.temporary_btn2).setOnClickListener{
-            parentFragmentManager.beginTransaction().replace(R.id.profile_detail,ProfileDetailFragment.newInstance(
-                ProfileType.user, inputDataParam4)).commit()
-        }
         return view
     }
 

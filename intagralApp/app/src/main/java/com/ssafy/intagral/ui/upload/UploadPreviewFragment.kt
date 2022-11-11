@@ -54,17 +54,15 @@ class UploadPreviewFragment : Fragment() {
             }.keys.toList()
         }
 
-        val content = selectedTagList.joinToString(
-            " #",
-            "#"
-        )
-
-        binding.postDetail.postContent.text = content
+        if(selectedTagList.isNotEmpty()){
+            val content = selectedTagList.map { "#${it}" }.reduce { acc, s -> "$acc $s" }
+            binding.postDetail.postContent.text = content
+        }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.PHOTO_PICKER
+        uploadViewModel.getuploadStep().value = UploadViewModel.UploadStep.TAG_RESULT
     }
 
     inner class UploadPreviewButtonListener: View.OnClickListener {
