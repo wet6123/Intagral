@@ -33,7 +33,6 @@ class ProfilePageFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        postListViewModel.getPostList().value = ArrayList<PostItem>()
 
         arguments?.let {
             param1 = it.getSerializable(ARG_PARAM1) as ProfileType
@@ -58,9 +57,7 @@ class ProfilePageFragment : Fragment() {
 
 
         //TODO: tag선택 따라서 PostListViewModel 변경
-        postListViewModel.getPostList().value = ArrayList<PostItem>()
         postListViewModel.initPage(param1.toString(), 1, param2?.name)
-
         parentFragmentManager.beginTransaction().replace(R.id.fragment_profile_page_post_list, PostListFragment()).commit()
 
         //TODO: param2에서 필요한 data 뽑아서 profile detail fragment 생성
