@@ -81,7 +81,7 @@ class MainMenuActivity : AppCompatActivity() {
                 it?.also {
                     //post list init함수 호출
                     postListViewModel.initPage(it.type.toString(), 1, it.name)
-                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment.newInstance(it.type,it)).commit()
+                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment()).commit()
                 }
             }
 
