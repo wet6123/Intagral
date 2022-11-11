@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ProfileDetailViewModel @Inject constructor(private val hashtagService: HashtagService, private val userService: UserService): ViewModel() {
     private var profileDetail: MutableLiveData<ProfileDetail> = MutableLiveData()
-    private var editStatus: MutableLiveData<EditStatus> = MutableLiveData(EditStatus.INAVTIVE)
+    private var editStatus: MutableLiveData<EditStatus> = MutableLiveData()
 
     enum class EditStatus{
         DUPLICATED_NAME,
