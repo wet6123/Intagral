@@ -1,9 +1,10 @@
 package com.ssafy.intagral.ui.common.post
 
+import android.content.Intent
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -38,6 +39,11 @@ class PostDetailFragment: Fragment() {
 
         binding.buttonLike.setOnClickListener{
             postDetailViewModel.togglePostLike(paramPostId!!)
+        }
+
+        registerForContextMenu(binding.postDetailMenuButton)
+        binding.postDetailMenuButton.setOnClickListener{
+            it.showContextMenu()
         }
         
         // TODO : 유저페이지로 이동하는 클릭 이벤트리스너
@@ -85,6 +91,58 @@ class PostDetailFragment: Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         postDetailViewModel.getPostDetail().value = null
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        requireActivity().menuInflater.inflate(R.menu.post_detail_menu, menu)
+
+        // TODO : 내가 아닐때만 false
+        menu.findItem(R.id.post_menu_item_delete).isVisible = false
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.post_menu_item_report -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("신고하기")
+                    .setMessage("신고하시겠습니까?")
+                    .setPositiveButton("네"
+                    ) { _, _ ->
+                        val address = arrayOf("intagralofficial@gmail.com")
+                        val email = Intent(Intent.ACTION_SEND)
+                        email.type = "plain/text"
+                        email.putExtra(Intent.EXTRA_EMAIL, address)
+                        email.putExtra(Intent.EXTRA_SUBJECT, "INTAGRAL REPORT : POST NUMBER $paramPostId")
+                        email.putExtra(Intent.EXTRA_TEXT, "${paramPostId}번 게시글 신고\n내용 : ")
+                        startActivity(email)
+                    }
+                    .setNegativeButton("아니요"
+                    ) { _, _ -> }.create().show()
+            }
+            R.id.post_menu_item_delete -> {
+                AlertDialog.Builder(requireContext())
+                    .setTitle("삭제하기")
+                    .setMessage("정말로 삭제하시겠습니까?")
+                    .setPositiveButton("네"
+                    ) { _, _ ->
+                        // TODO : delete 요청
+                        Toast.makeText(
+                            requireContext(),
+                            "$paramPostId 번 게시글 신고",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                    .setNegativeButton("아니요"
+                    ) { _, _ -> }.create().show()
+            }
+            else -> {}
+        }
+        return super.onContextItemSelected(item)
     }
 
     companion object {
