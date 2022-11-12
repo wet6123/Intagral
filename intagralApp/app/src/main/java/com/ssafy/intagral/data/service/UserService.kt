@@ -48,4 +48,6 @@ class UserService {
         val imageFile = MultipartBody.Part.createFormData("image", image.name, image.asRequestBody("image/jpeg".toMediaTypeOrNull()))
         return userRepository.updateProfileImg(imageFile)
     }
+
+    suspend fun getMyInfo() = userRepository.getMyInfo()
 }
