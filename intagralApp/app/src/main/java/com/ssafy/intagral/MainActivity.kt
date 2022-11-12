@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -15,12 +16,16 @@ import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.ssafy.intagral.databinding.ActivityMainBinding
+import com.ssafy.intagral.util.PreferenceUtil
+import com.ssafy.intagral.viewmodel.LoginViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityMainBinding
     private lateinit var mGoogleSignInClient : GoogleSignInClient
+    private val loginViewModel : LoginViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
@@ -30,32 +35,36 @@ class MainActivity : AppCompatActivity() {
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestEmail()
+            .requestIdToken(getString(R.string.default_web_client_id))
             .build()
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso)
 
+        loginViewModel.getAuthToken().observe(this@MainActivity){
+            IntagralApplication.prefs.token = it;
+            updateUI();
+        }
     }
 
     override fun onStart() {
         super.onStart()
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
-        if(account!=null) {
-            println("onStart account not null")
-            updateUI(account)
-        } else {
+        if(account == null || IntagralApplication.prefs.token == "EXPIRED"){
+            IntagralApplication.prefs.token = ""
             println("onStart account null")
             val signInButton = findViewById<SignInButton>(R.id.sign_in_button)
             signInButton.setSize(SignInButton.SIZE_STANDARD)
             signInButton.setOnClickListener { signIn() }
-
+        } else {
+            println("onStart account not null")
+            updateUI()
         }
+
     }
 
-    private fun updateUI(account: GoogleSignInAccount){
+    private fun updateUI(){
         val intent = Intent(this, MainMenuActivity::class.java)
-        intent.putExtra("userEmail",account.email)
-        intent.putExtra("userName",account.displayName)
         startActivity(intent) //단방향 이동
     }
 
@@ -84,7 +93,7 @@ class MainActivity : AppCompatActivity() {
         try {
             val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
             // Signed in successfully, show authenticated UI.
-            updateUI(account)
+            loginViewModel.login(account.idToken!!)
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.

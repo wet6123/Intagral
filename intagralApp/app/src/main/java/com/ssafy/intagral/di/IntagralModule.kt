@@ -2,6 +2,7 @@ package com.ssafy.intagral.di
 
 import com.ssafy.intagral.data.service.*
 import com.ssafy.intagral.util.AuthInterceptor
+import com.ssafy.intagral.util.ResponseInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,6 +21,7 @@ object CommonRepository {
     private val client: OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(HttpLoggingInterceptor())
         .addInterceptor(AuthInterceptor())
+        .addInterceptor(ResponseInterceptor())
         .build()
 
     @Singleton
