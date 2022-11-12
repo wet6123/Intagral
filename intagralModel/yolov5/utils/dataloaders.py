@@ -517,7 +517,8 @@ class LoadImagesAndLabels(Dataset):
         # 28: suitcase , 56: chair , 57: couch , 58: potted plant , 59: bed , 60: dining table 
         # 61: toilet , 62: tv , 68: microwave , 72: refrigerator , 74: clock , 75: vase
         
-        include_class = [28,56,57,58,59,60,61,62,68,72,74,75]  # filter labels to include only these classes (optional)
+        #include_class = [28,56,57,58,59,60,61,62,68,72,74,75]  # filter labels to include only these classes (optional)
+        include_class = []  # filter labels to include only these classes (optional)
         include_class_array = np.array(include_class).reshape(1, -1)
         for i, (label, segment) in enumerate(zip(self.labels, self.segments)):
             if include_class:
