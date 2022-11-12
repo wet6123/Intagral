@@ -19,7 +19,7 @@ interface UserRepository {
     @POST(value="/api/user/login")
     suspend fun login(@Body json: JsonObject): Response<UserLoginReponse>
     @GET(value="/api/user/logout")
-    suspend fun logout()
+    suspend fun logout(): Response<ResponseBody>
     @GET(value="/api/user/profile")
     suspend fun getUserProfile(@Query("q") q: String): Response<UserProfileResponse>
     @GET(value="/api/user/check")

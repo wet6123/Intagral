@@ -30,14 +30,11 @@ import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
 import com.ssafy.intagral.util.LiveSharedPreferences
-import com.ssafy.intagral.viewmodel.PostListViewModel
+import com.ssafy.intagral.viewmodel.*
 import dagger.hilt.android.AndroidEntryPoint
 import org.pytorch.LiteModuleLoader
 import org.pytorch.Module
 import java.io.*
-import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
-import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
-import com.ssafy.intagral.viewmodel.UserViewModel
 
 @AndroidEntryPoint
 class MainMenuActivity : AppCompatActivity() {
@@ -51,6 +48,7 @@ class MainMenuActivity : AppCompatActivity() {
     private val profileSimpleViewModel: ProfileSimpleViewModel by viewModels()
     private val postListViewModel: PostListViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -111,7 +109,18 @@ class MainMenuActivity : AppCompatActivity() {
         userViewModel.getMyInfo().observe(this@MainMenuActivity){
             IntagralApplication.prefs.nickname = it.nickname
         }
+        loginViewModel.getIsLogin().observe(this@MainMenuActivity){
+            if(!it){
+                mGoogleSignInClient.signOut()
+                    .addOnCompleteListener(this) {
+                        // 로그아웃 성공시 실행
+                        // 로그아웃 이후의 이벤트들(토스트 메세지, 화면 종료)을 여기서 수행하면 됨
+                        finish()
+                    }
+            }
+        }
         userViewModel.getInfo()
+
 
         setHome()
     }
@@ -178,12 +187,7 @@ class MainMenuActivity : AppCompatActivity() {
     }
 
     fun logout() {
-        mGoogleSignInClient.signOut()
-            .addOnCompleteListener(this) {
-                // 로그아웃 성공시 실행
-                // 로그아웃 이후의 이벤트들(토스트 메세지, 화면 종료)을 여기서 수행하면 됨
-                finish()
-            }
+        loginViewModel.logout()
     }
 
 

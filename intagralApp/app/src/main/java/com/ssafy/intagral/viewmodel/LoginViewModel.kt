@@ -14,9 +14,14 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(private val userService: UserService): ViewModel() {
 
     private var authToken : MutableLiveData<String> = MutableLiveData()
+    private var isLogin: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getAuthToken(): MutableLiveData<String>{
         return authToken
+    }
+
+    fun getIsLogin() : MutableLiveData<Boolean> {
+        return isLogin
     }
 
     fun login(idToken : String) {
@@ -26,10 +31,22 @@ class LoginViewModel @Inject constructor(private val userService: UserService): 
             val response = userService.login(json)
             if(response.isSuccessful){
                 response.body()?.let {
-                        authToken.value = it.authToken
-                    }
+                    authToken.value = it.authToken
+                    isLogin.value = true
+                }
             }else{
                 Log.d("RETROFIT /api/user/login", "응답 에러 : ${response.code()}")
+            }
+        }
+    }
+
+    fun logout() {
+        viewModelScope.launch {
+            val response = userService.logout()
+            if(response.isSuccessful){
+                isLogin.value = false
+            } else{
+                Log.d("RETROFIT /api/user/logout", "응답 에러 : ${response.code()}")
             }
         }
     }
