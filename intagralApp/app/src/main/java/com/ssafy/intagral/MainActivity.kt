@@ -51,6 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if(account == null || IntagralApplication.prefs.token == "EXPIRED"){
+            IntagralApplication.prefs.token = ""
             println("onStart account null")
             val signInButton = findViewById<SignInButton>(R.id.sign_in_button)
             signInButton.setSize(SignInButton.SIZE_STANDARD)
