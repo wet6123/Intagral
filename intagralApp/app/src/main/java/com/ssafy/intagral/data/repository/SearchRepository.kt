@@ -2,6 +2,7 @@ package com.ssafy.intagral.data.repository
 
 import com.google.gson.JsonObject
 import com.ssafy.intagral.data.response.searchResponse
+import okhttp3.ResponseBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -12,5 +13,5 @@ interface SearchRepository {
     @GET("/api/search")
     suspend fun search(@Query("q") q: String): Response<searchResponse>
     @POST("api/search")
-    suspend fun addHashtagSearchCnt(@Body json: JsonObject)
+    suspend fun addHashtagSearchCnt(@Body json: JsonObject): Response<ResponseBody>
 }
