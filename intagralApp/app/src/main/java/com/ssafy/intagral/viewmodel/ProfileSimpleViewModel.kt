@@ -1,8 +1,10 @@
 package com.ssafy.intagral.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.JsonObject
 import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.service.FollowService
 import com.ssafy.intagral.data.service.SearchService
@@ -38,6 +40,21 @@ class ProfileSimpleViewModel @Inject constructor(private val searchService: Sear
     fun getHashtagFollowerList(q: String) {
         viewModelScope.launch {
             profileSimpleList.value = followService.getHashtagFollowerList("follower", q)
+        }
+    }
+
+    fun addSearchCnt(q: String) {
+        var json = JsonObject()
+        json.addProperty("hashtag", q)
+        viewModelScope.launch {
+            val response = searchService.addHashtagSearchCnt(json)
+            //TODO: API refactor 요청
+            if(response.isSuccessful) {
+                return@launch
+            } else {
+                Log.d("Retrofit POST /api/search", "응답 에러 : ${response.code()}")
+                return@launch
+            }
         }
     }
 }

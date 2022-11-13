@@ -8,6 +8,8 @@ import com.ssafy.intagral.data.repository.SearchRepository
 import com.ssafy.intagral.data.response.hashtagSearchResult
 import com.ssafy.intagral.data.response.userSearchResult
 import com.ssafy.intagral.di.CommonRepository
+import okhttp3.ResponseBody
+import retrofit2.Response
 import retrofit2.Retrofit
 
 class SearchService {
@@ -44,5 +46,6 @@ class SearchService {
             return null
         }
     }
-    suspend fun addHashtagSearchCnt(json: JsonObject) = searchRepository.addHashtagSearchCnt(json)
+
+    suspend fun addHashtagSearchCnt(json: JsonObject): Response<ResponseBody> = searchRepository.addHashtagSearchCnt(json)
 }
