@@ -28,7 +28,14 @@ class SearchActivity : AppCompatActivity() {
         binding = ActivitySearchBinding.inflate(layoutInflater).apply {
             searchFragment.setOnQueryTextListener(SearchListener())
             searchFragment.requestFocus()
+
             supportFragmentManager.beginTransaction().replace(R.id.search_result_profile_simple, ProfileSimpleListFragment()).commit()
+
+            profileSimpleViewModel.getProfileSimpleList().observe(this@SearchActivity){
+                it?.also {
+                    supportFragmentManager.beginTransaction().replace(R.id.search_result_profile_simple, ProfileSimpleListFragment()).commit()
+                }
+            }
         }
         setContentView(binding.root)
     }
@@ -38,12 +45,10 @@ class SearchActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
             profileSimpleViewModel.search(query?: "")
-            supportFragmentManager.setFragmentResult("search text", bundleOf("input text" to query))
             return true
         }
         override fun onQueryTextChange(newText: String?): Boolean {
             profileSimpleViewModel.search(newText?: "")
-            supportFragmentManager.setFragmentResult("search text", bundleOf("input text" to newText))
             return true
         }
     }

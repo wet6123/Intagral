@@ -20,6 +20,7 @@ enum class ActivityType {
 }
 
 // Fragment used when searching and showing profile page
+// TODO: search activity, main menu activity 로직 통일시킬 수 있는지 생각해보기
 class ProfileSimpleListFragment: Fragment() {
 //simple profile list
     private lateinit var profileSimpleRecyclerView: RecyclerView
@@ -30,15 +31,6 @@ class ProfileSimpleListFragment: Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_profile_simple_list, container, false)
-
-//simple profile list fragment
-        setFragmentResultListener("search text") { requestKey, bundle ->
-            bindProfileList(bundle.getString("input text"))
-        }
-        setFragmentResultListener("search text") { requestKey, bundle ->
-            bindProfileList(bundle.getString("input text"))
-        }
-
 
         profileSimpleRecyclerView = view.findViewById(R.id.search_profile_simple_list)
         bindProfileList("")
