@@ -33,8 +33,6 @@ class ProfileSimpleAdapter(context: Context, val profileSimpleLists: MutableList
         holder.apply {
             bindProfileSimple(profileSimpleLists[position])
             itemView.findViewById<LinearLayout>(R.id.profile_simple_imgAndName).setOnClickListener{
-//                val imm = it.context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//                imm.hideSoftInputFromWindow(it.windowToken, 0)
                 if(it.context.javaClass.simpleName.equals(ActivityType.SearchActivity.toString())) {
                     val activity = it.context as SearchActivity
                     activity.changeActivity(1, profileSimpleLists[position])
