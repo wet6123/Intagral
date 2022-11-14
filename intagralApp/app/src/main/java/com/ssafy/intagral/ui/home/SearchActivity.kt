@@ -7,11 +7,11 @@ import android.view.inputmethod.InputMethodManager
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
-import androidx.core.os.bundleOf
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.databinding.ActivitySearchBinding
+import com.ssafy.intagral.ui.common.profile.ProfileSimpleListFragment
 import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
