@@ -1,8 +1,6 @@
 package com.ssafy.intagral
 
-import android.app.Activity
 import android.content.Context
-
 import android.os.Bundle
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -12,6 +10,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.widget.Toolbar
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.google.android.gms.auth.api.signin.GoogleSignIn
@@ -23,9 +22,9 @@ import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
+import com.ssafy.intagral.ui.common.profile.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
 import com.ssafy.intagral.ui.home.HomeFragment
-import com.ssafy.intagral.ui.home.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
@@ -93,12 +92,14 @@ class MainMenuActivity : AppCompatActivity() {
             }
             profileDetailViewModel.getProfileDetail().observe(this@MainMenuActivity){
                 it?.also {
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfilePageFragment()).commit()
                 }
             }
 
             profileSimpleViewModel.getProfileSimpleList().observe(this@MainMenuActivity){
                 it?.also{
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
                 }
             }
@@ -125,6 +126,7 @@ class MainMenuActivity : AppCompatActivity() {
 
     private fun setHome() {
         postListViewModel.initPage("all", 1, null)
+        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
         val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
     }
@@ -140,10 +142,12 @@ class MainMenuActivity : AppCompatActivity() {
                 }
                 R.id.nav_upload -> {
                     println("upload selected!")
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PhotoPicker.newInstance()).commit()
                 }
                 R.id.nav_hashtag -> {
                     println("hashtag selected!")
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
                 }
                 R.id.nav_mypage -> {
@@ -174,6 +178,7 @@ class MainMenuActivity : AppCompatActivity() {
                     activityResultLauncher.launch(intent)
                 }
                 R.id.toolbar_setting -> {
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, SettingFragment()).commit()
                 }
                 else -> {

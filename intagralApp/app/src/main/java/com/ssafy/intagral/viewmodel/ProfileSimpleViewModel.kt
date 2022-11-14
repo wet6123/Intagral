@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.data.service.FollowService
 import com.ssafy.intagral.data.service.SearchService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,10 +28,39 @@ class ProfileSimpleViewModel @Inject constructor(private val searchService: Sear
         }
     }
 
-    //TODO: use in post detail page
-    fun getProfileSimple(q: String) {
+    suspend fun toggleFollow(profileSimpleItem: ProfileSimpleItem): Boolean{
+        val job = viewModelScope.async {
+            var result = profileSimpleItem.isFollow
+            when(profileSimpleItem.type){
+                ProfileType.user -> {
+                    val response = followService.toggleFollowUser(profileSimpleItem.name)
+                    if(response.isSuccessful){
+                        response.body()?.let {
+                            result = it.isFollow
+                        }
+                    }else{
+                        Log.d("RETROFIT /api/follow/user", "user follow toggle 실패")
+                    }
+                }
+                ProfileType.hashtag -> {
+                    val response = followService.toggleFollowHashtag(profileSimpleItem.name)
+                    if(response.isSuccessful){
+                        response.body()?.let {
+                            result = it.isFollow
+                        }
+                    }else{
+                        Log.d("RETROFIT /api/follow/hashtag", "hashtag follow toggle 실패")
+                    }
+                }
+                else -> {}
+            }
 
+            return@async result
+        }
+
+        return job.await()
     }
+
 //TODO: array size 0일 때
     fun getOnesFollowList(type: String, q: String) {
         viewModelScope.launch {
