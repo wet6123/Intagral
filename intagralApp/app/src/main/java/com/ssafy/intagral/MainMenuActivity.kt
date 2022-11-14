@@ -22,9 +22,9 @@ import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
 import com.ssafy.intagral.ui.common.profile.ProfilePageFragment
+import com.ssafy.intagral.ui.common.profile.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.hashtagPreset.PresetViewFragment
 import com.ssafy.intagral.ui.home.HomeFragment
-import com.ssafy.intagral.ui.home.ProfileSimpleListFragment
 import com.ssafy.intagral.ui.home.SearchActivity
 import com.ssafy.intagral.ui.home.SettingFragment
 import com.ssafy.intagral.ui.upload.PhotoPicker
