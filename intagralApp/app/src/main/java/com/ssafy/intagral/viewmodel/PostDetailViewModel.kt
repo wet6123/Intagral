@@ -57,4 +57,15 @@ class PostDetailViewModel @Inject constructor(private val postService: PostServi
             }
         }
     }
+
+    fun deletePost(postId: Int){
+        viewModelScope.launch {
+            val response = postService.deletePost(postId)
+            if(response.isSuccessful){
+                //TODO
+            } else {
+                Log.d("RETROFIT /api/post/delete", "응답 에러 : ${response.code()}")
+            }
+        }
+    }
 }
