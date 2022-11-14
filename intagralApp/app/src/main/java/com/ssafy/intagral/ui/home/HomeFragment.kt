@@ -15,8 +15,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.FilterTagItem
+import com.ssafy.intagral.data.model.FilterType
 import com.ssafy.intagral.data.model.PostItem
 import com.ssafy.intagral.ui.common.post.PostListFragment
+import com.ssafy.intagral.viewmodel.FilterTagViewModel
 import com.ssafy.intagral.viewmodel.PostListViewModel
 
 class HomeFragment : Fragment() {
@@ -24,9 +26,10 @@ class HomeFragment : Fragment() {
     //filter hashtag list
     private lateinit var filterTagRecyclerView: RecyclerView
     private lateinit var filterTagAdapter: FilterTagAdapter
-    private var filterTagList = mutableListOf<FilterTagItem>()
+    private var filterTagList: ArrayList<FilterTagItem> = ArrayList()
 
     private val postListViewModel: PostListViewModel by activityViewModels()
+    private val filterTagViewModel: FilterTagViewModel by activityViewModels()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -38,23 +41,27 @@ class HomeFragment : Fragment() {
 
 //filter tag fragment
         filterTagRecyclerView = view.findViewById(R.id.fragment_filter_tag_list)
-        //temporary items
-        filterTagList.add(FilterTagItem(1,"전체"))
-        filterTagList.add(FilterTagItem(2,"팔로우"))
+        filterTagViewModel.getHotFilterTagList()
+        filterTagViewModel.getFilterTagList().observe(viewLifecycleOwner){
+            filterTagList = filterTagViewModel.getFilterTagList().value!!
 
-        //TODO: null일 경우 추가
-        context?.also {
-            filterTagAdapter = FilterTagAdapter(it, filterTagList)
-            filterTagAdapter.onItemClickListener = object: FilterTagAdapter.OnItemClickListener {
-                override fun onClick(view:View, position: Int) {
-                    //TODO: API 호출
-                    Toast.makeText(it, "listener: $position", Toast.LENGTH_SHORT).show()
+            context?.also {
+                filterTagAdapter = FilterTagAdapter(it, filterTagList)
+                filterTagAdapter.onItemClickListener = object: FilterTagAdapter.OnItemClickListener {
+                    override fun onClick(view:View, position: Int) {
+                        postListViewModel.initPage(filterTagList[position].type.toString(), 1, filterTagList[position].tagContent)
+                    }
+                }
+                filterTagRecyclerView.apply {
+                    adapter = filterTagAdapter
+                    layoutManager = LinearLayoutManager(it, RecyclerView.HORIZONTAL, false)
                 }
             }
-            filterTagRecyclerView.apply {
-                adapter = filterTagAdapter
-                layoutManager = LinearLayoutManager(it, RecyclerView.HORIZONTAL, false)
-            }
+
+        }
+
+        postListViewModel.getPostList().observe(viewLifecycleOwner) {
+            parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment()).commit()
         }
 
         return view
