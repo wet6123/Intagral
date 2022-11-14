@@ -40,4 +40,11 @@ class ProfilePageFragment : Fragment() {
 
         return binding.root
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        parentFragmentManager.findFragmentById(R.id.profile_detail)?.let {
+            parentFragmentManager.beginTransaction().remove(it).commit()
+        }
+    }
 }
