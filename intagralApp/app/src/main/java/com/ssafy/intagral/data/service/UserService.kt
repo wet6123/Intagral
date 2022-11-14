@@ -45,7 +45,7 @@ class UserService {
     suspend fun checkValidName(name: String) = userRepository.checkValidName(name)
     suspend fun updateUserProfile(json: JsonObject) = userRepository.updateUserProfile(json)
     suspend fun updateProfileImg(image: File): Response<ResponseBody> {
-        val imageFile = MultipartBody.Part.createFormData("image", image.name, image.asRequestBody("image/jpeg".toMediaTypeOrNull()))
+        val imageFile = MultipartBody.Part.createFormData("data", image.name, image.asRequestBody("image/jpeg".toMediaTypeOrNull()))
         return userRepository.updateProfileImg(imageFile)
     }
 

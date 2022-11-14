@@ -1,17 +1,28 @@
 package com.ssafy.intagral.ui.common.profile
 
+import android.app.Activity
+import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.provider.MediaStore
+import android.view.*
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentUserProfileBinding
+import com.ssafy.intagral.util.ImageUtil
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import java.io.File
 
 @AndroidEntryPoint
 class UserProfileDetailFragment: Fragment() {
@@ -20,6 +31,13 @@ class UserProfileDetailFragment: Fragment() {
 
     private val profileSimpleViewModel: ProfileSimpleViewModel by activityViewModels()
     private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
+
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraLauncher : ActivityResultLauncher<Intent>
+
+    private var newPhotoFile: File? = null
+    private lateinit var newPhotoBitmap: Bitmap
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,6 +64,10 @@ class UserProfileDetailFragment: Fragment() {
                             }
                         }
                     }
+                }
+                registerForContextMenu(userProfileImg)
+                userProfileImg.setOnClickListener {
+                    it.showContextMenu()
                 }
             } else {
                 profileDetailBtn.apply {
@@ -146,11 +168,101 @@ class UserProfileDetailFragment: Fragment() {
                 }
             }
         }
+
+        cameraLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ){ result ->
+            if(result.resultCode == Activity.RESULT_OK){
+                Toast.makeText(context, "captured!!!", Toast.LENGTH_SHORT).show();
+                newPhotoFile?.also {
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        val source = ImageDecoder.createSource(requireActivity().contentResolver, Uri.fromFile(it))
+                        ImageDecoder.decodeBitmap(source)?.let {
+                            newPhotoBitmap = ImageUtil.resizeBitmap(it, 900f, 0f)
+                        }
+                    } else {
+                        MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, Uri.fromFile(it))?.let {
+                            newPhotoBitmap = ImageUtil.resizeBitmap(it, 900f, 0f)
+                        }
+                    }
+                    profileDetailViewModel.editProfileImage(requireContext().filesDir.path, newPhotoBitmap)
+                }
+            }
+        }
+        galleryLauncher = registerForActivityResult(
+            ActivityResultContracts.StartActivityForResult()
+        ){
+            if(it.resultCode == Activity.RESULT_OK){
+                Toast.makeText(context, "get photo from gallery", Toast.LENGTH_SHORT).show();
+                val photoUri : Uri? = it.data?.data
+                photoUri?.also{
+                    if(Build.VERSION.SDK_INT < 28) {
+                        val bitmap = MediaStore.Images.Media.getBitmap(
+                            requireActivity().contentResolver,
+                            photoUri
+                        )
+                        newPhotoBitmap = bitmap
+                    } else {
+                        val source = ImageDecoder.createSource(requireActivity().contentResolver, photoUri)
+                        val bitmap = ImageDecoder.decodeBitmap(source)
+                        newPhotoBitmap = bitmap
+                    }
+                    profileDetailViewModel.editProfileImage(requireContext().filesDir.path, newPhotoBitmap)
+                }
+            }
+        }
+
         return binding.root
     }
 
     override fun onDestroy() {
         super.onDestroy()
         profileDetailViewModel.getEditStatus().value = null
+    }
+
+    override fun onCreateContextMenu(
+        menu: ContextMenu,
+        v: View,
+        menuInfo: ContextMenu.ContextMenuInfo?
+    ) {
+        super.onCreateContextMenu(menu, v, menuInfo)
+        activity?.menuInflater?.inflate(R.menu.photo_picker_menu, menu)
+    }
+
+    override fun onContextItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.photo_picker_capture -> {
+                capture()
+            }
+            R.id.photo_picker_album -> {
+                getImageFromGallery()
+            }
+            else -> {
+
+            }
+        }
+        return super.onContextItemSelected(item)
+    }
+
+    // 카메라 실행
+    private fun capture(){
+        context?.also{
+            val file = ImageUtil.createImageFile(it)
+            newPhotoFile = file
+            val photoUri : Uri = FileProvider.getUriForFile(
+                it,
+                "com.ssafy.intagral.provider",
+                file
+            )
+            val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
+            cameraLauncher.launch(intent)
+        }
+    }
+
+    // 갤러리 실행
+    private fun getImageFromGallery(){
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "image/*"
+        galleryLauncher.launch(intent)
     }
 }
