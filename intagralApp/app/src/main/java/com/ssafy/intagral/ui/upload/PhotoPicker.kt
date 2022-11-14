@@ -2,17 +2,14 @@ package com.ssafy.intagral.ui.upload
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.ImageDecoder
-import android.graphics.Matrix
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.provider.MediaStore
 import android.view.*
 import android.widget.Button
@@ -27,6 +24,7 @@ import androidx.fragment.app.activityViewModels
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentPhotoPickerBinding
+import com.ssafy.intagral.util.ImageUtil
 import com.ssafy.intagral.viewmodel.PresetViewModel
 import com.ssafy.intagral.viewmodel.UploadViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -37,9 +35,6 @@ import org.pytorch.IValue
 import org.pytorch.Module
 import org.pytorch.torchvision.TensorImageUtils
 import java.io.File
-import java.io.FileOutputStream
-import java.io.IOException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
@@ -102,11 +97,11 @@ class PhotoPicker : Fragment(), CoroutineScope {
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         val source = ImageDecoder.createSource(requireActivity().contentResolver, Uri.fromFile(it))
                         ImageDecoder.decodeBitmap(source)?.let {
-                            uploadViewModel.getImageBitmap().value = resizeBitmap(it, 900f, 0f)
+                            uploadViewModel.getImageBitmap().value = ImageUtil.resizeBitmap(it, 900f, 0f)
                         }
                     } else {
                         MediaStore.Images.Media.getBitmap(requireActivity().contentResolver, Uri.fromFile(it))?.let {
-                            uploadViewModel.getImageBitmap().value = resizeBitmap(it, 900f, 0f)
+                            uploadViewModel.getImageBitmap().value = ImageUtil.resizeBitmap(it, 900f, 0f)
                         }
                     }
                 }
@@ -259,43 +254,15 @@ class PhotoPicker : Fragment(), CoroutineScope {
         return super.onContextItemSelected(item)
     }
 
-    //이미지 파일 생성
-    private fun createImageFile(): File {
-        val timestamp : String = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val storageDir : File? = context?.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
-        return File.createTempFile("JPEG_${timestamp}_",".jpeg",storageDir).apply {
-            currentPhotoFile = this
-        }
-    }
-
-    private fun resizeBitmap(src: Bitmap, size: Float, angle: Float): Bitmap {
-        val width = src.width
-        val height = src.height
-        var newWidth = 0f
-        var newHeight = 0f
-        if(width > height) {
-            newWidth = size
-            newHeight = height.toFloat() * (newWidth / width.toFloat())
-        } else {
-            newHeight = size
-            newWidth = width.toFloat() * (newHeight / height.toFloat())
-        }
-        val scaleWidth = newWidth.toFloat() / width
-        val scaleHeight = newHeight.toFloat() / height
-        val matrix = Matrix()
-        matrix.postRotate(angle);
-        matrix.postScale(scaleWidth, scaleHeight)
-        val resizedBitmap = Bitmap.createBitmap(src, 0, 0, width, height, matrix, true)
-        return resizedBitmap
-    }
-
     // 카메라 실행
     private fun capture(){
         context?.also{
+            val file = ImageUtil.createImageFile(it)
+            currentPhotoFile = file
             val photoUri : Uri = FileProvider.getUriForFile(
                 it,
                 "com.ssafy.intagral.provider",
-                createImageFile()
+                file
             )
             val intent: Intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE).putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
             cameraLauncher.launch(intent)
@@ -307,25 +274,6 @@ class PhotoPicker : Fragment(), CoroutineScope {
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "image/*"
         galleryLauncher.launch(intent)
-    }
-
-    @Throws(IOException::class)
-    fun assetFilePath(context: Context, assetName: String?): String? {
-        val file = File(context.filesDir, assetName)
-        if (file.exists() && file.length() > 0) {
-            return file.absolutePath
-        }
-        context.assets.open(assetName!!).use { `is` ->
-            FileOutputStream(file).use { os ->
-                val buffer = ByteArray(4 * 1024)
-                var read: Int
-                while (`is`.read(buffer).also { read = it } != -1) {
-                    os.write(buffer, 0, read)
-                }
-                os.flush()
-            }
-            return file.absolutePath
-        }
     }
 
     // object detection
