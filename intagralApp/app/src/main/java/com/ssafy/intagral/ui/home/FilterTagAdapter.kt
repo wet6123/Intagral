@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.ssafy.intagral.R
@@ -14,7 +15,7 @@ class FilterTagAdapter(context: Context, val filterTagList: MutableList<FilterTa
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterTagViewHolder {
         val inflater = LayoutInflater.from(parent.context)
-        val itemView = inflater.inflate(R.layout.fragment_filtertag_item, parent, false)
+        val itemView = inflater.inflate(R.layout.view_filtertag_item, parent, false)
         return FilterTagViewHolder(itemView)
     }
 
