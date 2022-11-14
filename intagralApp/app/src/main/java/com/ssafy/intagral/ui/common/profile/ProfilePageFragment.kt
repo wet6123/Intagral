@@ -10,7 +10,6 @@ import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
 import com.ssafy.intagral.ui.common.post.PostListFragment
-
 import com.ssafy.intagral.viewmodel.PostListViewModel
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 
@@ -44,7 +43,7 @@ class ProfilePageFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         parentFragmentManager.findFragmentById(R.id.profile_detail)?.let {
-            parentFragmentManager.beginTransaction().remove(it).commit()
+            parentFragmentManager.beginTransaction().remove(it).commitAllowingStateLoss()
         }
     }
 }
