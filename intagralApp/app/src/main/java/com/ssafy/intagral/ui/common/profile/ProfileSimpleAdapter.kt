@@ -34,7 +34,6 @@ class ProfileSimpleAdapter(context: Context, val profileSimpleLists: MutableList
             bindProfileSimple(profileSimpleLists[position])
             itemView.findViewById<LinearLayout>(R.id.profile_simple_imgAndName).setOnClickListener{
                 if(it.context.javaClass.simpleName.equals(ActivityType.SearchActivity.toString())) {
-                    //TODO: search cnt++
                     val activity = it.context as SearchActivity
                     activity.changeActivity(1, profileSimpleLists[position])
                 }else if(it.context.javaClass.simpleName.equals(ActivityType.MainMenuActivity.toString())) {
