@@ -1,5 +1,6 @@
 package com.ssafy.intagral.viewmodel
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,6 +14,10 @@ import com.ssafy.intagral.data.service.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.text.SimpleDateFormat
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -46,8 +51,26 @@ class ProfileDetailViewModel @Inject constructor(private val hashtagService: Has
     }
 
     // TODO: profile image file upload request
-    fun editProfileImage(){
+    fun editProfileImage(filePath: String, imageBitmap: Bitmap){
         viewModelScope.launch {
+            val file = File(filePath, "${SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())}.jpeg")
+            FileOutputStream(file).use { out ->
+                imageBitmap.compress(Bitmap.CompressFormat.JPEG, 10, out)
+            }
+            var name: String? = null
+            profileDetail.value?.let {
+                name = it.name
+            }
+            if(name == null){
+                cancel()
+            }
+            val response = userService.updateProfileImg(file)
+            if(response.isSuccessful){
+                Log.d("RETROFIT /api/user/profile/image", "${file.name} 업로드 성공")
+                reloadProfileData(name!!)
+            }else{
+                Log.d("RETROFIT /api/user/profile/image", "응답 에러 : ${response.code()}")
+            }
         }
     }
 
