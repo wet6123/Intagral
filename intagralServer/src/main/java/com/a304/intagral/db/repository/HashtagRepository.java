@@ -13,7 +13,7 @@ public interface HashtagRepository extends JpaRepository<Hashtag, Long> {
 
     Optional<Hashtag> findByContent(String content);
 
-    @Query(value = "SELECT * FROM hashtag WHERE content LIKE CONCAT('%', :target, '%') ORDER BY CASE WHEN content = :target THEN 0 WHEN content LIKE CONCAT(:target, '%') THEN 1 WHEN content LIKE CONCAT('%', :target, '%') THEN 2 WHEN content `LIKE CONCAT('%', :target) THEN 3 ELSE 4 END", nativeQuery = true)
+    @Query(value = "SELECT * FROM hashtag WHERE content LIKE CONCAT('%', :target, '%') ORDER BY CASE WHEN content = :target THEN 0 WHEN content LIKE CONCAT(:target, '%') THEN 1 WHEN content LIKE CONCAT('%', :target, '%') THEN 2 WHEN content LIKE CONCAT('%', :target) THEN 3 ELSE 4 END", nativeQuery = true)
     List<Hashtag> findAllByContentContaining(String target);
 
     List<Hashtag> findTop5ByOrderBySearchCntDesc();
