@@ -16,9 +16,11 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentUserProfileBinding
 import com.ssafy.intagral.util.ImageUtil
+import com.ssafy.intagral.util.PreferenceUtil
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,7 +49,7 @@ class UserProfileDetailFragment: Fragment() {
         binding = FragmentUserProfileBinding.inflate(inflater, container, false).apply {
             //TODO: 본인인지 아닌지
             // profile null일 때
-            if (profileDetailViewModel.getProfileDetail().value?.name == "goodman") {
+            if (profileDetailViewModel.getProfileDetail().value?.name == IntagralApplication.prefs.nickname) {
                 profileDetailBtn.apply {
                     text = "setting"
                     setOnClickListener {
