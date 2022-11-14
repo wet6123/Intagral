@@ -34,4 +34,6 @@ interface PostRepository {
     @GET("/api/post/list")
     suspend fun getPostList(@Query("type") type: String, @Query("page") page: Int, @Query("q") q: String?): Response<PostListResponse>
 
+    @POST("/api/post/delete/{postId}")
+    suspend fun deletePost(@Path("postId") postId: Int): Response<ResponseBody>
 }
