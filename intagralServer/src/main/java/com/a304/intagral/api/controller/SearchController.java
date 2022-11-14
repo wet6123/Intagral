@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Slf4j
 @Schema(description = "검색 API")
@@ -65,6 +66,8 @@ public class SearchController {
         try {
             searchService.countUpHashtagSearchCnt(searchCntPostReq.getHashtag());
             return ResponseEntity.ok(BaseResponseBody.of(200, "success"));
+        } catch (NoSuchElementException e) {
+            return ResponseEntity.status(202).body(BaseResponseBody.of(202, e.getMessage()));
         } catch (RuntimeException e) {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
