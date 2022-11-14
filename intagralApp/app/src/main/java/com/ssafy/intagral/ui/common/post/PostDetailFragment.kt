@@ -10,9 +10,12 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.R
+import com.ssafy.intagral.data.model.ProfileSimpleItem
+import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.ViewPostDetailBinding
 import com.ssafy.intagral.viewmodel.PostDetailViewModel
 import com.ssafy.intagral.viewmodel.PostListViewModel
+import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 
 class PostDetailFragment: Fragment() {
 
@@ -20,7 +23,7 @@ class PostDetailFragment: Fragment() {
 
     private lateinit var binding: ViewPostDetailBinding
     private val postDetailViewModel: PostDetailViewModel by activityViewModels()
-    private val postListViewModel: PostListViewModel by activityViewModels()
+    private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +53,14 @@ class PostDetailFragment: Fragment() {
         }
         
         // TODO : 유저페이지로 이동하는 클릭 이벤트리스너
+        binding.include.profileSimpleImgAndName.setOnClickListener{
+            profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(
+                ProfileType.user,
+                postDetailViewModel.getPostDetail().value!!.writer,
+                postDetailViewModel.getPostDetail().value!!.isFollow,
+                postDetailViewModel.getPostDetail().value!!.imgPath
+            ))
+        }
 
         return binding.root
     }
