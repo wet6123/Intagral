@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.ProfileSimpleItem
@@ -34,7 +35,6 @@ class ProfileSimpleAdapter(context: Context, val profileSimpleLists: MutableList
             bindProfileSimple(profileSimpleLists[position])
             itemView.findViewById<LinearLayout>(R.id.profile_simple_imgAndName).setOnClickListener{
                 if(it.context.javaClass.simpleName.equals(ActivityType.SearchActivity.toString())) {
-                    //TODO: search cnt++
                     val activity = it.context as SearchActivity
                     activity.changeActivity(1, profileSimpleLists[position])
                 }else if(it.context.javaClass.simpleName.equals(ActivityType.MainMenuActivity.toString())) {
@@ -57,23 +57,27 @@ class ProfileSimpleAdapter(context: Context, val profileSimpleLists: MutableList
 class ProfileSimpleViewHolder(itemView: View):RecyclerView.ViewHolder(itemView) {
     fun bindProfileSimple(profileSimple: ProfileSimpleItem) {
         var imgPath: String = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
-        val followBtnText: String
+
         if(profileSimple.type == ProfileType.user) {
             //TODO: check when imgPath is null
             imgPath = profileSimple.imgPath ?:"https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
         } else {
             imgPath = "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/%EC%83%88+%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8.png"
         }
-
-        if(profileSimple.isFollow){
-            followBtnText = "Unfollow"
-        }else{
-            followBtnText = "Follow"
-        }
         Glide.with(itemView.context).load(imgPath)
             .into(itemView.findViewById(R.id.profile_simple_img))
+
+        var followBtn: Button = itemView.findViewById(R.id.profile_simple_followbtn)
+
+        if(profileSimple.name.equals(IntagralApplication.prefs.nickname)){
+            followBtn.visibility = View.GONE
+        } else if(profileSimple.isFollow){
+            followBtn.text = "Unfollow"
+        }else{
+            followBtn.text = "Follow"
+        }
+
         itemView.findViewById<TextView>(R.id.profile_simple_nickname).text = profileSimple.name
-        itemView.findViewById<Button>(R.id.profile_simple_followbtn).text = followBtnText
 
     }
 }

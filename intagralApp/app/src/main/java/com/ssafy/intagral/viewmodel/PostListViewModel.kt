@@ -69,9 +69,8 @@ class PostListViewModel @Inject constructor(private val postService: PostService
                     if(it.data.size == 0){
                         return@launch
                     }
-                    postList.value = it.data
                     pageInfo.state = StateInfo.CREATED
-
+                    postList.value = it.data
                 }
             }
         }

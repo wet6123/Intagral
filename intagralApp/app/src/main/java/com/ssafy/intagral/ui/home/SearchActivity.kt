@@ -45,10 +45,6 @@ class SearchActivity : AppCompatActivity() {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
             profileSimpleViewModel.search(query?: "")
-            query!!.let {
-                if(query.equals("")){ return@let }
-                profileSimpleViewModel.addSearchCnt(query)
-            }
             return true
         }
         override fun onQueryTextChange(newText: String?): Boolean {
@@ -60,6 +56,7 @@ class SearchActivity : AppCompatActivity() {
     fun changeActivity(index: Int, profileSimple: ProfileSimpleItem) {
         when(index) {
             1 -> {
+                profileSimpleViewModel.addSearchCnt(profileSimple.name)
                 var intent = Intent(this@SearchActivity, MainMenuActivity::class.java)
                 intent.putExtra("profileSimple", profileSimple)
                 setResult(RESULT_OK, intent)
