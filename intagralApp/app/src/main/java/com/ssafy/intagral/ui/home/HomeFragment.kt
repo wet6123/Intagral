@@ -50,6 +50,7 @@ class HomeFragment : Fragment() {
                 filterTagAdapter.onItemClickListener = object: FilterTagAdapter.OnItemClickListener {
                     override fun onClick(view:View, position: Int) {
                         postListViewModel.initPage(filterTagList[position].type.toString(), 1, filterTagList[position].tagContent)
+                        parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment()).commit()
                     }
                 }
                 filterTagRecyclerView.apply {
@@ -58,10 +59,6 @@ class HomeFragment : Fragment() {
                 }
             }
 
-        }
-
-        postListViewModel.getPostList().observe(viewLifecycleOwner) {
-            parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment()).commit()
         }
 
         return view
