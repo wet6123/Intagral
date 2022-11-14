@@ -40,4 +40,6 @@ class PostService {
         // 2. infinite scroll
         return postRepository.getPostList(type, page, q)
     }
+
+    suspend fun deletePost(postId: Int): Response<ResponseBody> = postRepository.deletePost(postId)
 }

@@ -8,9 +8,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.ViewPostDetailBinding
 import com.ssafy.intagral.viewmodel.PostDetailViewModel
+import com.ssafy.intagral.viewmodel.PostListViewModel
 
 class PostDetailFragment: Fragment() {
 
@@ -18,6 +20,7 @@ class PostDetailFragment: Fragment() {
 
     private lateinit var binding: ViewPostDetailBinding
     private val postDetailViewModel: PostDetailViewModel by activityViewModels()
+    private val postListViewModel: PostListViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +105,8 @@ class PostDetailFragment: Fragment() {
         requireActivity().menuInflater.inflate(R.menu.post_detail_menu, menu)
 
         // TODO : 내가 아닐때만 false
-        menu.findItem(R.id.post_menu_item_delete).isVisible = false
+        menu.findItem(R.id.post_menu_item_delete).isVisible = postDetailViewModel.getPostDetail().value!!.writer.equals(IntagralApplication.prefs.nickname)
+        menu.findItem(R.id.post_menu_item_report).isVisible = !postDetailViewModel.getPostDetail().value!!.writer.equals(IntagralApplication.prefs.nickname)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
@@ -131,11 +135,13 @@ class PostDetailFragment: Fragment() {
                     .setPositiveButton("네"
                     ) { _, _ ->
                         // TODO : delete 요청
+                        postDetailViewModel.deletePost(paramPostId!!)
                         Toast.makeText(
                             requireContext(),
-                            "$paramPostId 번 게시글 신고",
+                            "$paramPostId 번 게시글 삭제",
                             Toast.LENGTH_SHORT
                         ).show()
+                        requireActivity().supportFragmentManager.popBackStack()
                     }
                     .setNegativeButton("아니요"
                     ) { _, _ -> }.create().show()
