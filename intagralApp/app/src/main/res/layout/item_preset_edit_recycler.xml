@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_preset_edit_recycler"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_margin="14dp"
     android:orientation="vertical">
 
     <TextView
@@ -12,12 +14,14 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="default"
+        android:textColor="@color/black"
         android:textSize="24sp" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/preset_edit_tag_chip_group"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_marginStart="8dp"
         android:layout_weight="1">
 
     </com.google.android.material.chip.ChipGroup>
@@ -27,15 +31,31 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:orientation="horizontal"
+        android:gravity="bottom"
         android:layout_gravity="end">
 
-        <EditText
+<!--        <EditText-->
+<!--            android:id="@+id/tag_input"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:ems="6"-->
+<!--            android:inputType="textPersonName"-->
+<!--            android:text="tag" />-->
+
+        <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/tag_input"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:ems="6"
-            android:inputType="textPersonName"
-            android:text="tag" />
+            app:boxStrokeColor="@color/black"
+            android:textColorHint="@color/black">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:layout_width="200dp"
+                android:layout_height="match_parent"
+                android:background="#00000000"
+                android:textColor="@color/black"
+                android:hint="태그 입력" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/tag_add_button"
