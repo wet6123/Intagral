@@ -31,6 +31,9 @@ class PostService {
         for(tag in tagList){
             hashtags.add(MultipartBody.Part.createFormData("hashtags", tag))
         }
+        if(hashtags.isEmpty()){
+            hashtags.add(MultipartBody.Part.createFormData("hashtags", ""))
+        }
         return postRepository.publishPost(imageFile, hashtags)
     }
 
