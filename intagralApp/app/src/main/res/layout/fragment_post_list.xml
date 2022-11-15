@@ -8,7 +8,9 @@
             android:id="@+id/post_list_recycler_view"
             android:background="@color/design_default_color_primary_variant"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
         </androidx.recyclerview.widget.RecyclerView>
