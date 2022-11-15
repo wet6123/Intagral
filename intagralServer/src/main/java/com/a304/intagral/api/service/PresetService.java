@@ -17,4 +17,6 @@ public interface PresetService {
     void addPreset(Long userId, PresetAddPostReq presetAddPostReq);
 
     void deletePreset(Long userId, PresetDeletePostReq presetDeletePostReq);
+
+    List<String> getKorClsName(List<String> classList);
 }
