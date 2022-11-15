@@ -92,4 +92,17 @@ public class PresetServiceImpl implements PresetService {
         Hashtag hashtag = hashtagRepository.findByContent(presetDeletePostReq.getData()).get();
         hashtagPresetRepository.deleteByUserIdAndHashtagIdAndClsTargetId(userId.intValue(), hashtag.getId().intValue(), classificationTarget.getId().intValue());
     }
+
+    @Override
+    public List<String> getKorClsName(List<String> classList) {
+
+        List<ClassificationTarget> allClsTarget = classificationTargetRepository.findByTargetNameIn(classList);
+
+        List<String> list = new ArrayList<>();
+        for(ClassificationTarget classificationTarget : allClsTarget){
+            list.add(classificationTarget.getTargetNameKor());
+        }
+
+        return list;
+    }
 }
