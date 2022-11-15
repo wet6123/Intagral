@@ -16,7 +16,15 @@
         android:layout_weight="0"
         android:text="프리셋 설정"
         android:gravity="center"
+        android:textColor="@color/black"
+        android:layout_marginVertical="8dp"
         android:textSize="34sp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_weight="0"
+        android:background="@color/black" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/preset_edit_recycler_list"

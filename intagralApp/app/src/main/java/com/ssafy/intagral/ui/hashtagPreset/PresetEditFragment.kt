@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -92,19 +91,20 @@ class PresetEditFragment : Fragment() {
                         chip.setOnCloseIconClickListener{
                             it as Chip
                             presetViewModel.removeTag(this.className, it.text.toString())
-                            Toast.makeText(requireContext(), "${it.text} remove!!", Toast.LENGTH_SHORT).show()
                         }
                         binding.presetEditTagChipGroup.addView(chip)
                     }
                     binding.tagAddButton.setOnClickListener {
                         val regex = """\s""".toRegex()
-                        val tag : String = regex.replace(binding.tagInput.text.toString(), "")
+                        val tag : String = regex.replace(binding.tagInput.editText!!.text.toString(), "")
 
                         if(!tag.equals("")){
                             presetViewModel.addTag(this.className, tag)
-                            binding.tagInput.setText("")
+                            binding.tagInput.editText!!.setText("")
                         }else{
-                            Toast.makeText(requireContext(), "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
+                            binding.tagInput.error = null
+                            binding.tagInput.isErrorEnabled = false
+                            binding.tagInput.error = "태그를 입력해주세요"
                         }
                     }
                 }
