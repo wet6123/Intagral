@@ -52,9 +52,7 @@ class PostListViewModel @Inject constructor(private val postService: PostService
                     if(it.data.size == 0){
                         return@launch
                     }
-                    var arr: ArrayList<PostItem> = postList.value!!
-                    arr!!.addAll(it.data)
-                    postList.value = arr
+                    postList.value = it.data
                 }
             }
         }
