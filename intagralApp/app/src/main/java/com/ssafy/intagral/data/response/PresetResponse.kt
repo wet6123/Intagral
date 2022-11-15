@@ -10,6 +10,10 @@ data class PresetResponse(
     val classList: ArrayList<String>,
 
     @Expose
+    @SerializedName(value = "classKor")
+    val classListKor: Map<String, String>,
+
+    @Expose
     @SerializedName(value = "data")
     val data: HashMap<String, ArrayList<String>>,
 )
