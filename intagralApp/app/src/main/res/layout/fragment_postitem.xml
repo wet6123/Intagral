@@ -9,11 +9,11 @@
         android:id="@+id/dummyPostItem"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        android:adjustViewBounds="true"
         app:srcCompat="@drawable/ic_launcher_foreground"
-        android:scaleType="centerInside"/>
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
