@@ -25,7 +25,7 @@ import java.util.NoSuchElementException;
 public class PostServiceImpl implements PostService {
 
 
-    int numOfPosts = 21;
+    int numOfPosts = 20;
 
     @Autowired
     PostRepository postRepository;
