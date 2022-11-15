@@ -94,15 +94,15 @@ public class PresetServiceImpl implements PresetService {
     }
 
     @Override
-    public List<String> getKorClsName(List<String> classList) {
+    public Map<String, String> getKorClsName(List<String> classList) {
 
         List<ClassificationTarget> allClsTarget = classificationTargetRepository.findByTargetNameIn(classList);
 
-        List<String> list = new ArrayList<>();
+        Map<String, String> map = new HashMap<>();
         for(ClassificationTarget classificationTarget : allClsTarget){
-            list.add(classificationTarget.getTargetNameKor());
+            map.put(classificationTarget.getTargetName(), classificationTarget.getTargetNameKor());
         }
 
-        return list;
+        return map;
     }
 }

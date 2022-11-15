@@ -18,5 +18,5 @@ public interface PresetService {
 
     void deletePreset(Long userId, PresetDeletePostReq presetDeletePostReq);
 
-    List<String> getKorClsName(List<String> classList);
+    Map<String, String> getKorClsName(List<String> classList);
 }
