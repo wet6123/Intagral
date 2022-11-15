@@ -5,12 +5,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.bumptech.glide.Glide
+import com.squareup.picasso.Picasso
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.PostItem
 import com.ssafy.intagral.databinding.FragmentPostListBinding
@@ -34,7 +37,10 @@ class PostListFragment: Fragment() {
                 postAdapter = PostAdapter(it, postList)
                 postListRecyclerView.apply {
                     adapter = postAdapter
-                    layoutManager = GridLayoutManager(it, 3)
+//                    layoutManager = GridLayoutManager(it, 3)
+                    layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL).apply {
+                        gapStrategy = StaggeredGridLayoutManager.GAP_HANDLING_MOVE_ITEMS_BETWEEN_SPANS
+                    }
                     addOnScrollListener(object : RecyclerView.OnScrollListener() {
                         override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                             super.onScrolled(recyclerView, dx, dy)
@@ -43,16 +49,20 @@ class PostListFragment: Fragment() {
                             }
                         }
                     })
+
+                    setItemViewCacheSize(300)
+                    itemAnimator = null
                 }
             }
         }
+        postAdapter.notifyDataSetChanged()
 
         postListViewModel.getPostList().observe(viewLifecycleOwner){
             it?.also{
                 if(postListViewModel.getPageInfo().state == PostListViewModel.StateInfo.INIT){ return@also }
-                postList.clear()
+                var start = postList.size
                 postList.addAll(it)
-                postAdapter.notifyDataSetChanged()
+                postAdapter.notifyItemRangeInserted(start, it.size)
             }
         }
 
@@ -84,6 +94,7 @@ class PostListFragment: Fragment() {
                             PostDetailFragment.newInstance(postList[position].postId)
                         ).commit()
                 }
+
             }
 
         }
@@ -95,8 +106,9 @@ class PostListFragment: Fragment() {
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindPost(post: PostItem) {
-            //TODO: Glide Error 찾아보기
-            Glide.with(itemView.context).load(post.imgPath).into(itemView.findViewById(R.id.dummyPostItem)) //R.id.~
+            //TODO: resize, placeholder
+            Picasso.get().load(post.imgPath).placeholder(R.drawable.intagral_logo).into(itemView.findViewById(R.id.dummyPostItem) as ImageView)
+
         }
     }
 }
