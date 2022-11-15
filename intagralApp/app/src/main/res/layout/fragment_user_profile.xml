@@ -89,7 +89,7 @@
         </LinearLayout>
     </RelativeLayout>
     <androidx.appcompat.widget.LinearLayoutCompat
-        android:background="@color/teal_700"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="left"
