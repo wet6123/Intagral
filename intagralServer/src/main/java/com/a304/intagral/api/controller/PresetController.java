@@ -48,6 +48,7 @@ public class PresetController {
         Long userId = Long.valueOf(userDetails.getUsername());
         Map<String, List<String>> presetList = null;
         List<String> classList = new ArrayList<>();
+        List<String> classKorList = new ArrayList<>();
         try {
             // 리스트 가져오기
             if("all".equals(type)){
@@ -56,9 +57,10 @@ public class PresetController {
                 classList.add("default");
                 classList.add(q);
             }
+            classKorList = presetService.getKorClsName(classList);
             presetList = presetService.getAllPreset(userId, classList);
 
-            return ResponseEntity.ok(PresetListRes.of(200, "success", classList, presetList));
+            return ResponseEntity.ok(PresetListRes.of(200, "success", classList, classKorList, presetList));
         } catch(RuntimeException e) {
             return ResponseEntity.status(500).body(BaseResponseBody.of(500, e.getMessage()));
         }
