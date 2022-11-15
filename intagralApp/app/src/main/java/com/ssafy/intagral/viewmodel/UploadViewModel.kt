@@ -30,7 +30,8 @@ class UploadViewModel @Inject constructor(private val service: PostService): Vie
         PHOTO_PICKER,
         TAG_RESULT,
         PREVIEW,
-        COMPLETE
+        COMPLETE,
+        UPLOADING,
     }
 
     fun getImageBitmap(): MutableLiveData<Bitmap> {
@@ -43,6 +44,7 @@ class UploadViewModel @Inject constructor(private val service: PostService): Vie
 
     fun publishPost(filePath: String){
         viewModelScope.launch {
+            uploadStep.value = UploadStep.UPLOADING
             val file = File(filePath, "${SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())}.jpeg")
             FileOutputStream(file).use { out ->
                 imageBitmap.value?.let { bitmap ->
