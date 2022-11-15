@@ -53,6 +53,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
 
     // 프로그레스 바
     private lateinit var progressDialog: Dialog
+    private lateinit var progressBar: View
 
     private lateinit var binding: FragmentPhotoPickerBinding
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
@@ -68,7 +69,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
         job = Job()
 
         // 프로그레스 다이얼로그
-        val progressBar = layoutInflater.inflate(R.layout.view_progress_model, null)
+        progressBar = layoutInflater.inflate(R.layout.view_progress_model, null)
         progressDialog = Dialog(requireContext())
         progressDialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT)) // 배경을 투명하게
         progressDialog.setContentView(progressBar) // ProgressBar 위젯 생성
@@ -172,6 +173,8 @@ class PhotoPicker : Fragment(), CoroutineScope {
                 UploadViewModel.UploadStep.PHOTO_PICKER -> {
                     uploadViewModel.getDetectedClassList().value = null
                     uploadViewModel.getTagMap().value = null
+                    progressDialog.dismiss()
+                    (progressBar.findViewById(R.id.model_process_cancel_button) as Button).visibility = View.VISIBLE
                 }
                 UploadViewModel.UploadStep.COMPLETE -> {
                     requireActivity()
@@ -181,6 +184,12 @@ class PhotoPicker : Fragment(), CoroutineScope {
                             R.id.menu_frame_layout,
                             UploadCompleteFragment.newInstance()
                         ).commit()
+                    progressDialog.dismiss()
+                    (progressBar.findViewById(R.id.model_process_cancel_button) as Button).visibility = View.VISIBLE
+                }
+                UploadViewModel.UploadStep.UPLOADING -> {
+                    (progressBar.findViewById(R.id.model_process_cancel_button) as Button).visibility = View.GONE
+                    progressDialog.show()
                 }
                 else -> {
 
