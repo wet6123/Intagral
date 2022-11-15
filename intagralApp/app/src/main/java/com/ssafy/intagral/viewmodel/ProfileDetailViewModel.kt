@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
+import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.model.ProfileType
@@ -133,6 +134,14 @@ class ProfileDetailViewModel @Inject constructor(private val hashtagService: Has
             val profile = userService.getUserProfile(name)
             profile?.let {
                 profileDetail.value = it
+            }
+        }
+        viewModelScope.launch {
+           var response = userService.getMyInfo()
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    IntagralApplication.prefs.nickname = it.nickname
+                }
             }
         }
     }
