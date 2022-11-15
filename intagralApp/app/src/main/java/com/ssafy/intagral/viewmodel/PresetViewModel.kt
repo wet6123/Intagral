@@ -58,6 +58,7 @@ class PresetViewModel @Inject constructor(private val service: PresetService): V
                         result.add(
                             PresetClassItem(
                             className,
+                            it.classListKor[className]!!,
                             it.data[className]!!
                         )
                         )
