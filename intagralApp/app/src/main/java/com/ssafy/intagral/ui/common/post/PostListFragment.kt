@@ -50,6 +50,7 @@ class PostListFragment: Fragment() {
         postListViewModel.getPostList().observe(viewLifecycleOwner){
             it?.also{
                 if(postListViewModel.getPageInfo().state == PostListViewModel.StateInfo.INIT){ return@also }
+                postList.clear()
                 postList.addAll(it)
                 postAdapter.notifyDataSetChanged()
             }
