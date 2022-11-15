@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import springfox.documentation.annotations.ApiIgnore;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +49,7 @@ public class PresetController {
         Long userId = Long.valueOf(userDetails.getUsername());
         Map<String, List<String>> presetList = null;
         List<String> classList = new ArrayList<>();
-        List<String> classKorList = new ArrayList<>();
+        Map<String, String> classKorList = new HashMap<>();
         try {
             // 리스트 가져오기
             if("all".equals(type)){
