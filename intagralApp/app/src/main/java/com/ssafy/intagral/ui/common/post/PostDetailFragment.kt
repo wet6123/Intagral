@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.R
@@ -16,6 +17,9 @@ import com.ssafy.intagral.databinding.ViewPostDetailBinding
 import com.ssafy.intagral.viewmodel.PostDetailViewModel
 import com.ssafy.intagral.viewmodel.PostListViewModel
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.Main
+import kotlin.coroutines.coroutineContext
 
 class PostDetailFragment: Fragment() {
 
@@ -24,6 +28,7 @@ class PostDetailFragment: Fragment() {
     private lateinit var binding: ViewPostDetailBinding
     private val postDetailViewModel: PostDetailViewModel by activityViewModels()
     private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
+    private val postListViewModel: PostListViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -149,13 +154,9 @@ class PostDetailFragment: Fragment() {
                     .setMessage("정말로 삭제하시겠습니까?")
                     .setPositiveButton("네"
                     ) { _, _ ->
-                        // TODO : delete 요청
+                        // TODO : delete 비동기 요청 처리하기
                         postDetailViewModel.deletePost(paramPostId!!)
-                        Toast.makeText(
-                            requireContext(),
-                            "$paramPostId 번 게시글 삭제",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                        postListViewModel.initPage(postListViewModel.getPageInfo().type,1,postListViewModel.getPageInfo().q)
                         requireActivity().supportFragmentManager.popBackStack()
                     }
                     .setNegativeButton("아니요"

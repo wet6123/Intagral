@@ -52,7 +52,9 @@ class PostListViewModel @Inject constructor(private val postService: PostService
                     if(it.data.size == 0){
                         return@launch
                     }
-                    postList.value = it.data
+                    var arr: ArrayList<PostItem> = postList.value!!
+                    arr!!.addAll(it.data)
+                    postList.value = arr
                 }
             }
         }
@@ -61,6 +63,7 @@ class PostListViewModel @Inject constructor(private val postService: PostService
     fun initPage(type: String, page: Int, q: String?) {
         pageInfo = PageInfo(type, page, true, StateInfo.INIT, q)
         postList.value = ArrayList()
+
         viewModelScope.launch {
             val response = postService.getPostList(type, page, q)
             if(response.isSuccessful) {
