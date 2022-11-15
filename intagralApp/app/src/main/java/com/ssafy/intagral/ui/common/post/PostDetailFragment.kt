@@ -78,10 +78,14 @@ class PostDetailFragment: Fragment() {
                     .into(binding.include.profileSimpleImg)
                 binding.include.profileSimpleNickname.text = it.writer
 
-                if(it.isFollow){
-                    binding.include.profileSimpleFollowbtn.text = "UNFOLLOW"
-                } else {
-                    binding.include.profileSimpleFollowbtn.text = "FOLLOW"
+                if(IntagralApplication.prefs.nickname.equals(postDetailViewModel.getPostDetail().value!!.writer)){
+                    binding.include.profileSimpleFollowbtn.visibility = View.GONE
+                }else{
+                    if(it.isFollow){
+                        binding.include.profileSimpleFollowbtn.text = "UNFOLLOW"
+                    } else {
+                        binding.include.profileSimpleFollowbtn.text = "FOLLOW"
+                    }
                 }
 
                 Glide.with(requireContext())
