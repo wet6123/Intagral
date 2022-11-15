@@ -51,6 +51,7 @@ class PostListFragment: Fragment() {
                     })
 
                     setItemViewCacheSize(300)
+                    itemAnimator = null
                 }
             }
         }
@@ -59,9 +60,9 @@ class PostListFragment: Fragment() {
         postListViewModel.getPostList().observe(viewLifecycleOwner){
             it?.also{
                 if(postListViewModel.getPageInfo().state == PostListViewModel.StateInfo.INIT){ return@also }
-                postList.clear()
+                var start = postList.size
                 postList.addAll(it)
-                postAdapter.notifyDataSetChanged()
+                postAdapter.notifyItemRangeInserted(start, it.size)
             }
         }
 
@@ -105,10 +106,8 @@ class PostListFragment: Fragment() {
 
     inner class PostViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         fun bindPost(post: PostItem) {
-            //TODO: Glide Error 찾아보기
-//            Glide.with(itemView.context).load(post.imgPath).placeholder(R.drawable.intagral_logo).into(itemView.findViewById(R.id.dummyPostItem))
-//            Picasso.get().load(post.imgPath).resize(600,600).centerInside().into(itemView.findViewById(R.id.dummyPostItem) as ImageView)
-            Picasso.get().load(post.imgPath).resize(600,600).centerInside().placeholder(R.drawable.intagral_logo).into(itemView.findViewById(R.id.dummyPostItem) as ImageView)
+            //TODO: resize, placeholder
+            Picasso.get().load(post.imgPath).placeholder(R.drawable.intagral_logo).into(itemView.findViewById(R.id.dummyPostItem) as ImageView)
 
         }
     }
