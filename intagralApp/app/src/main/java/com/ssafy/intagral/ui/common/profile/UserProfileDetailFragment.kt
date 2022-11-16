@@ -51,11 +51,11 @@ class UserProfileDetailFragment: Fragment() {
             // profile null일 때
             if (profileDetailViewModel.getProfileDetail().value?.name == IntagralApplication.prefs.nickname) {
                 profileDetailBtn.apply {
-                    text = "setting"
+                    text = "프로필 수정"
                     setOnClickListener {
-                        if (this.text == "setting") {
+                        if (this.text == "프로필 수정") {
                             profileDetailViewModel.getEditStatus().value = ProfileDetailViewModel.EditStatus.ACTIVE
-                        } else if (this.text == "done") {
+                        } else if (this.text == "수정 완료") {
                             val regex = """\s""".toRegex()
                             var name = inputNickname.editText!!.text.toString()
                             name = regex.replace(name, "")
@@ -144,7 +144,7 @@ class UserProfileDetailFragment: Fragment() {
                         textLayout.error = "닉네임 중복"
                     }
                     ProfileDetailViewModel.EditStatus.INAVTIVE -> {
-                        profileDetailBtn.text = "setting"
+                        profileDetailBtn.text = "프로필 수정"
                         profileInfoViewContainer.visibility = View.VISIBLE
                         profileInfoEditContainer.visibility = View.GONE
                     }
@@ -153,7 +153,7 @@ class UserProfileDetailFragment: Fragment() {
                             ProfileDetailViewModel.EditStatus.INAVTIVE
                     }
                     ProfileDetailViewModel.EditStatus.ACTIVE -> {
-                        profileDetailBtn.text = "done"
+                        profileDetailBtn.text = "수정 완료"
                         profileInfoViewContainer.visibility = View.GONE
                         profileInfoEditContainer.visibility = View.VISIBLE
 
