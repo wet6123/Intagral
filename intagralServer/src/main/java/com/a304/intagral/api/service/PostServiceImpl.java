@@ -5,6 +5,7 @@ import com.a304.intagral.api.response.PostAddPostRes;
 import com.a304.intagral.api.response.PostLikePostRes;
 import com.a304.intagral.common.response.FileDetail;
 import com.a304.intagral.common.util.AmazonS3ResourceStorageUtil;
+import com.a304.intagral.common.util.MultipartUtil;
 import com.a304.intagral.db.entity.*;
 import com.a304.intagral.db.repository.*;
 import com.a304.intagral.dto.PostDataDto;
@@ -271,7 +272,12 @@ public class PostServiceImpl implements PostService {
     public PostAddPostRes postAdd(Long userId, PostAddPostReq postAddPostReq) {
         MultipartFile multipartFile = postAddPostReq.getImage();
         FileDetail fileDetail = FileDetail.multipartOf(multipartFile);
-        String resourceUrl = amazonS3ResourceStorageUtil.store(fileDetail.getPath(), multipartFile);
+        // resizing
+        String fileName = fileDetail.getName();
+        String fileFormatName = fileDetail.getFormat();
+        MultipartFile resizedFile = MultipartUtil.resizeImage(fileName, fileFormatName, multipartFile, 768);
+
+        String resourceUrl = amazonS3ResourceStorageUtil.store(fileDetail.getPath(), resizedFile);
 
         Post post = Post.builder()
                 .userId(userId.intValue())
