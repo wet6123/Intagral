@@ -6,6 +6,7 @@ import com.a304.intagral.api.response.TokenRes;
 import com.a304.intagral.common.response.FileDetail;
 import com.a304.intagral.common.util.AmazonS3ResourceStorageUtil;
 import com.a304.intagral.common.util.JwtTokenUtil;
+import com.a304.intagral.common.util.MultipartUtil;
 import com.a304.intagral.db.dto.HashtagProfileDto;
 import com.a304.intagral.db.dto.UserMyProfileDto;
 import com.a304.intagral.db.dto.UserProfileDto;
@@ -174,7 +175,12 @@ public class UserServiceImpl implements UserService {
     public void updateProfileImage(Long userId, UserProfileImageUpdatePostReq userProfileImageUpdatePostReq) {
         MultipartFile multipartFile = userProfileImageUpdatePostReq.getData();
         FileDetail fileDetail = FileDetail.multipartOf(multipartFile);
-        String resourceUrl = amazonS3ResourceStorageUtil.store(fileDetail.getPath(), multipartFile);
+        // resizing
+        String fileName = fileDetail.getName();
+        String fileFormatName = fileDetail.getFormat();
+        MultipartFile resizedFile = MultipartUtil.resizeImage(fileName, fileFormatName, multipartFile, 768);
+
+        String resourceUrl = amazonS3ResourceStorageUtil.store(fileDetail.getPath(), resizedFile);
 
         User user = userRepository.findById(userId).get();
         user.setProfileImgPath(resourceUrl);
