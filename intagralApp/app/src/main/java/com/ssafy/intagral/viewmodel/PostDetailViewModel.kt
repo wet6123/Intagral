@@ -8,6 +8,7 @@ import com.ssafy.intagral.data.response.PostDetailResponse
 import com.ssafy.intagral.data.service.FollowService
 import com.ssafy.intagral.data.service.PostService
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -58,14 +59,16 @@ class PostDetailViewModel @Inject constructor(private val postService: PostServi
         }
     }
 
-    fun deletePost(postId: Int){
-        viewModelScope.launch {
+    suspend fun deletePost(postId: Int): Int{
+        return viewModelScope.async {
             val response = postService.deletePost(postId)
             if(response.isSuccessful){
                 //TODO
+                return@async postId
             } else {
                 Log.d("RETROFIT /api/post/delete", "응답 에러 : ${response.code()}")
+                return@async -1
             }
-        }
+        }.await()
     }
 }
