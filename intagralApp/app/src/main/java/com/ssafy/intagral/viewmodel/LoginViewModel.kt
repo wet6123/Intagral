@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
+import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.data.service.UserService
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -46,6 +47,8 @@ class LoginViewModel @Inject constructor(private val userService: UserService): 
             if(response.isSuccessful){
                 isLogin.value = false
             } else{
+                isLogin.value = false
+                IntagralApplication.prefs.token == "EXPIRED"
                 Log.d("RETROFIT /api/user/logout", "응답 에러 : ${response.code()}")
             }
         }
