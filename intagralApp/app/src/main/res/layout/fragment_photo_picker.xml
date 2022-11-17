@@ -16,7 +16,7 @@
         android:adjustViewBounds="true"
         android:layout_margin="50dp"
         android:layout_weight="1"
-        android:src="@drawable/intagral_logo"/>
+        android:src="@drawable/choose_image"/>
 
     <Button
         android:id="@+id/button"
