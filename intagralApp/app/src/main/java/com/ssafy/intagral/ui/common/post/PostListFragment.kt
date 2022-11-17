@@ -58,11 +58,34 @@ class PostListFragment: Fragment() {
             it?.also{
                 if(postListViewModel.getPageInfo().state == PostListViewModel.StateInfo.INIT){ return@also }
                 var start = postList.size
-                postList.addAll(it)
-                postAdapter.notifyItemRangeInserted(start, it.size)
+                var num = 0
+
+                for(postItem in it){
+                    if(postList.find {
+                        it.postId == postItem.postId
+                    } == null){
+                        postList.add(postItem)
+                        num++
+                    }
+                }
+                postAdapter.notifyItemRangeInserted(start, num)
             }
         }
 
+        postListViewModel.getDeletedPostId().observe(
+            viewLifecycleOwner
+        ){ deletedPostId ->
+            var deletedItem = postList.find {
+                it.postId == deletedPostId
+            }
+            if(deletedItem != null){
+                var deletedIndex = postList.indexOf(deletedItem)
+                postList.removeAt(deletedIndex)
+                postAdapter.notifyItemRemoved(deletedIndex)
+                postAdapter.notifyItemRangeChanged(deletedIndex, postList.size)
+                postListViewModel.reloadRecentPage()
+            }
+        }
         return binding.root
     }
 
