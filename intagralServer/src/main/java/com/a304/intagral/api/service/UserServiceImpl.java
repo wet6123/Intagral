@@ -144,7 +144,7 @@ public class UserServiceImpl implements UserService {
         Long followerCnt = userFollowRepository.countByUserIdTo(targetUserId);
         Long followingCnt = userFollowRepository.countByUserIdFrom(targetUserId);
         Long hashtagFollowCnt = hashtagFollowRepository.countByUserId(targetUserId);
-        Long isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(userId.intValue(), targetUserId);
+        boolean isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(targetUserId, userId.intValue()) != 0;
 
         UserProfileDto userProfileDto = UserProfileDto.builder()
                 .nickname(nickname)
@@ -153,7 +153,7 @@ public class UserServiceImpl implements UserService {
                 .following(followingCnt)
                 .follower(followerCnt)
                 .hashtag(hashtagFollowCnt)
-                .isFollow(isFollow != 0)
+                .isFollow(isFollow)
                 .build();
 
         return userProfileDto;
