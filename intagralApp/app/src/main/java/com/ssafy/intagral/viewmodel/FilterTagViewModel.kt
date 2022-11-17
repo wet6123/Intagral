@@ -12,6 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class FilterTagViewModel @Inject constructor(private val hashtagService: HashtagService): ViewModel(){
     private val filterTagList: MutableLiveData<ArrayList<FilterTagItem>> = MutableLiveData()
+    private var filterTagSelected: MutableLiveData<Int> = MutableLiveData(0)
 
     fun getFilterTagList(): MutableLiveData<ArrayList<FilterTagItem>> = filterTagList
 
@@ -21,4 +22,9 @@ class FilterTagViewModel @Inject constructor(private val hashtagService: Hashtag
         }
     }
 
+    fun getFilterTagSelected() = filterTagSelected
+
+    fun selectFilterTag(index: Int) {
+        filterTagSelected.value = index
+    }
 }

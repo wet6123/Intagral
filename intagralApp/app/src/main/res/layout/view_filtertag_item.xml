@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<Button xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.appcompat.widget.AppCompatButton xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
+android:background="@drawable/filtertag_button_style"
 android:layout_width="wrap_content"
 android:layout_height="45dp"
 android:id="@+id/filter_tag_item"
 android:layout_marginLeft="5dp"
 android:layout_marginTop="5dp"
 android:layout_marginRight="5dp"
-    android:layout_marginBottom="5dp"
+android:layout_marginBottom="5dp"
 android:text="dummy_filter"
 android:textSize="16sp"
+android:textColor="@drawable/filtertag_text_style"
 app:layout_constraintEnd_toEndOf="@id/filter_tag_item"
 app:layout_constraintHorizontal_bias="0.0"
 app:layout_constraintStart_toStartOf="parent"
-app:layout_constraintTop_toTopOf="parent"
-app:srcCompat="@drawable/ic_launcher_foreground" />
+app:layout_constraintTop_toTopOf="parent"/>
