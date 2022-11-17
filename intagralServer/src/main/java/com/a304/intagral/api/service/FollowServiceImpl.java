@@ -94,7 +94,7 @@ public class FollowServiceImpl implements FollowService {
 
         List<FollowUserGetDto> followList = new ArrayList<>();
         for (User user : userList) {
-            boolean isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(userId.intValue(), user.getId().intValue()) != 0;
+            boolean isFollow = userFollowRepository.countByUserIdToAndUserIdFrom(user.getId().intValue(), userId.intValue()) != 0;
             FollowUserGetDto followUserGetDto = FollowUserGetDto.builder()
                     .imagePath(user.getProfileImgPath())
                     .nickname(user.getNickname())
