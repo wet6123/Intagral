@@ -155,9 +155,13 @@ class PostDetailFragment: Fragment() {
                     .setPositiveButton("네"
                     ) { _, _ ->
                         // TODO : delete 비동기 요청 처리하기
-                        postDetailViewModel.deletePost(paramPostId!!)
-                        postListViewModel.initPage(postListViewModel.getPageInfo().type,1,postListViewModel.getPageInfo().q)
-                        requireActivity().supportFragmentManager.popBackStack()
+                        CoroutineScope(Main).launch{
+                            var result = postDetailViewModel.deletePost(paramPostId!!)
+                            if(result != -1){
+                                postListViewModel.getDeletedPostId().value = paramPostId
+                            }
+                            requireActivity().supportFragmentManager.popBackStack()
+                        }
                     }
                     .setNegativeButton("아니요"
                     ) { _, _ -> }.create().show()
