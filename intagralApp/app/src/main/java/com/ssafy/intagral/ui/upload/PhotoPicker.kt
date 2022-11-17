@@ -318,7 +318,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
     // model output is of size 25200*(num_of_class+5)
     private val mOutputRow = 25200 // as decided by the YOLOv5 model for input image of size 640*640
 
-    private val mOutputColumn = 85 // left, top, right, bottom, score and 80 class probability
+//    private val mOutputColumn = 85 // left, top, right, bottom, score and 80 class probability
 
     private val mThreshold = 0.10f // score above which a detection is generated
 
@@ -326,6 +326,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
     // parse detection score
     private fun parseScore(outputs: FloatArray) : ArrayList<String>{
         val classTargetList = (requireActivity() as MainMenuActivity).classList
+        val mOutputColumn = classTargetList.size + 5
         val detectedSet: HashSet<String> = HashSet()
         detectedSet.add("default")
         for (i in 0 until mOutputRow){
@@ -344,6 +345,7 @@ class PhotoPicker : Fragment(), CoroutineScope {
             }
         }
 
+        println(Arrays.toString(ArrayList(detectedSet).toArray()))
         return ArrayList(detectedSet)
     }
 

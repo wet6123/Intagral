@@ -68,10 +68,10 @@ class MainMenuActivity : AppCompatActivity() {
             })
 
         // asset init
-        mModule = LiteModuleLoader.load(assetFilePath(this, "best.opti.ptl"))
+        mModule = LiteModuleLoader.load(assetFilePath(this, "bestV2.opti.ptl"))
         classList = arrayListOf()
-        val br = BufferedReader(InputStreamReader(assets.open("classes.txt")))
-        while (br.readLine().also{ classList.add(it)} != null) {}
+        val br = BufferedReader(InputStreamReader(assets.open("classesV2.txt")))
+        while (br.readLine().also{ if(it != null) classList.add(it)} != null) {}
 
         setContentView(R.layout.activity_main_menu)
 
