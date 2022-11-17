@@ -168,11 +168,11 @@ class MainMenuActivity : AppCompatActivity() {
     inner class TopBarListener : Toolbar.OnMenuItemClickListener {
         override fun onMenuItemClick(item: MenuItem?): Boolean {
             when (item?.itemId) {
-                R.id.toolbar_logo -> { // redirect home
-                    val intent = intent // ?
-                    finishAffinity()
-                    startActivity(intent)
-                }
+//                R.id.toolbar_logo -> { // redirect home
+//                    val intent = intent // ?
+//                    finishAffinity()
+//                    startActivity(intent)
+//                }
                 R.id.toolbar_search_icon -> {
                     val intent = Intent(this@MainMenuActivity, SearchActivity::class.java)
                     activityResultLauncher.launch(intent)
