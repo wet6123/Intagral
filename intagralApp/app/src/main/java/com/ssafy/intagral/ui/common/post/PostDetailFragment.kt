@@ -44,16 +44,12 @@ class PostDetailFragment: Fragment() {
     ): View? {
         binding = ViewPostDetailBinding.inflate(inflater, container, false)
 
-        binding.include.profileSimpleFollowbtn.setOnClickListener {
-            postDetailViewModel.toggleWriterFollow(paramPostId!!)
-        }
-
-        binding.buttonLike.setOnClickListener{
+        binding.include.buttonLike.setOnClickListener{
             postDetailViewModel.togglePostLike(paramPostId!!)
         }
 
-        registerForContextMenu(binding.postDetailMenuButton)
-        binding.postDetailMenuButton.setOnClickListener{
+        registerForContextMenu(binding.include.postDetailMenuButton)
+        binding.include.postDetailMenuButton.setOnClickListener{
             it.showContextMenu()
         }
         
@@ -83,24 +79,15 @@ class PostDetailFragment: Fragment() {
                     .into(binding.include.profileSimpleImg)
                 binding.include.profileSimpleNickname.text = it.writer
 
-                if(IntagralApplication.prefs.nickname.equals(postDetailViewModel.getPostDetail().value!!.writer)){
-                    binding.include.profileSimpleFollowbtn.visibility = View.GONE
-                }else{
-                    if(it.isFollow){
-                        binding.include.profileSimpleFollowbtn.text = "UNFOLLOW"
-                    } else {
-                        binding.include.profileSimpleFollowbtn.text = "FOLLOW"
-                    }
-                }
 
                 Glide.with(requireContext())
                     .load(it.imgPath)
                     .into(binding.postImage)
-                binding.postLikeCount.text = "${it.likeCount}"
+                binding.include.postLikeCount.text = "${it.likeCount}"
                 if(it.tags.isNotEmpty()){
                     binding.postContent.text = it.tags.map { "#${it}" }.reduce { acc, s -> "$acc $s" }
                 }
-                binding.buttonLike.isChecked = it.isLike
+                binding.include.buttonLike.isChecked = it.isLike
 
 
                 binding.viewPostDetail.visibility = View.VISIBLE
