@@ -4,13 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
+import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.databinding.FragmentHashtagProfileBinding
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 class HashtagProfileDetailFragment: Fragment() {
     private lateinit var binding: FragmentHashtagProfileBinding
@@ -27,8 +30,25 @@ class HashtagProfileDetailFragment: Fragment() {
             profileDetailBtn.apply {
                 text = if(profileDetailViewModel.getProfileDetail().value?.isFollow ?:false) "UNFOLLOW" else "FOLLOW"
                 setOnClickListener {
-                    //TODO: follow API 호출
-                    Toast.makeText(this.context, "follow API 호출", Toast.LENGTH_SHORT).show()
+                    CoroutineScope(Main).launch {
+                        profileDetailViewModel.getProfileDetail().value?.let{
+                            var toggleResult = profileSimpleViewModel.toggleFollow(
+                                ProfileSimpleItem(
+                                    it.type,
+                                    it.name,
+                                    it.isFollow,
+                                    it.profileImg
+                                )
+                            )
+                            if(toggleResult){
+                                text = "Unfollow"
+                                binding.followerCnt.text = (Integer.parseInt(binding.followerCnt.text.toString()) + 1).toString()
+                            }else{
+                                text = "Follow"
+                                binding.followerCnt.text = (Integer.parseInt(binding.followerCnt.text.toString()) - 1).toString()
+                            }
+                        }
+                    }
                 }
             }
             context?.let {

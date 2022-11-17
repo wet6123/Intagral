@@ -18,12 +18,15 @@ import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.R
+import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.databinding.FragmentUserProfileBinding
 import com.ssafy.intagral.util.ImageUtil
-import com.ssafy.intagral.util.PreferenceUtil
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 import com.ssafy.intagral.viewmodel.ProfileSimpleViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import java.io.File
 
 @AndroidEntryPoint
@@ -47,8 +50,6 @@ class UserProfileDetailFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUserProfileBinding.inflate(inflater, container, false).apply {
-            //TODO: 본인인지 아닌지
-            // profile null일 때
             if (profileDetailViewModel.getProfileDetail().value?.name == IntagralApplication.prefs.nickname) {
                 profileDetailBtn.apply {
                     text = "프로필 수정"
@@ -75,8 +76,26 @@ class UserProfileDetailFragment: Fragment() {
                 profileDetailBtn.apply {
                     text = if (profileDetailViewModel.getProfileDetail().value?.isFollow ?:false) "UNFOLLOW" else "FOLLOW"
                     setOnClickListener {
-                        //TODO: follow API 호출
-                        Toast.makeText(it.context, "follow API 호출", Toast.LENGTH_SHORT).show()
+                        CoroutineScope(Main).launch {
+                            profileDetailViewModel.getProfileDetail().value?.let {
+                                var toggleResult = profileSimpleViewModel.toggleFollow(
+                                    ProfileSimpleItem(
+                                        it.type,
+                                        it.name,
+                                        it.isFollow,
+                                        it.profileImg
+                                    )
+                                )
+                                if(toggleResult){
+                                    text = "Unfollow"
+                                    binding.followerCnt.text = (Integer.parseInt(binding.followerCnt.text.toString()) + 1).toString()
+                                }else{
+                                    text = "Follow"
+                                    binding.followerCnt.text = (Integer.parseInt(binding.followerCnt.text.toString()) - 1).toString()
+                                }
+                            }
+
+                        }
                     }
                 }
             }
