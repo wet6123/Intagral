@@ -88,9 +88,7 @@ class HomeFragment : Fragment() {
 
         override fun onViewAttachedToWindow(holder: FilterTagViewHolder) {
             super.onViewAttachedToWindow(holder)
-            if(holder.adapterPosition == filterTagViewModel.getFilterTagSelected().value) {
-                holder.itemView.isSelected = true
-            }
+            holder.itemView.isSelected = holder.adapterPosition == filterTagViewModel.getFilterTagSelected().value
         }
 
     }
