@@ -309,7 +309,6 @@ class PhotoPicker : Fragment(), CoroutineScope {
 
             println(outputs.size)
             println(Arrays.toString(outputs))
-            parseScore(outputs)
             return outputs
         }
         return null
