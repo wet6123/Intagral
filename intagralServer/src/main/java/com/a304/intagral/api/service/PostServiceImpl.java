@@ -321,19 +321,24 @@ public class PostServiceImpl implements PostService {
         Integer cntLike = postLikeRepository.countByUserIdAndPostId(userId, postId);
         boolean isLike = cntLike != 0;
 
+        Post post = postRepository.findById(postId).get();
+        Integer likeCnt = post.getLikeCnt();
+
         if(isLike){
             postLikeRepository.deleteByUserIdAndPostId(userId, postId);
+            likeCnt--;
         }else{
             PostLike postLike = PostLike.builder()
                     .postId(postId)
                     .userId(userId)
                     .build();
             postLikeRepository.save(postLike);
+            likeCnt++;
         }
 
         PostLikePostDto postLikePostDto = PostLikePostDto.builder()
                 .isLike(!isLike)
-                .likeCnt(cntLike)
+                .likeCnt(likeCnt)
                 .build();
 
         return postLikePostDto;
