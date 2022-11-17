@@ -135,6 +135,7 @@ class MainMenuActivity : AppCompatActivity() {
         override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
             val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
+            transaction.setCustomAnimations(R.anim.enter_from_right, R.anim.exit_to_right, R.anim.enter_from_right, R.anim.exit_to_right);
             when(item?.itemId){
                 R.id.nav_home -> {
                     println("home selected!")
