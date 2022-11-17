@@ -36,7 +36,6 @@ import org.pytorch.Module
 import org.pytorch.torchvision.TensorImageUtils
 import java.io.File
 import java.util.*
-import kotlin.collections.ArrayList
 import kotlin.coroutines.CoroutineContext
 
 /**
@@ -150,6 +149,11 @@ class PhotoPicker : Fragment(), CoroutineScope {
         ) {
             it?.also {
                 binding.imageView2.setImageBitmap(it)
+                if(it==null){
+                    binding.button.isEnabled = false;
+                }else {
+                    binding.button.isEnabled = true;
+                }
             }
         }
         uploadViewModel.getDetectedClassList().observe(
@@ -217,9 +221,6 @@ class PhotoPicker : Fragment(), CoroutineScope {
                         }
                     }
                 }
-            }
-            if(uploadViewModel.getImageBitmap().value == null){
-                Toast.makeText(requireContext(), "사진을 선택해주세요", Toast.LENGTH_SHORT).show()
             }
         }
         return binding.root
