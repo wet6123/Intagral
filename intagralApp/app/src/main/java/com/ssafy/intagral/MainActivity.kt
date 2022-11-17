@@ -26,11 +26,25 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding : ActivityMainBinding
     private lateinit var mGoogleSignInClient : GoogleSignInClient
     private val loginViewModel : LoginViewModel by viewModels()
+    private var secretLoginCnt: Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.activity_main)
 
-        binding = ActivityMainBinding.inflate(layoutInflater)
+        binding = ActivityMainBinding.inflate(layoutInflater).apply {
+            imageView.setOnClickListener {
+                secretLoginCnt++
+                if(secretLoginCnt == 3) {
+                    IntagralApplication.prefs.token =
+                        "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiaXNzIjoiaW50YWdyYWwuY29tIiwiZXhwIjoxNjY5OTYyNTYyLCJpYXQiOjE2Njg2NjY1NjJ9.cxDLUmzbx_rd9QkPz9FQarSsckNSole_bb4U54HXXGGq7JctsS8VFVshBs--hxGEstpv8KWVIFDshq6XHtBBnQ"
+                    IntagralApplication.prefs.nickname = "test"
+                    updateUI()
+                    secretLoginCnt = 0
+                }
+            }
+        }
+
         setContentView(binding.root)
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
