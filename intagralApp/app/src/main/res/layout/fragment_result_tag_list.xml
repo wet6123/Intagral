@@ -33,19 +33,24 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="8"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:layout_marginHorizontal="10dp"
+            />
 
         <Button
             android:id="@+id/add_tag_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가" />
+            android:text="추가"
+            android:layout_marginHorizontal="10dp"
+            />
     </LinearLayout>
 
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
+        android:layout_marginHorizontal="20dp"
         android:layout_weight="1">
 
         <com.google.android.material.chip.ChipGroup
@@ -67,12 +72,14 @@
             android:id="@+id/publish_preview_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:text="미리보기" />
 
         <Button
             android:id="@+id/tag_result_publish_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:text="게시하기" />
     </LinearLayout>
 </LinearLayout>
