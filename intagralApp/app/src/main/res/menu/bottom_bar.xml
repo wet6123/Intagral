@@ -10,19 +10,19 @@
         android:icon="@drawable/home_btn"/>
     <item
         android:id="@+id/nav_upload"
-        android:title="업로드"
+        android:title="게시"
         android:enabled="true"
         app:showAsAction="always"
         android:icon="@drawable/upload_btn"/>
     <item
         android:id="@+id/nav_hashtag"
-        android:title="해시태그"
+        android:title="태그"
         android:enabled="true"
         app:showAsAction="always"
         android:icon="@drawable/tag_btn"/>
     <item
         android:id="@+id/nav_mypage"
-        android:title="마이페이지"
+        android:title="My"
         android:enabled="true"
         app:showAsAction="always"
         android:icon="@drawable/mypage_btn"/>
