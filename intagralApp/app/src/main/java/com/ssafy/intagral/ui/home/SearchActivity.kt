@@ -36,6 +36,12 @@ class SearchActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.search_result_profile_simple, ProfileSimpleListFragment()).commit()
                 }
             }
+
+            searchActivityTobackArrow.setOnClickListener {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+                finish()
+            }
         }
         setContentView(binding.root)
     }
@@ -53,10 +59,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    fun changeActivity(index: Int, profileSimple: ProfileSimpleItem) {
+    fun changeActivity(index: Int, profileSimple: ProfileSimpleItem?) {
         when(index) {
             1 -> {
-                profileSimpleViewModel.addSearchCnt(profileSimple.name)
+                profileSimpleViewModel.addSearchCnt(profileSimple!!.name)
                 var intent = Intent(this@SearchActivity, MainMenuActivity::class.java)
                 intent.putExtra("profileSimple", profileSimple)
                 setResult(RESULT_OK, intent)
