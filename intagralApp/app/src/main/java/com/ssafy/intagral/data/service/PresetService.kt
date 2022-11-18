@@ -14,7 +14,7 @@ class PresetService {
         presetRepository = commonRepository.create(PresetRepository::class.java)
     }
 
-    suspend fun fetchPresetItemList() = presetRepository.getPresetList()
+    suspend fun fetchPresetItemList(type: String = "all", q: String? = null) = presetRepository.getPresetList(type, q)
 
     suspend fun addPresetTag(json: JsonObject) = presetRepository.addPreset(json)
 
