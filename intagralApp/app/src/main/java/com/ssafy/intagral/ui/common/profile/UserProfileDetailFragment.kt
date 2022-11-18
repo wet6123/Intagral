@@ -9,7 +9,6 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.view.*
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
@@ -194,7 +193,6 @@ class UserProfileDetailFragment: Fragment() {
             ActivityResultContracts.StartActivityForResult()
         ){ result ->
             if(result.resultCode == Activity.RESULT_OK){
-                Toast.makeText(context, "captured!!!", Toast.LENGTH_SHORT).show();
                 newPhotoFile?.also {
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         val source = ImageDecoder.createSource(requireActivity().contentResolver, Uri.fromFile(it))
@@ -214,7 +212,6 @@ class UserProfileDetailFragment: Fragment() {
             ActivityResultContracts.StartActivityForResult()
         ){
             if(it.resultCode == Activity.RESULT_OK){
-                Toast.makeText(context, "get photo from gallery", Toast.LENGTH_SHORT).show();
                 val photoUri : Uri? = it.data?.data
                 photoUri?.also{
                     if(Build.VERSION.SDK_INT < 28) {

@@ -18,8 +18,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 
 @Service("postService")
@@ -360,5 +362,62 @@ public class PostServiceImpl implements PostService {
     @Override
     public boolean isFollowWriter(Long userId, Long writerId) {
         return userFollowRepository.countByUserIdToAndUserIdFrom(writerId.intValue(), userId.intValue()) != 0;
+    }
+
+    @Override
+    public PostListDto getRecommendPostListByPostId(String postId, int page) {
+        List<PostDataDto> list = new ArrayList<>();
+        Post targetPost = postRepository.findById(Long.valueOf(postId)).get();
+        List<PostHashtag> targetPostHashtagList = targetPost.getPostHashtagList();
+        List<Integer> hashtagIdList = new ArrayList<>();
+        for(PostHashtag postHashtag : targetPostHashtagList){
+            hashtagIdList.add(postHashtag.getHashtagId());
+        }
+
+        List<PostHashtag> postHashtagList = postHashtagRepository.findByHashtagIdIn(hashtagIdList, Sort.by(Sort.Direction.DESC, "id"));
+        boolean isNext = false;
+
+        List<PostDataDto> postlist = new ArrayList<>();
+        Set<Long> postIdSet = new HashSet<>();
+        postIdSet.add(Long.valueOf(postId));
+
+        for(PostHashtag postHashtag : postHashtagList){
+            Post post = postHashtag.getPostHashtagToPost();
+            Long recPostId = post.getId();
+            if(postIdSet.contains(recPostId)){
+                continue;
+            }
+            postIdSet.add(recPostId);
+
+            PostDataDto data = PostDataDto.builder()
+                    .postId(recPostId)
+                    .imgPath(post.getImgPath())
+                    .build();
+
+            postlist.add(data);
+        }
+
+        int len = postlist.size();
+        if(len - (page-1) * numOfPosts > 0){
+            if(len - page * numOfPosts > 0){
+                for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
+                    list.add(postlist.get(i));
+                    isNext = true;
+                }
+            }else {
+                for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
+                    list.add(postlist.get(i));
+                    isNext = false;
+                }
+            }
+        }
+
+        PostListDto res = PostListDto.builder()
+                .data(list)
+                .page(page)
+                .isNext(isNext)
+                .build();
+
+        return res;
     }
 }

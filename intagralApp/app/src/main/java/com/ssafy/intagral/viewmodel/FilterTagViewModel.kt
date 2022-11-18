@@ -19,6 +19,7 @@ class FilterTagViewModel @Inject constructor(private val hashtagService: Hashtag
     fun getHotFilterTagList() {
         viewModelScope.launch {
             filterTagList.value = hashtagService.getHotFiltertag()
+            selectFilterTag(0)
         }
     }
 

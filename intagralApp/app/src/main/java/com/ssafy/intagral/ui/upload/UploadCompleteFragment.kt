@@ -6,11 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentUploadCompleteBinding
-import com.ssafy.intagral.ui.home.HomeFragment
 import com.ssafy.intagral.viewmodel.UploadViewModel
 
 class UploadCompleteFragment : Fragment() {
@@ -43,14 +42,7 @@ class UploadCompleteFragment : Fragment() {
         override fun onClick(p0: View?) {
             when(p0?.id){
                 R.id.to_main -> {
-                    Toast.makeText(requireContext(), "to home!!!", Toast.LENGTH_SHORT).show()
-                    requireActivity()
-                        .supportFragmentManager
-                        .beginTransaction()
-                        .replace(
-                            R.id.menu_frame_layout,
-                            HomeFragment()
-                        ).commit()
+                    (requireActivity() as MainMenuActivity).setHome()
                 }
             }
         }

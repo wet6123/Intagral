@@ -45,9 +45,9 @@ class MainMenuActivity : AppCompatActivity() {
     lateinit var classList : ArrayList<String>
     private val profileDetailViewModel: ProfileDetailViewModel by viewModels()
     private val profileSimpleViewModel: ProfileSimpleViewModel by viewModels()
-    private val postListViewModel: PostListViewModel by viewModels()
     private val userViewModel: UserViewModel by viewModels()
     private val loginViewModel: LoginViewModel by viewModels()
+    private val filterTagViewModel: FilterTagViewModel by viewModels()
 
     private lateinit var activityResultLauncher: ActivityResultLauncher<Intent>
 
@@ -85,6 +85,11 @@ class MainMenuActivity : AppCompatActivity() {
             menuTopToolbar.inflateMenu(R.menu.top_bar)  //setSupportActionBar
             menuTopToolbar.setOnMenuItemClickListener(TopBarListener())
 
+            topIntagralLogo.setOnClickListener{
+                supportFragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, HomeFragment()).commit()
+            }
+
             activityResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
                 if(it.resultCode== RESULT_OK) {
                     profileDetailViewModel.changeProfileDetail(it?.data?.getSerializableExtra("profileSimple") as ProfileSimpleItem)
@@ -103,6 +108,7 @@ class MainMenuActivity : AppCompatActivity() {
                     supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
                 }
             }
+
         }
 
         userViewModel.getMyInfo().observe(this@MainMenuActivity){
@@ -124,11 +130,8 @@ class MainMenuActivity : AppCompatActivity() {
         setHome()
     }
 
-    private fun setHome() {
-//        postListViewModel.initPage("all", 1, null)
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
+    fun setHome() {
+        binding.menuBottomNavigation.selectedItemId = R.id.nav_home
     }
 
     inner class BottomTabListener : NavigationBarView.OnItemSelectedListener{
@@ -137,16 +140,14 @@ class MainMenuActivity : AppCompatActivity() {
             val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
             when(item?.itemId){
                 R.id.nav_home -> {
-                    println("home selected!")
-                    setHome()
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
                 }
                 R.id.nav_upload -> {
-                    println("upload selected!")
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PhotoPicker.newInstance()).commit()
                 }
                 R.id.nav_hashtag -> {
-                    println("hashtag selected!")
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
                 }
@@ -154,7 +155,6 @@ class MainMenuActivity : AppCompatActivity() {
                     //TODO: change user name
                     var test = IntagralApplication.prefs.nickname
                     profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(ProfileType.user, IntagralApplication.prefs.nickname!!, false, ""))
-                    println("mypage selected!")
                 }
                 else -> {
 
@@ -168,11 +168,6 @@ class MainMenuActivity : AppCompatActivity() {
     inner class TopBarListener : Toolbar.OnMenuItemClickListener {
         override fun onMenuItemClick(item: MenuItem?): Boolean {
             when (item?.itemId) {
-                R.id.toolbar_logo -> { // redirect home
-                    val intent = intent // ?
-                    finishAffinity()
-                    startActivity(intent)
-                }
                 R.id.toolbar_search_icon -> {
                     val intent = Intent(this@MainMenuActivity, SearchActivity::class.java)
                     activityResultLauncher.launch(intent)
@@ -226,7 +221,3 @@ class MainMenuActivity : AppCompatActivity() {
         }
     }
 }
-
-val dummyData: ProfileDetail = ProfileDetail(ProfileType.user, "yuyeon",
-    200,false, "https://intagral-file-upload-bucket.s3.ap-northeast-2.amazonaws.com/remove-background-before-qa1.png")
-val dummyData2: ProfileDetail = ProfileDetail(ProfileType.user, "한유연", 200,false)
