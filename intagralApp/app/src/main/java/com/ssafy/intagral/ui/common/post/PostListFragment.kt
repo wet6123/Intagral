@@ -106,11 +106,12 @@ class PostListFragment: Fragment() {
                     requireActivity()
                         .supportFragmentManager
                         .beginTransaction()
-                        .addToBackStack(null)
-                        .add(
-                            R.id.menu_frame_layout,
-                            PostDetailFragment.newInstance(postList[position].postId)
-                        ).commit()
+                        .replace(R.id.menu_frame_layout, PostDetailFragment.newInstance(postList[position].postId))
+//                        .addToBackStack(null)
+//                        .add(
+//                            R.id.menu_frame_layout,
+//                            PostDetailFragment.newInstance(postList[position].postId))
+                        .commit()
                 }
 
             }
