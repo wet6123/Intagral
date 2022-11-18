@@ -99,7 +99,9 @@ public class PostController {
 
         if(type.equals("all")){
             res = postService.getNewPostList(page);
-        }else if(type.equals("follow")){
+        } else if(type.equals("recommend")){
+            res = postService.getRecommendPostListByPostId(keyword, page);
+        } else if(type.equals("follow")){
             UserDetails userDetails = (UserDetails)authentication.getDetails();
             Long userId = Long.valueOf(userDetails.getUsername());
             res = postService.getPostListByFollow(page, userId);

@@ -37,4 +37,6 @@ public interface PostService {
     public String postDelete(Long userId, Long postId);
 
     boolean isFollowWriter(Long userId, Long writerId);
+
+    PostListDto getRecommendPostListByPostId(String postId, int page);
 }
