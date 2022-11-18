@@ -379,6 +379,7 @@ public class PostServiceImpl implements PostService {
 
         List<PostDataDto> postlist = new ArrayList<>();
         Set<Long> postIdSet = new HashSet<>();
+        postIdSet.add(Long.valueOf(postId));
 
         for(PostHashtag postHashtag : postHashtagList){
             Post post = postHashtag.getPostHashtagToPost();
