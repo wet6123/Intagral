@@ -62,7 +62,7 @@ class PostDetailFragment: Fragment() {
         }
 
         //TODO: hashtag 기반 post list 불러오기
-        postListViewModel.initPage("hashtag", 1, "ㅇㅇ")
+        postListViewModel.initPage("recommend", 1, paramPostId.toString())
         parentFragmentManager.beginTransaction().replace(R.id.post_list_under_post_detail, PostListFragment()).commit()
 
         return binding.root
