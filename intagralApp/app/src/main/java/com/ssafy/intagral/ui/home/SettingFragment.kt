@@ -5,8 +5,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.ssafy.intagral.MainActivity
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentSettingBinding
@@ -40,7 +38,6 @@ class SettingFragment : Fragment() {
 
                 }
                 R.id.logout_button -> {
-                    Toast.makeText(requireContext(), "logout", Toast.LENGTH_SHORT).show()
                     val activity = requireActivity() as MainMenuActivity
                     activity.logout()
                 }
