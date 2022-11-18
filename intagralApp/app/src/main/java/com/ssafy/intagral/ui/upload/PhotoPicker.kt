@@ -14,7 +14,6 @@ import android.provider.MediaStore
 import android.view.*
 import android.widget.Button
 import android.widget.ImageView
-import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
@@ -92,7 +91,6 @@ class PhotoPicker : Fragment(), CoroutineScope {
             ActivityResultContracts.StartActivityForResult()
         ){ result ->
             if(result.resultCode == Activity.RESULT_OK){
-                Toast.makeText(context, "captured!!!", Toast.LENGTH_SHORT).show();
                 currentPhotoFile?.also {
                     if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                         val source = ImageDecoder.createSource(requireActivity().contentResolver, Uri.fromFile(it))
@@ -111,7 +109,6 @@ class PhotoPicker : Fragment(), CoroutineScope {
             ActivityResultContracts.StartActivityForResult()
         ){
             if(it.resultCode == Activity.RESULT_OK){
-                Toast.makeText(context, "get photo from gallery", Toast.LENGTH_SHORT).show();
                 val photoUri : Uri? = it.data?.data
                 photoUri?.also{
                     if(Build.VERSION.SDK_INT < 28) {
@@ -308,8 +305,6 @@ class PhotoPicker : Fragment(), CoroutineScope {
             val outputTensor = outputTuple[0].toTensor()
             val outputs = outputTensor.dataAsFloatArray
 
-            println(outputs.size)
-            println(Arrays.toString(outputs))
             return outputs
         }
         return null
@@ -345,7 +340,6 @@ class PhotoPicker : Fragment(), CoroutineScope {
             }
         }
 
-        println(Arrays.toString(ArrayList(detectedSet).toArray()))
         return ArrayList(detectedSet)
     }
 

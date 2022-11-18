@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -52,12 +51,10 @@ class MainActivity : AppCompatActivity() {
         val account = GoogleSignIn.getLastSignedInAccount(this)
         if(account == null || IntagralApplication.prefs.token == "EXPIRED"){
             IntagralApplication.prefs.token = ""
-            println("onStart account null")
             val signInButton = findViewById<SignInButton>(R.id.sign_in_button)
             signInButton.setSize(SignInButton.SIZE_STANDARD)
             signInButton.setOnClickListener { signIn() }
         } else {
-            println("onStart account not null")
             updateUI()
         }
 
@@ -97,7 +94,6 @@ class MainActivity : AppCompatActivity() {
         } catch (e: ApiException) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Toast.makeText(this, "login 실패", Toast.LENGTH_SHORT).show()
             Log.w("failed", "signInResult:failed code=" + e.statusCode)
         }
     }

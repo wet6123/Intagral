@@ -137,16 +137,13 @@ class MainMenuActivity : AppCompatActivity() {
             val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
             when(item?.itemId){
                 R.id.nav_home -> {
-                    println("home selected!")
                     setHome()
                 }
                 R.id.nav_upload -> {
-                    println("upload selected!")
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PhotoPicker.newInstance()).commit()
                 }
                 R.id.nav_hashtag -> {
-                    println("hashtag selected!")
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
                 }
@@ -154,7 +151,6 @@ class MainMenuActivity : AppCompatActivity() {
                     //TODO: change user name
                     var test = IntagralApplication.prefs.nickname
                     profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(ProfileType.user, IntagralApplication.prefs.nickname!!, false, ""))
-                    println("mypage selected!")
                 }
                 else -> {
 

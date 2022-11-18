@@ -3,11 +3,9 @@ package com.ssafy.intagral.ui.common.post
 import android.content.Intent
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.R
