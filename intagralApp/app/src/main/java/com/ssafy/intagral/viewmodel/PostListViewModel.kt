@@ -1,5 +1,6 @@
 package com.ssafy.intagral.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -93,6 +94,8 @@ class PostListViewModel @Inject constructor(private val postService: PostService
                     pageInfo.state = StateInfo.CREATED
                     postList.value = it.data
                 }
+            } else {
+                Log.d("RETROFIT GET /api/post/list", "응답 에러 : ${response.code()}")
             }
         }
     }
