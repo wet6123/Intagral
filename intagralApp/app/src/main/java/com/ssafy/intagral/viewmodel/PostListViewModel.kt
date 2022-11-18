@@ -15,7 +15,6 @@ import javax.inject.Inject
 @HiltViewModel
 class PostListViewModel @Inject constructor(private val postService: PostService): ViewModel() {
     private var postList: MutableLiveData<ArrayList<PostItem>> = MutableLiveData()
-    private var deletedPostId: MutableLiveData<Int> = MutableLiveData()
 
     enum class StateInfo {
         INIT, //불러오기 시작
@@ -39,10 +38,6 @@ class PostListViewModel @Inject constructor(private val postService: PostService
 
     fun getPostList(): MutableLiveData<ArrayList<PostItem>> {
         return postList
-    }
-
-    fun getDeletedPostId(): MutableLiveData<Int>{
-        return deletedPostId
     }
 
     fun getPageInfo(): PageInfo = pageInfo
@@ -81,7 +76,6 @@ class PostListViewModel @Inject constructor(private val postService: PostService
 
     fun initPage(type: String, page: Int, q: String?) {
         pageInfo = PageInfo(type, page, true, StateInfo.INIT, q)
-        postList.value = ArrayList()
 
         viewModelScope.launch {
             val response = postService.getPostList(type, page, q)
