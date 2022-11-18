@@ -10,7 +10,8 @@ interface PresetRepository {
 
     @GET(value = "/api/preset/list")
     suspend fun getPresetList(
-        @Query(value="type", encoded = true) type: String = "all"
+        @Query(value="type", encoded = true) type: String = "all",
+        @Query(value="q", encoded = true) q: String? = null
     ): Response<PresetResponse>
 
     @POST(value = "/api/preset/add")
