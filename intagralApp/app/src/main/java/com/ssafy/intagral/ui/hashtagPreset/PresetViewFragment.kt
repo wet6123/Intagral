@@ -20,6 +20,8 @@ class PresetViewFragment : Fragment() {
     private lateinit var binding: FragmentPresetViewBinding
     private val presetViewModel: PresetViewModel by activityViewModels()
 
+    private var presetList: ArrayList<PresetClassItem> = arrayListOf()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
@@ -48,13 +50,32 @@ class PresetViewFragment : Fragment() {
         // pass it to rvLists layoutManager
         binding.presetViewRecyclerList.layoutManager = layoutManager
 
-        binding.presetViewRecyclerList.adapter = PresetViewAdapter(presetViewModel.getPresetList().value ?: listOf())
+        presetViewModel.getPresetList().value?.let {
+            presetList = it
+        }
+
+        binding.presetViewRecyclerList.adapter = PresetViewAdapter(presetList)
 
         presetViewModel.getPresetList().observe(
                 viewLifecycleOwner
         ){
             it?.also {
-                binding.presetViewRecyclerList.adapter = PresetViewAdapter(it)
+                if(presetList.isEmpty()){
+                    presetList.addAll(it)
+                    (binding.presetViewRecyclerList.adapter as PresetViewAdapter).notifyDataSetChanged()
+                }else{
+                    for(item in it){
+                        val presetItem = presetList.find {
+                            it.className == item.className
+                        }
+                        val presetIndex = presetList.indexOf(presetItem)
+
+                        if(presetIndex > -1){
+                            presetList[presetIndex] = item
+                            (binding.presetViewRecyclerList.adapter as PresetViewAdapter).notifyItemChanged(presetIndex)
+                        }
+                    }
+                }
             }
         }
         return binding.root
