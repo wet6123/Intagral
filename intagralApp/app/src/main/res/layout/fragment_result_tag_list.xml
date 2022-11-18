@@ -35,14 +35,16 @@
             android:ems="8"
             android:inputType="textPersonName"
             android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/scdream5"
             />
 
         <Button
             android:id="@+id/add_tag_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가"
             android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/scdream5"
+            android:text="추가"
             />
     </LinearLayout>
 
@@ -73,6 +75,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/scdream5"
             android:text="미리보기" />
 
         <Button
@@ -80,6 +83,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/scdream5"
             android:text="게시하기" />
     </LinearLayout>
 </LinearLayout>

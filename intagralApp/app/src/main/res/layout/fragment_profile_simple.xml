@@ -40,7 +40,9 @@
                 android:layout_marginStart="24dp"
                 android:gravity="center_vertical"
                 android:textSize="20sp"
-                android:text="팔로워"/>
+                android:text="팔로워"
+                android:fontFamily="@font/scdream5"
+                />
         </LinearLayout>
         <Button
             android:id="@+id/profile_simple_followbtn"
@@ -48,6 +50,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:text="Follow">
-        </Button>
+            android:text="Follow"
+            android:fontFamily="@font/scdream5"
+            />
 </LinearLayout>

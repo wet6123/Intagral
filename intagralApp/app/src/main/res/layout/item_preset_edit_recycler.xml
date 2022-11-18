@@ -54,13 +54,17 @@
                 android:layout_height="match_parent"
                 android:background="#00000000"
                 android:textColor="@color/black"
-                android:hint="태그 입력" />
+                android:hint="태그 입력"
+                android:fontFamily="@font/scdream5"
+                />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/tag_add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="추가" />
+            android:text="추가"
+            android:fontFamily="@font/scdream5"
+            />
     </LinearLayout>
 </LinearLayout>

@@ -37,7 +37,9 @@
             android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/scdream5"
+            />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -57,12 +59,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="팔로워"/>
+                    android:text="팔로워"
+                    android:fontFamily="@font/scdream5"
+                    />
                 <TextView
                     android:id="@+id/follower_cnt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="100"/>
+                    android:text="100"
+                    android:fontFamily="@font/scdream5"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/following_btn"
@@ -74,12 +80,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="팔로잉"/>
+                    android:text="팔로잉"
+                    android:fontFamily="@font/scdream5"
+                    />
                 <TextView
                     android:id="@+id/following_cnt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="150"/>
+                    android:text="150"
+                    android:fontFamily="@font/scdream5"
+                    />
             </LinearLayout>
             <LinearLayout
                 android:id="@+id/hashtag_btn"
@@ -91,12 +101,16 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="해시태그"/>
+                    android:text="해시태그"
+                    android:fontFamily="@font/scdream5"
+                    />
                 <TextView
                     android:id="@+id/hashtag_cnt"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="30"/>
+                    android:text="30"
+                    android:fontFamily="@font/scdream5"
+                    />
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
@@ -121,7 +135,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="갱얼쥐ggg"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:fontFamily="@font/scdream5"
+                />
 
             <TextView
                 android:id="@+id/profile_detail_intro"
@@ -129,7 +145,9 @@
                 android:layout_height="wrap_content"
                 android:paddingVertical="10dp"
                 android:text="갱얼쥐235uoieioauoisdjlfjkldsjklfjkdsjkldsjklfjkdsjkglhkalwjeklrsjkldfjksdjlkfjklsdjoigawjeoiruioweu918391724f"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:fontFamily="@font/scdream5"
+                />
 
         </LinearLayout>
 

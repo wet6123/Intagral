@@ -13,7 +13,9 @@
         android:layout_height="wrap_content"
         android:text="개인 설정"
         android:layout_margin="10dp"
-        android:textSize="34sp" />
+        android:textSize="34sp"
+        android:fontFamily="@font/scdream5"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +46,9 @@
                     android:paddingVertical="10dp"
                     android:text="이용 약관"
                     android:background="?attr/selectableItemBackground"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:fontFamily="@font/scdream5"
+                    />
 
                 <View
                     android:layout_width="match_parent"
@@ -59,7 +63,9 @@
                     android:paddingVertical="10dp"
                     android:text="로그아웃"
                     android:background="?attr/selectableItemBackground"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    android:fontFamily="@font/scdream5"
+                    />
             </LinearLayout>
         </ScrollView>
 

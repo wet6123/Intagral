@@ -19,7 +19,9 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:layout_marginVertical="8dp"
-        android:textSize="34sp" />
+        android:textSize="34sp"
+        android:fontFamily="@font/scdream5"
+        />
 
     <View
         android:layout_width="match_parent"
@@ -42,5 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_weight="0"
-        android:text="편집하기" />
+        android:text="편집하기"
+        android:fontFamily="@font/scdream5"
+        />
 </LinearLayout>
