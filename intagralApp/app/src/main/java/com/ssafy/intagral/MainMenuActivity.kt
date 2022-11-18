@@ -130,11 +130,8 @@ class MainMenuActivity : AppCompatActivity() {
         setHome()
     }
 
-    private fun setHome() {
-//        postListViewModel.initPage("all", 1, null)
-        supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-        val transaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
+    fun setHome() {
+        binding.menuBottomNavigation.selectedItemId = R.id.nav_home
     }
 
     inner class BottomTabListener : NavigationBarView.OnItemSelectedListener{
@@ -143,7 +140,8 @@ class MainMenuActivity : AppCompatActivity() {
             val transaction : FragmentTransaction = supportFragmentManager.beginTransaction()
             when(item?.itemId){
                 R.id.nav_home -> {
-                    setHome()
+                    supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+                    transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
                 }
                 R.id.nav_upload -> {
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
