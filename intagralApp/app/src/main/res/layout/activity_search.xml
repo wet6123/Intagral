@@ -5,19 +5,33 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clickable="true"
-    tools:context=".ui.home.SearchActivity">
+    tools:context=".ui.home.SearchActivity"
+    android:orientation="horizontal">
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/search_fragment"
+    <RelativeLayout
+        android:id="@+id/search_bar_area"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:searchIcon="@drawable/ic_baseline_search_24"
-        app:closeIcon="@drawable/ic_baseline_close_24"
-        app:iconifiedByDefault="false"
-        />
+        android:layout_height="wrap_content"
+        android:gravity="center">
+        <ImageButton
+            android:id="@+id/search_activity_toback_arrow"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="?attr/actionBarSize"
+            android:paddingEnd="-10dp"
+            android:background="#00ffffff"
+            app:srcCompat="@drawable/ic_baseline_arrow_back_24"/>
 
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/search_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_toRightOf="@+id/search_activity_toback_arrow"
+            app:searchIcon="@drawable/ic_baseline_search_24"
+            app:closeIcon="@drawable/ic_baseline_close_24"
+            android:paddingStart="-15dp"
+            app:queryHint="검색어를 입력하세요"
+            app:iconifiedByDefault="false"/>
+    </RelativeLayout>
     <FrameLayout
         android:id="@+id/search_result_profile_simple"
         android:layout_width="match_parent"
