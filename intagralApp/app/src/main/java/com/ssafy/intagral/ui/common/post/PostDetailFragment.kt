@@ -88,6 +88,9 @@ class PostDetailFragment: Fragment() {
                 binding.include.postLikeCount.text = "${it.likeCount}"
                 if(it.tags.isNotEmpty()){
                     binding.postContent.text = it.tags.map { "#${it}" }.reduce { acc, s -> "$acc $s" }
+                    binding.postContent.visibility = View.VISIBLE
+                }else{
+                    binding.postContent.visibility = View.GONE
                 }
                 binding.include.buttonLike.isChecked = it.isLike
 
