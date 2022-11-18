@@ -5,28 +5,31 @@ import android.os.Bundle
 import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.ViewPostDetailBinding
+import com.ssafy.intagral.viewmodel.PostDeleteViewModel
 import com.ssafy.intagral.viewmodel.PostDetailViewModel
-import com.ssafy.intagral.viewmodel.PostListViewModel
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.Main
-import kotlin.coroutines.coroutineContext
 
+@AndroidEntryPoint
 class PostDetailFragment: Fragment() {
 
     private var paramPostId: Int? = null
 
     private lateinit var binding: ViewPostDetailBinding
-    private val postDetailViewModel: PostDetailViewModel by activityViewModels()
+    private val postDetailViewModel: PostDetailViewModel by viewModels()
+    private val postDeleteViewModel: PostDeleteViewModel by activityViewModels()
     private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
-    private val postListViewModel: PostListViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,8 +65,7 @@ class PostDetailFragment: Fragment() {
         }
 
         //TODO: hashtag 기반 post list 불러오기
-        postListViewModel.initPage("recommend", 1, paramPostId.toString())
-        parentFragmentManager.beginTransaction().replace(R.id.post_list_under_post_detail, PostListFragment()).commit()
+        childFragmentManager.beginTransaction().replace(R.id.post_list_under_post_detail, PostListFragment.newInstance("recommend", paramPostId.toString())).commit()
 
         return binding.root
     }
@@ -113,7 +115,6 @@ class PostDetailFragment: Fragment() {
         v: View,
         menuInfo: ContextMenu.ContextMenuInfo?
     ) {
-        super.onCreateContextMenu(menu, v, menuInfo)
         requireActivity().menuInflater.inflate(R.menu.post_detail_menu, menu)
 
         // TODO : 내가 아닐때만 false
@@ -150,9 +151,9 @@ class PostDetailFragment: Fragment() {
                         CoroutineScope(Main).launch{
                             var result = postDetailViewModel.deletePost(paramPostId!!)
                             if(result != -1){
-                                postListViewModel.getDeletedPostId().value = paramPostId
+                                postDeleteViewModel.getDeletedPostId().value = paramPostId
                             }
-                            requireActivity().supportFragmentManager.popBackStack()
+                            requireActivity().supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                         }
                     }
                     .setNegativeButton("아니요"
@@ -160,7 +161,7 @@ class PostDetailFragment: Fragment() {
             }
             else -> {}
         }
-        return super.onContextItemSelected(item)
+        return true
     }
 
     companion object {

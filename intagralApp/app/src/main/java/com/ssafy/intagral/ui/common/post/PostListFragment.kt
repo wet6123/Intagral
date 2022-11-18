@@ -8,15 +8,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.squareup.picasso.Picasso
 import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.PostItem
 import com.ssafy.intagral.databinding.FragmentPostListBinding
+import com.ssafy.intagral.viewmodel.PostDeleteViewModel
 import com.ssafy.intagral.viewmodel.PostListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class PostListFragment: Fragment() {
+
+    private var initType: String = "all"
+    private var initQuery: String? = null
 
     lateinit var binding: FragmentPostListBinding
 
@@ -24,7 +31,17 @@ class PostListFragment: Fragment() {
     private lateinit var postAdapter: PostAdapter
     private var postList = ArrayList<PostItem>()
 
-    private val postListViewModel: PostListViewModel by activityViewModels()
+    private val postListViewModel: PostListViewModel by viewModels()
+    private val postDeleteViewModel: PostDeleteViewModel by activityViewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.let {
+            initType = it.getString(PARAM_NAME1)!!
+            initQuery = it.getString(PARAM_NAME2)
+        }
+        postListViewModel.initPage(initType, 1, initQuery)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
@@ -71,18 +88,20 @@ class PostListFragment: Fragment() {
             }
         }
 
-        postListViewModel.getDeletedPostId().observe(
+        postDeleteViewModel.getDeletedPostId().observe(
             viewLifecycleOwner
         ){ deletedPostId ->
-            var deletedItem = postList.find {
-                it.postId == deletedPostId
-            }
-            if(deletedItem != null){
-                var deletedIndex = postList.indexOf(deletedItem)
-                postList.removeAt(deletedIndex)
-                postAdapter.notifyItemRemoved(deletedIndex)
-                postAdapter.notifyItemRangeChanged(deletedIndex, postList.size)
-                postListViewModel.reloadRecentPage()
+            deletedPostId?.let {
+                var deletedItem = postList.find {
+                    it.postId == deletedPostId
+                }
+                if(deletedItem != null){
+                    var deletedIndex = postList.indexOf(deletedItem)
+                    postList.removeAt(deletedIndex)
+                    postAdapter.notifyItemRemoved(deletedIndex)
+                    postAdapter.notifyItemRangeChanged(deletedIndex, postList.size)
+                    postListViewModel.reloadRecentPage()
+                }
             }
         }
         return binding.root
@@ -106,11 +125,10 @@ class PostListFragment: Fragment() {
                     requireActivity()
                         .supportFragmentManager
                         .beginTransaction()
-                        .replace(R.id.menu_frame_layout, PostDetailFragment.newInstance(postList[position].postId))
-//                        .addToBackStack(null)
-//                        .add(
-//                            R.id.menu_frame_layout,
-//                            PostDetailFragment.newInstance(postList[position].postId))
+                        .addToBackStack(null)
+                        .add(
+                            R.id.menu_frame_layout,
+                            PostDetailFragment.newInstance(postList[position].postId))
                         .commit()
                 }
 
@@ -128,5 +146,18 @@ class PostListFragment: Fragment() {
             Picasso.get().load(post.imgPath).placeholder(R.drawable.ic_transeparent_background).into(itemView.findViewById(R.id.dummyPostItem) as ImageView)
 
         }
+    }
+
+    companion object {
+        private const val PARAM_NAME1 = "initType"
+        private const val PARAM_NAME2 = "initQuery"
+        @JvmStatic
+        fun newInstance(initType: String, initQuery: String? = null) =
+            PostListFragment().apply {
+                arguments = Bundle().apply {
+                    putString(PARAM_NAME1, initType)
+                    putString(PARAM_NAME2, initQuery)
+                }
+            }
     }
 }
