@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface PostHashtagRepository extends JpaRepository<PostHashtag, Long> {
     List<PostHashtag> findByHashtagId(Integer hashtagId, Sort sort);
+
+    List<PostHashtag> findByHashtagIdIn(List<Integer> hashtagIdList, Sort id);
 }
