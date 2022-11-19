@@ -71,7 +71,7 @@ class PostListFragment: Fragment() {
             }
         }
         postAdapter.notifyDataSetChanged()
-        if(initType == "user" || initType == "hashtag"){
+        if(initType != "recommend"){
             checkAndShowEmptyList()
         }
 
@@ -90,7 +90,7 @@ class PostListFragment: Fragment() {
                     }
                 }
                 postAdapter.notifyItemRangeInserted(start, num)
-                if(initType == "user" || initType == "hashtag"){
+                if(initType != "recommend"){
                     checkAndShowEmptyList()
                 }
             }
@@ -108,7 +108,7 @@ class PostListFragment: Fragment() {
                     postList.removeAt(deletedIndex)
                     postAdapter.notifyItemRemoved(deletedIndex)
                     postAdapter.notifyItemRangeChanged(deletedIndex, postList.size)
-                    if(initType == "user" || initType == "hashtag"){
+                    if(initType != "recommend"){
                         checkAndShowEmptyList()
                     }
                 }
