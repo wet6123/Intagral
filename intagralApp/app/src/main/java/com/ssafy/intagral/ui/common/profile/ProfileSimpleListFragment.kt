@@ -143,7 +143,7 @@ class ProfileSimpleListFragment: Fragment() {
 
             var followBtn: Button = itemView.findViewById(R.id.profile_simple_followbtn)
 
-            if(profileSimple.name.equals(IntagralApplication.prefs.nickname)){
+            if(profileSimple.type == ProfileType.user && profileSimple.name.equals(IntagralApplication.prefs.nickname)){
                 followBtn.visibility = View.GONE
             } else if(profileSimple.isFollow){
                 followBtn.text = "Unfollow"
