@@ -30,7 +30,8 @@ class ProfileDetailViewModel @Inject constructor(private val hashtagService: Has
         DUPLICATED_NAME,
         ACTIVE,
         INAVTIVE,
-        ERROR
+        ERROR,
+        LONG_NICKNAME,
     }
 
     fun getProfileDetail(): MutableLiveData<ProfileDetail> {
@@ -83,9 +84,14 @@ class ProfileDetailViewModel @Inject constructor(private val hashtagService: Has
                 val checkResponse = userService.checkValidName(name)
                 if(checkResponse.isSuccessful){
                     checkResponse.body()?.let {
-                        if(!it.isAvailable){
+                        if(it.isAvailable == 2){
                             editStatus.value = EditStatus.DUPLICATED_NAME
                             this.cancel()
+                        } else if(it.isAvailable == 1){
+                            editStatus.value = EditStatus.LONG_NICKNAME
+                            this.cancel()
+                        } else {
+                            //TODO: 다른 닉네임 체크 케이스 생기면 추가
                         }
                     }
                 }else{
@@ -104,7 +110,6 @@ class ProfileDetailViewModel @Inject constructor(private val hashtagService: Has
                     Log.d("RETROFIT /api/user/profile/info type=name", "성공")
                 }else{
                     Log.d("RETROFIT /api/user/profile/info type=name", "응답 에러 : ${response.code()}")
-                    editStatus.value = EditStatus.ERROR
                     this.cancel()
                 }
             }
