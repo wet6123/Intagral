@@ -155,4 +155,9 @@ class ProfileSimpleListFragment: Fragment() {
 
         }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        profileSimpleViewModel.getProfileListPageInfo().value = ProfileSimpleViewModel.ProfileListPageInfo.NONE
+    }
 }
