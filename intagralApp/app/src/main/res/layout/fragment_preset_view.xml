@@ -30,7 +30,7 @@
                 android:id="@+id/preset_edit_button"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
-                android:layout_marginEnd="10dp"
+                android:layout_marginEnd="14dp"
                 android:background="@drawable/ic_baseline_mode_edit_24"
                 android:layout_gravity="center|end"/>
         </com.google.android.material.appbar.CollapsingToolbarLayout>
