@@ -349,6 +349,7 @@ public class PostServiceImpl implements PostService {
             postLikeRepository.save(postLike);
             likeCnt++;
         }
+        post.setLikeCnt(likeCnt);
         // searchCnt 증가
         List<PostHashtag> postHashtagList = post.getPostHashtagList();
         List<Integer> hashtagIdList = new ArrayList<>();
