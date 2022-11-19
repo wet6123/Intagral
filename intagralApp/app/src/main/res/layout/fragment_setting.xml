@@ -56,6 +56,23 @@
                     android:background="#666666"/>
 
                 <TextView
+                    android:id="@+id/question_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="10dp"
+                    android:text="문의하기"
+                    android:background="?attr/selectableItemBackground"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/scdream5"
+                    />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="2dp"
+                    android:background="#666666"/>
+
+                <TextView
                     android:id="@+id/logout_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
