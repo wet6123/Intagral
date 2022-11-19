@@ -25,4 +25,6 @@ public interface UserService {
     boolean checkNicknameDuplication(String nickname);
 
     UserMyProfileDto getMyProfile(Long userId);
+
+    boolean checkNicknameLength(String nickname);
 }
