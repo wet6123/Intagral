@@ -34,6 +34,10 @@
             android:layout_height="wrap_content"
             android:ems="8"
             android:inputType="textPersonName"
+            android:hint="태그를 직접 추가"
+            android:textSize="13dp"
+            android:padding="10dp"
+            android:background="@drawable/eidttext_add_tag"
             android:layout_marginHorizontal="10dp"
             android:fontFamily="@font/scdream5"
             />
