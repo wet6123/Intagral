@@ -25,7 +25,9 @@
             android:layout_marginEnd="20dp"
             android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_alignParentBottom="true"/>
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/scdream5"
+            />
         <LinearLayout
             android:id="@+id/profile_detail_follower"
             android:layout_width="match_parent"
@@ -75,7 +77,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="20dp"
                 android:text="갱얼쥐ggg"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:fontFamily="@font/scdream5"
+                />
 
             <TextView
                 android:id="@+id/profile_detail_intro"
@@ -83,7 +87,9 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="10dp"
                 android:text="갱얼쥐235uoieioauoisdjlfjkldsjklfjkdsjkldsjklfjkdsjkglhkalwjeklrsjkldfjksdjlkfjklsdjoigawjeoiruioweu918391724f"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:fontFamily="@font/scdream5"
+                />
 
         </LinearLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>

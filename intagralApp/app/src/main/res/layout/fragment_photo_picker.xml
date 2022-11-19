@@ -43,5 +43,7 @@
         android:layout_gravity="center"
         android:layout_marginBottom="50dp"
         android:layout_weight="0"
-        android:text="해시태그 생성" />
+        android:text="해시태그 생성"
+        android:fontFamily="@font/scdream5"
+        />
 </LinearLayout>
