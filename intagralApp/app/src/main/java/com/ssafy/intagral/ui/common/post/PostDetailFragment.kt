@@ -72,7 +72,7 @@ class PostDetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.viewPostDetail.background =  requireContext().getDrawable(R.drawable.bg_gradation)
+        //binding.viewPostDetail.background =  requireContext().getDrawable(R.drawable.bg_gradation)
         binding.viewPostDetail.visibility = View.GONE
         postDetailViewModel.getPostDetail().observe(
             viewLifecycleOwner
