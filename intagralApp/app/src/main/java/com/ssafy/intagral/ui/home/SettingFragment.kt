@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import com.ssafy.intagral.IntagralApplication
 import com.ssafy.intagral.MainMenuActivity
@@ -56,8 +57,16 @@ class SettingFragment : Fragment() {
                     startActivity(email)
                 }
                 R.id.logout_button -> {
-                    val activity = requireActivity() as MainMenuActivity
-                    activity.logout()
+                    AlertDialog.Builder(requireContext())
+                        .setTitle("로그아웃")
+                        .setMessage("정말로 로그아웃 하시겠습니까?")
+                        .setPositiveButton("네"
+                        ) { _, _ ->
+                            val activity = requireActivity() as MainMenuActivity
+                            activity.logout()
+                        }
+                        .setNegativeButton("아니요"
+                        ) { _, _ -> }.create().show()
                 }
             }
         }
