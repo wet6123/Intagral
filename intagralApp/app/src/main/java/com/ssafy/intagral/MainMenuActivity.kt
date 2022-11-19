@@ -105,7 +105,7 @@ class MainMenuActivity : AppCompatActivity() {
             profileSimpleViewModel.getProfileSimpleList().observe(this@MainMenuActivity){
                 it?.also{
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
+                    supportFragmentManager.beginTransaction().addToBackStack(null).add(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
                 }
             }
 
