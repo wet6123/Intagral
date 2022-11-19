@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/bg_gradation"
+    android:background="@color/white"
     android:clickable="true"
     tools:context=".ui.upload.UploadPreviewFragment">
 
@@ -36,6 +36,7 @@
             android:id="@+id/publish_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="14dp"
             android:text="게시하기"
             android:fontFamily="@font/scdream5"
             />

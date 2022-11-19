@@ -48,19 +48,19 @@ class PresetViewModel @Inject constructor(private val service: PresetService): V
         }
     }
 
-    private fun reloadPresetList() {
+    private fun reloadPresetList(type: String = "all", q: String? = null) {
         viewModelScope.launch{
             val result: ArrayList<PresetClassItem> = arrayListOf()
-            val response = service.fetchPresetItemList()
+            val response = service.fetchPresetItemList(type, q)
             if(response.isSuccessful){
                 response.body()?.let {
                     for(className in it.classList){
                         result.add(
                             PresetClassItem(
-                            className,
-                            it.classListKor[className]!!,
-                            it.data[className]!!
-                        )
+                                className,
+                                it.classListKor[className]!!,
+                                it.data[className]!!
+                            )
                         )
                     }
                     presetList.value = result

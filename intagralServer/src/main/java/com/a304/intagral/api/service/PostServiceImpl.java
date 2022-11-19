@@ -81,8 +81,8 @@ public class PostServiceImpl implements PostService {
         boolean isNext = false;
 
         int len = postlist.size();
-        if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > 0){
+        if(len - (page-1) * numOfPosts >= 0){
+            if(len - page * numOfPosts >= 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
@@ -91,6 +91,9 @@ public class PostServiceImpl implements PostService {
                             .build();
                     list.add(postData);
                     isNext = true;
+                    if(len - page * numOfPosts == 0){
+                        isNext = false;
+                    }
                 }
             }else {
                 for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
@@ -155,8 +158,8 @@ public class PostServiceImpl implements PostService {
 
         List<PostDataDto> list = new ArrayList<>();
         int len = postlist.size();
-        if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > 0){
+        if(len - (page-1) * numOfPosts >= 0){
+            if(len - page * numOfPosts >= 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
@@ -165,6 +168,9 @@ public class PostServiceImpl implements PostService {
                             .build();
                     list.add(postData);
                     isNext = true;
+                    if(len - page * numOfPosts == 0){
+                        isNext = false;
+                    }
                 }
             }else {
                 for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
@@ -207,11 +213,14 @@ public class PostServiceImpl implements PostService {
         }
 
         int len = postlist.size();
-        if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > 0){
+        if(len - (page-1) * numOfPosts >= 0){
+            if(len - page * numOfPosts >= 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     list.add(postlist.get(i));
                     isNext = true;
+                    if(len - page * numOfPosts == 0){
+                        isNext = false;
+                    }
                 }
             }else {
                 for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
@@ -238,8 +247,8 @@ public class PostServiceImpl implements PostService {
         List<Post> postlist = postRepository.findByUserId(userId, Sort.by(Sort.Direction.DESC, "id"));
 
         int len = postlist.size();
-        if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > 0){
+        if(len - (page-1) * numOfPosts >= 0){
+            if(len - page * numOfPosts >= 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
@@ -248,9 +257,12 @@ public class PostServiceImpl implements PostService {
                             .build();
                     list.add(postData);
                     isNext = true;
+                    if(len - page * numOfPosts == 0){
+                        isNext = false;
+                    }
                 }
             }else {
-                for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){
+                for(int i = (page-1)*numOfPosts, size = (page-1)*numOfPosts + len%numOfPosts; i < size; i++){
                     Post post = postlist.get(i);
                     PostDataDto postData = PostDataDto.builder()
                             .postId(post.getId())
@@ -398,11 +410,14 @@ public class PostServiceImpl implements PostService {
         }
 
         int len = postlist.size();
-        if(len - (page-1) * numOfPosts > 0){
-            if(len - page * numOfPosts > 0){
+        if(len - (page-1) * numOfPosts >= 0){
+            if(len - page * numOfPosts >= 0){
                 for(int i = (page-1)*numOfPosts; i < page*numOfPosts; i++){
                     list.add(postlist.get(i));
                     isNext = true;
+                    if(len - page * numOfPosts == 0){
+                        isNext = false;
+                    }
                 }
             }else {
                 for(int i = (page-1)*numOfPosts; i < (page-1)*numOfPosts + len%numOfPosts; i++){

@@ -29,6 +29,7 @@ class SearchActivity : AppCompatActivity() {
             searchFragment.setOnQueryTextListener(SearchListener())
             searchFragment.requestFocus()
 
+            profileSimpleViewModel.getProfileListPageInfo().value = ProfileSimpleViewModel.ProfileListPageInfo.SEARCH
             supportFragmentManager.beginTransaction().replace(R.id.search_result_profile_simple, ProfileSimpleListFragment()).commit()
 
             profileSimpleViewModel.getProfileSimpleList().observe(this@SearchActivity){
@@ -40,6 +41,7 @@ class SearchActivity : AppCompatActivity() {
             searchActivityTobackArrow.setOnClickListener {
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+                profileSimpleViewModel.getProfileListPageInfo().value = ProfileSimpleViewModel.ProfileListPageInfo.NONE
                 finish()
             }
         }
@@ -68,6 +70,7 @@ class SearchActivity : AppCompatActivity() {
                 setResult(RESULT_OK, intent)
                 val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
                 imm.hideSoftInputFromWindow(currentFocus?.windowToken,0)
+                profileSimpleViewModel.getProfileListPageInfo().value = ProfileSimpleViewModel.ProfileListPageInfo.NONE
                 finish()
             }
         }

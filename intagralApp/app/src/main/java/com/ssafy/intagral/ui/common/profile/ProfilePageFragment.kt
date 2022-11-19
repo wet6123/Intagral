@@ -10,7 +10,6 @@ import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.FragmentProfilePageBinding
 import com.ssafy.intagral.ui.common.post.PostListFragment
-import com.ssafy.intagral.viewmodel.PostListViewModel
 import com.ssafy.intagral.viewmodel.ProfileDetailViewModel
 
 
@@ -18,7 +17,6 @@ class ProfilePageFragment : Fragment() {
 
     private lateinit var binding: FragmentProfilePageBinding
 
-    private val postListViewModel: PostListViewModel by activityViewModels()
     private val profileDetailViewModel: ProfileDetailViewModel by activityViewModels()
 
     override fun onCreateView(
@@ -28,13 +26,15 @@ class ProfilePageFragment : Fragment() {
 
         binding = FragmentProfilePageBinding.inflate(inflater, container, false)
 
-        postListViewModel.initPage(profileDetailViewModel.getProfileDetail().value!!.type.toString(), 1, profileDetailViewModel.getProfileDetail().value!!.name)
-        parentFragmentManager.beginTransaction().replace(R.id.fragment_profile_page_post_list, PostListFragment()).commit()
+        childFragmentManager.beginTransaction().replace(R.id.fragment_profile_page_post_list, PostListFragment.newInstance(
+            profileDetailViewModel.getProfileDetail().value!!.type.toString(),
+            profileDetailViewModel.getProfileDetail().value!!.name
+        )).commit()
 
         if(profileDetailViewModel.getProfileDetail().value!!.type == ProfileType.user){
-            parentFragmentManager.beginTransaction().replace(R.id.profile_detail, UserProfileDetailFragment()).commit()
+            childFragmentManager.beginTransaction().replace(R.id.profile_detail, UserProfileDetailFragment()).commit()
         } else {
-            parentFragmentManager.beginTransaction().replace(R.id.profile_detail, HashtagProfileDetailFragment()).commit()
+            childFragmentManager.beginTransaction().replace(R.id.profile_detail, HashtagProfileDetailFragment()).commit()
         }
 
         return binding.root

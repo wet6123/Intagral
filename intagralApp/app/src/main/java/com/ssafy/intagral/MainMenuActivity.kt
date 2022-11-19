@@ -17,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.material.navigation.NavigationBarView
-import com.ssafy.intagral.data.model.ProfileDetail
 import com.ssafy.intagral.data.model.ProfileSimpleItem
 import com.ssafy.intagral.data.model.ProfileType
 import com.ssafy.intagral.databinding.ActivityMainMenuBinding
@@ -102,10 +101,11 @@ class MainMenuActivity : AppCompatActivity() {
                 }
             }
 
+            // this observer is used only in one's following or follower page
             profileSimpleViewModel.getProfileSimpleList().observe(this@MainMenuActivity){
                 it?.also{
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
-                    supportFragmentManager.beginTransaction().replace(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
+                    supportFragmentManager.beginTransaction().addToBackStack(null).add(R.id.menu_frame_layout, ProfileSimpleListFragment()).commit()
                 }
             }
 
@@ -142,19 +142,21 @@ class MainMenuActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
+                    binding.menuAppBar.elevation = 0f
                 }
                 R.id.nav_upload -> {
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PhotoPicker.newInstance()).commit()
+                    binding.menuAppBar.elevation = 10f
                 }
                 R.id.nav_hashtag -> {
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
+                    binding.menuAppBar.elevation = 0f
                 }
                 R.id.nav_mypage -> {
-                    //TODO: change user name
-                    var test = IntagralApplication.prefs.nickname
                     profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(ProfileType.user, IntagralApplication.prefs.nickname!!, false, ""))
+                    binding.menuAppBar.elevation = 0f
                 }
                 else -> {
 

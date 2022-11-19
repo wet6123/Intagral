@@ -10,14 +10,20 @@ import com.a304.intagral.common.util.MultipartUtil;
 import com.a304.intagral.db.dto.HashtagProfileDto;
 import com.a304.intagral.db.dto.UserMyProfileDto;
 import com.a304.intagral.db.dto.UserProfileDto;
+import com.a304.intagral.db.entity.ClassificationTarget;
 import com.a304.intagral.db.entity.Hashtag;
+import com.a304.intagral.db.entity.HashtagPreset;
 import com.a304.intagral.db.entity.User;
+import com.a304.intagral.db.repository.ClassificationTargetRepository;
 import com.a304.intagral.db.repository.HashtagFollowRepository;
+import com.a304.intagral.db.repository.HashtagPresetRepository;
+import com.a304.intagral.db.repository.HashtagRepository;
 import com.a304.intagral.db.repository.UserFollowRepository;
 import com.a304.intagral.db.repository.UserRepository;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +32,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Set;
 
 
@@ -39,6 +49,12 @@ public class UserServiceImpl implements UserService {
     UserFollowRepository userFollowRepository;
     @Autowired
     HashtagFollowRepository hashtagFollowRepository;
+    @Autowired
+    HashtagPresetRepository hashtagPresetRepository;
+    @Autowired
+    ClassificationTargetRepository classificationTargetRepository;
+    @Autowired
+    HashtagRepository hashtagRepository;
     @Autowired
     AmazonS3ResourceStorageUtil amazonS3ResourceStorageUtil;
 
@@ -81,6 +97,7 @@ public class UserServiceImpl implements UserService {
 
             // user 생성
             user = userRepository.saveAndFlush(user);
+            initHashtagPreset(user.getId());
         }
         //4.토큰 반환
         String accessToken = JwtTokenUtil.getToken(String.valueOf(user.getId()));
@@ -208,5 +225,61 @@ public class UserServiceImpl implements UserService {
 
     private boolean isDuplicateNickname(String nickname){
         return userRepository.countByNickname(nickname) != 0;
+    }
+
+    private void initHashtagPreset(Long userId) {
+        Integer intUserId = userId.intValue();
+        List<HashtagPreset> hashtagPresetList = new ArrayList<>();
+        // 각 클래스의 이름에 맞는 프리셋
+        List<ClassificationTarget> classificationTargetList = classificationTargetRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
+        classificationTargetList.remove(0);
+        for (ClassificationTarget classificationTarget : classificationTargetList) {
+            Hashtag hashtag;
+            try {
+                hashtag = hashtagRepository.findByContent(classificationTarget.getTargetNameKor()).get();
+            } catch (NoSuchElementException e){
+                hashtag = Hashtag.builder()
+                        .content(classificationTarget.getTargetNameKor())
+                        .searchCnt(0)
+                        .build();
+                hashtag = hashtagRepository.save(hashtag);
+             }
+            hashtagPresetList.add(HashtagPreset.builder()
+                    .hashtagId(hashtag.getId().intValue())
+                    .clsTargetId(classificationTarget.getId().intValue())
+                    .userId(intUserId)
+                    .build());
+        }
+        // 기본 프리셋
+        List<String> defaultTagList = new ArrayList<>(Arrays.asList(new String[]{"인테리어", "디자인", "감성", "인테리어소품", "가구"}));
+        hashtagPresetList.addAll(tagToPresetList(intUserId, 1, defaultTagList));
+        // 안내 프리셋
+        List<String> noticeTagList = new ArrayList<>(Arrays.asList(new String[]{"우측상단의", "편집버튼을", "터치해", "태그수정이", "가능합니다"}));
+        hashtagPresetList.addAll(tagToPresetList(intUserId, 2, noticeTagList));
+
+        hashtagPresetRepository.saveAll(hashtagPresetList);
+    }
+
+    private List<HashtagPreset> tagToPresetList(int userId, int clsId, List<String> contents){
+        List<HashtagPreset> res = new ArrayList<>();
+
+        for (String content : contents) {
+            Hashtag hashtag;
+            try {
+                hashtag = hashtagRepository.findByContent(content).get();
+            } catch (NoSuchElementException e){
+                hashtag = Hashtag.builder()
+                        .content(content)
+                        .searchCnt(0)
+                        .build();
+                hashtag = hashtagRepository.save(hashtag);
+            }
+            res.add(HashtagPreset.builder()
+                    .hashtagId(hashtag.getId().intValue())
+                    .clsTargetId(clsId)
+                    .userId(userId)
+                    .build());
+        }
+        return res;
     }
 }

@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.FrameLayout
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -44,6 +46,31 @@ class ProfileSimpleListFragment: Fragment() {
 
         profileSimpleRecyclerView = view.findViewById(R.id.search_profile_simple_list)
         bindProfileList("")
+
+        if(profileSimpleAdapter.itemCount == 0) {
+            var isVisible: Int = View.INVISIBLE
+            var infoText: String = ""
+            when (profileSimpleViewModel.getProfileListPageInfo().value) {
+                ProfileSimpleViewModel.ProfileListPageInfo.FOLLOWER -> {
+                    isVisible = View.VISIBLE
+                    infoText = "팔로워가 여기에 표시됩니다."
+                }
+                ProfileSimpleViewModel.ProfileListPageInfo.FOLLOWING -> {
+                    isVisible = View.VISIBLE
+                    infoText = "팔로잉하는 사용자가 여기에 표시됩니다."
+                }
+                ProfileSimpleViewModel.ProfileListPageInfo.HASHTAGFOLLOWING -> {
+                    isVisible = View.VISIBLE
+                    infoText = "팔로잉하는 해시태그가 여기에 표시됩니다."
+                }
+                else -> {
+                    isVisible = View.GONE
+                }
+            }
+            view.findViewById<ConstraintLayout>(R.id.no_follow_found_fragment).visibility = isVisible
+            view.findViewById<TextView>(R.id.no_found_text).text = infoText
+        }
+
         return view
     }
 
@@ -127,5 +154,10 @@ class ProfileSimpleListFragment: Fragment() {
             itemView.findViewById<TextView>(R.id.profile_simple_nickname).text = profileSimple.name
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        profileSimpleViewModel.getProfileListPageInfo().value = ProfileSimpleViewModel.ProfileListPageInfo.NONE
     }
 }

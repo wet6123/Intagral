@@ -1,32 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="end"
-    android:background="@drawable/bg_gradation"
     android:clickable="true"
     tools:context=".ui.hashtagPreset.PresetEditFragment">
 
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:text="프리셋 설정"
-        android:gravity="center"
-        android:textColor="@color/black"
-        android:layout_marginVertical="8dp"
-        android:textSize="34sp"
-        android:fontFamily="@font/scdream5"
-        />
+        android:background="@color/white">
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_weight="0"
-        android:background="@color/black" />
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="noScroll">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:text="프리셋 설정"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginVertical="10dp"
+                android:textSize="28sp"
+                android:fontFamily="@font/scdream5"
+                />
+            <ImageButton
+                android:id="@+id/preset_complete_button"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="14dp"
+                android:background="@drawable/ic_baseline_done_24"
+                android:layout_gravity="center|end"/>
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/preset_edit_recycler_list"
@@ -34,17 +46,8 @@
         android:layout_height="fill_parent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         android:orientation="vertical"
-        android:layout_weight="1"
-        tools:listitem="@layout/item_preset_edit_recycler"/>
+        android:layout_marginTop="10dp"
+        tools:listitem="@layout/item_preset_edit_recycler"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
 
-    <Button
-        android:id="@+id/preset_complete_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:layout_weight="0"
-        android:text="편집 완료"
-        android:fontFamily="@font/scdream5"
-        />
-
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

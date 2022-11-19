@@ -1,10 +1,13 @@
 package com.ssafy.intagral.ui.hashtagPreset
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,8 @@ class PresetEditFragment : Fragment() {
 
     private lateinit var binding: FragmentPresetEditBinding
     private val presetViewModel: PresetViewModel by activityViewModels()
+
+    private var presetList: ArrayList<PresetClassItem> = arrayListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,16 +54,34 @@ class PresetEditFragment : Fragment() {
         // pass it to rvLists layoutManager
         binding.presetEditRecyclerList.layoutManager = layoutManager
 
-        binding.presetEditRecyclerList.adapter = PresetEditAdapter(presetViewModel.getPresetList().value ?: listOf())
+        presetViewModel.getPresetList().value?.let {
+            presetList = it
+        }
+
+        binding.presetEditRecyclerList.adapter = PresetEditAdapter(presetList)
 
         presetViewModel.getPresetList().observe(
             viewLifecycleOwner
         ){
             it?.also {
-                binding.presetEditRecyclerList.adapter = PresetEditAdapter(it)
+                if(presetList.isEmpty()){
+                    presetList.addAll(it)
+                    (binding.presetEditRecyclerList.adapter as PresetEditAdapter).notifyDataSetChanged()
+                }else{
+                    for(item in it){
+                        val presetItem = presetList.find {
+                            it.className == item.className
+                        }
+                        val presetIndex = presetList.indexOf(presetItem)
+
+                        if(presetIndex > -1){
+                            presetList[presetIndex] = item
+                            (binding.presetEditRecyclerList.adapter as PresetEditAdapter).notifyItemChanged(presetIndex)
+                        }
+                    }
+                }
             }
         }
-
         return binding.root
     }
 
@@ -94,6 +117,7 @@ class PresetEditFragment : Fragment() {
                         }
                         binding.presetEditTagChipGroup.addView(chip)
                     }
+
                     binding.tagAddButton.setOnClickListener {
                         val regex = """\s""".toRegex()
                         val tag : String = regex.replace(binding.tagInput.editText!!.text.toString(), "")
@@ -101,10 +125,10 @@ class PresetEditFragment : Fragment() {
                         if(!tag.equals("")){
                             presetViewModel.addTag(this.className, tag)
                             binding.tagInput.editText!!.setText("")
+                            val imm: InputMethodManager = requireActivity().getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                            imm.hideSoftInputFromWindow(requireActivity().currentFocus?.windowToken,0)
                         }else{
-                            binding.tagInput.error = null
-                            binding.tagInput.isErrorEnabled = false
-                            binding.tagInput.error = "태그를 입력해주세요"
+                            Toast.makeText(requireContext(), "태그를 입력해주세요", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }

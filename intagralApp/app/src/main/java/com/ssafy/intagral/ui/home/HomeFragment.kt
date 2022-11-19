@@ -14,7 +14,6 @@ import com.ssafy.intagral.R
 import com.ssafy.intagral.data.model.FilterTagItem
 import com.ssafy.intagral.ui.common.post.PostListFragment
 import com.ssafy.intagral.viewmodel.FilterTagViewModel
-import com.ssafy.intagral.viewmodel.PostListViewModel
 
 class HomeFragment : Fragment() {
 
@@ -23,17 +22,14 @@ class HomeFragment : Fragment() {
     private lateinit var filterTagAdapter: FilterTagAdapter
     private var filterTagList: ArrayList<FilterTagItem> = ArrayList()
 
-    private val postListViewModel: PostListViewModel by activityViewModels()
     private val filterTagViewModel: FilterTagViewModel by activityViewModels()
-
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_home, container, false)
         
         //TODO: tag선택 따라서 PostListViewModel 변경
-        postListViewModel.initPage("all", 1, null)
-        parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment()).commit()
+        parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment.newInstance("all")).commit()
 
 //filter tag fragment
         filterTagRecyclerView = view.findViewById(R.id.fragment_filter_tag_list)
@@ -71,9 +67,10 @@ class HomeFragment : Fragment() {
                     filterTagViewModel.selectFilterTag(position)
                     it.isSelected = true
 
-
-                    postListViewModel.initPage(filterTagList[position].type.toString(), 1, filterTagList[position].tagContent)
-                    parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment()).commit()
+                    parentFragmentManager.beginTransaction().replace(R.id.fragment_post_list, PostListFragment.newInstance(
+                        filterTagList[position].type.toString(),
+                        filterTagList[position].tagContent
+                    )).commit()
                 }
 
                 filterTagViewModel.getFilterTagSelected().observe(viewLifecycleOwner) {

@@ -73,15 +73,15 @@ class ResultTagListFragment : Fragment() {
             val tagMap = uploadViewModel.getTagMap().value ?: HashMap()
             val presetItemList = presetViewModel.getPresetList().value
             for(cls in it){
-                if(cls != "default"){
-                    tagMap[cls] = tagMap[cls] ?: false
-                }
-
-                val presetList = presetItemList?.find {
+                val presetItem = presetItemList?.find {
                     it.className == cls
                 }
-
-                presetList?.let {
+                
+                presetItem?.let {
+                    if(cls != "default"){
+                        val isChecked = tagMap[it.classNameKor]
+                        tagMap[it.classNameKor] = isChecked ?: false
+                    }
                     tagMap.putAll(it.tagList.map { it to (tagMap[it]?: false) }.toMap())
                 }
             }
