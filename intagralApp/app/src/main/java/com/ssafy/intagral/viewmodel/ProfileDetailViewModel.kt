@@ -84,10 +84,10 @@ class ProfileDetailViewModel @Inject constructor(private val hashtagService: Has
                 val checkResponse = userService.checkValidName(name)
                 if(checkResponse.isSuccessful){
                     checkResponse.body()?.let {
-                        if(it.isAvailable == 1){
+                        if(it.isAvailable == 2){
                             editStatus.value = EditStatus.DUPLICATED_NAME
                             this.cancel()
-                        } else if(it.isAvailable == 2){
+                        } else if(it.isAvailable == 1){
                             editStatus.value = EditStatus.LONG_NICKNAME
                             this.cancel()
                         } else {
