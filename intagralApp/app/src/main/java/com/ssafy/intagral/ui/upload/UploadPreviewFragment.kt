@@ -6,19 +6,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import com.bumptech.glide.Glide
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentUploadPreviewBinding
 import com.ssafy.intagral.viewmodel.UploadViewModel
+import com.ssafy.intagral.viewmodel.UserViewModel
 
-/**
- * TODO
- *  - 업로드 요청
- */
 class UploadPreviewFragment : Fragment() {
 
     private lateinit var binding: FragmentUploadPreviewBinding
 
     private val uploadViewModel: UploadViewModel by activityViewModels()
+    private val uploadUser: UserViewModel by activityViewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +56,15 @@ class UploadPreviewFragment : Fragment() {
         if(selectedTagList.isNotEmpty()){
             val content = selectedTagList.map { "#${it}" }.reduce { acc, s -> "$acc $s" }
             binding.postDetail.postContent.text = content
+        } else {
+            binding.postDetail.postContent.visibility = View.GONE
+        }
+
+        uploadUser.getMyInfo().value?.let {
+            binding.postDetail.include.profileSimpleNickname.text = it.nickname
+            Glide.with(requireContext()).load(
+                it.imgPath
+            ).into(binding.postDetail.include.profileSimpleImg)
         }
     }
 

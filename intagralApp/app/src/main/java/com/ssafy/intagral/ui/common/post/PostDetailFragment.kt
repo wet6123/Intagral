@@ -54,7 +54,6 @@ class PostDetailFragment: Fragment() {
             it.showContextMenu()
         }
         
-        // TODO : 유저페이지로 이동하는 클릭 이벤트리스너
         binding.include.profileSimpleImgAndName.setOnClickListener{
             profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(
                 ProfileType.user,
@@ -64,7 +63,6 @@ class PostDetailFragment: Fragment() {
             ))
         }
 
-        //TODO: hashtag 기반 post list 불러오기
         childFragmentManager.beginTransaction().replace(R.id.post_list_under_post_detail, PostListFragment.newInstance("recommend", paramPostId.toString())).commit()
 
         return binding.root
@@ -72,7 +70,6 @@ class PostDetailFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        //binding.viewPostDetail.background =  requireContext().getDrawable(R.drawable.bg_gradation)
         binding.viewPostDetail.visibility = View.GONE
         postDetailViewModel.getPostDetail().observe(
             viewLifecycleOwner
@@ -117,7 +114,6 @@ class PostDetailFragment: Fragment() {
     ) {
         requireActivity().menuInflater.inflate(R.menu.post_detail_menu, menu)
 
-        // TODO : 내가 아닐때만 false
         menu.findItem(R.id.post_menu_item_delete).isVisible = postDetailViewModel.getPostDetail().value!!.writer.equals(IntagralApplication.prefs.nickname)
         menu.findItem(R.id.post_menu_item_report).isVisible = !postDetailViewModel.getPostDetail().value!!.writer.equals(IntagralApplication.prefs.nickname)
     }
@@ -147,7 +143,6 @@ class PostDetailFragment: Fragment() {
                     .setMessage("정말로 삭제하시겠습니까?")
                     .setPositiveButton("네"
                     ) { _, _ ->
-                        // TODO : delete 비동기 요청 처리하기
                         CoroutineScope(Main).launch{
                             var result = postDetailViewModel.deletePost(paramPostId!!)
                             if(result != -1){
