@@ -60,6 +60,7 @@ public class UserServiceImpl implements UserService {
 
     final String lexicon = "ABCDEFGHIJKLMNOPQRSTUVWXYZ12345674890";
     final java.util.Random rand = new java.util.Random();
+    final Integer NICKNAME_MAX_LENGTH = 20;
 
     @Override
     public User getUserByUserId(Long userId) {
@@ -206,7 +207,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkNicknameDuplication(String nickname) {
-        return !isDuplicateNickname(nickname);
+        return isDuplicateNickname(nickname);
     }
 
     @Override
@@ -221,6 +222,11 @@ public class UserServiceImpl implements UserService {
                 .build();
 
         return userMyProfileDto;
+    }
+
+    @Override
+    public boolean checkNicknameLength(String nickname) {
+        return nickname.length() > NICKNAME_MAX_LENGTH;
     }
 
     private boolean isDuplicateNickname(String nickname){

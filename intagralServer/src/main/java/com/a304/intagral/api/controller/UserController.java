@@ -128,7 +128,15 @@ public class UserController {
     @GetMapping("/check")
     public ResponseEntity<? extends BaseResponseBody> checkNicknameDuplication(@RequestParam String nickname) {
         try{
-            boolean isAvailable = userService.checkNicknameDuplication(nickname);
+            boolean isTooLong = userService.checkNicknameLength(nickname);
+            boolean isAlreadyExist = userService.checkNicknameDuplication(nickname);
+
+            Integer isAvailable = 0;
+            if(isTooLong){
+                isAvailable = 1;
+            } else if (isAlreadyExist) {
+                isAvailable = 2;
+            }
 
             return ResponseEntity.ok(UserCheckNicknameGetRes.of(200, "success", isAvailable));
         } catch (RuntimeException e) {
