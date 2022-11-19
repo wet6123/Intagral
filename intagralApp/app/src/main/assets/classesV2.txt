@@ -4,22 +4,22 @@ bed
 cabinet
 carpet
 chair
-chandelier
+lamp
 clock
 closet
-computer
+monitor
 couch
 curtain
-diningtable
+table
 drawer
 fan
 lamp
-light
+lamp
 mirror
-notebook
+monitor
 oven
 pillow
-potted plant
+vase
 refrigerator
 shelf
 showerhead
@@ -27,6 +27,6 @@ sink
 stove
 table
 toilet
-tv
+monitor
 vase
 washstand
