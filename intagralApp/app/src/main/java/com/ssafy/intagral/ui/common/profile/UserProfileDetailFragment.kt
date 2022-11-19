@@ -161,6 +161,12 @@ class UserProfileDetailFragment: Fragment() {
                         textLayout.isErrorEnabled = false
                         textLayout.error = "닉네임 중복"
                     }
+                    ProfileDetailViewModel.EditStatus.LONG_NICKNAME -> {
+                        val textLayout = inputNickname
+                        textLayout.error = null
+                        textLayout.isErrorEnabled = false
+                        textLayout.error = "닉네임이 너무 깁니다."
+                    }
                     ProfileDetailViewModel.EditStatus.INAVTIVE -> {
                         profileDetailBtn.text = "프로필 수정"
                         profileInfoViewContainer.visibility = View.VISIBLE
