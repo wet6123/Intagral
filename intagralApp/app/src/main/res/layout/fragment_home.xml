@@ -14,7 +14,8 @@
         android:layout_height="wrap_content"
         android:layout_weight="0"
         app:layout_constraintBottom_toTopOf="@id/fragment_post_list"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginBottom="-4dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
