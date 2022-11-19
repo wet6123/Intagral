@@ -59,7 +59,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:boxStrokeColor="@color/black"
-                android:textColorHint="@color/black">
+                android:textColorHint="#808080">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="180dp"
@@ -68,6 +68,10 @@
                     android:textColor="@color/black"
                     android:hint="태그 입력"
                     android:fontFamily="@font/scdream5"
+                    android:gravity="bottom"
+                    android:paddingBottom="5dp"
+                    android:textSize="16dp"
+                    android:includeFontPadding="false"
                     />
             </com.google.android.material.textfield.TextInputLayout>
 
