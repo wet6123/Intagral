@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:clickable="true"
     tools:context=".ui.home.SettingFragment">
 
-
-    <TextView
+    <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="개인 설정"
-        android:layout_margin="10dp"
-        android:textSize="34sp"
-        android:fontFamily="@font/scdream5"
-        />
+        android:background="@color/white">
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_scrollFlags="noScroll">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="개인 설정"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginVertical="10dp"
+                android:textSize="28sp"
+                android:fontFamily="@font/scdream5"
+                />
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:layout_margin="14dp"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -30,57 +44,51 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="vertical" >
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#666666"/>
 
                 <TextView
                     android:id="@+id/terms_of_service_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="18dp"
                     android:text="개인정보처리방침"
                     android:background="?attr/selectableItemBackground"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/scdream5"
                     />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#666666"/>
+                    android:layout_height="1dp"
+                    android:background="#20000000"/>
 
                 <TextView
                     android:id="@+id/question_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="18dp"
                     android:text="문의하기"
                     android:background="?attr/selectableItemBackground"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/scdream5"
                     />
 
                 <View
                     android:layout_width="match_parent"
-                    android:layout_height="2dp"
-                    android:background="#666666"/>
+                    android:layout_height="1dp"
+                    android:background="#20000000"/>
 
                 <TextView
                     android:id="@+id/logout_button"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingHorizontal="20dp"
-                    android:paddingVertical="10dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="18dp"
                     android:text="로그아웃"
                     android:background="?attr/selectableItemBackground"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/scdream5"
                     />
             </LinearLayout>
@@ -88,11 +96,12 @@
 
         <TextView
             android:id="@+id/textView3"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0"
             android:layout_margin="10dp"
-            android:text="version 0.0.1\nmade by team 그Tag사람" />
+            android:text="version 1.0.1\nmade by team 그Tag사람"
+            android:layout_gravity="end"/>
     </LinearLayout>
 
-</LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
