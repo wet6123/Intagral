@@ -28,14 +28,18 @@
             android:id="@+id/back_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="뒤로가기" />
+            android:text="뒤로가기"
+            android:fontFamily="@font/scdream5"
+            />
 
         <Button
             android:id="@+id/publish_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="14dp"
-            android:text="게시하기" />
+            android:text="게시하기"
+            android:fontFamily="@font/scdream5"
+            />
     </LinearLayout>
 
 

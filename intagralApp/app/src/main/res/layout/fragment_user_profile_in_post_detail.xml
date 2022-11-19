@@ -40,7 +40,9 @@
             android:layout_marginStart="24dp"
             android:gravity="center_vertical"
             android:textSize="20sp"
-            android:text="팔로워"/>
+            android:text="팔로워"
+            android:fontFamily="@font/scdream5"
+            />
     </LinearLayout>
     <LinearLayout
 
@@ -56,7 +58,9 @@
             android:layout_height="wrap_content"
             android:inputType="numberSigned"
             android:text="0"
-            android:textSize="20dp"/>
+            android:textSize="20dp"
+            android:fontFamily="@font/scdream5"
+            />
 
         <ToggleButton
             android:id="@+id/button_like"
