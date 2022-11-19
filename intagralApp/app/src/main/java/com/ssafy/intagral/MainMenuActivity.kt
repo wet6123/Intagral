@@ -101,6 +101,7 @@ class MainMenuActivity : AppCompatActivity() {
                 }
             }
 
+            // this observer is used only in one's following or follower page
             profileSimpleViewModel.getProfileSimpleList().observe(this@MainMenuActivity){
                 it?.also{
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
