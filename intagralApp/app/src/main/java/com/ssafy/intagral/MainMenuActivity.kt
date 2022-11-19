@@ -142,17 +142,21 @@ class MainMenuActivity : AppCompatActivity() {
                 R.id.nav_home -> {
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, HomeFragment()).commit()
+                    binding.menuAppBar.elevation = 0f
                 }
                 R.id.nav_upload -> {
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PhotoPicker.newInstance()).commit()
+                    binding.menuAppBar.elevation = 10f
                 }
                 R.id.nav_hashtag -> {
                     supportFragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE)
                     transaction.replace(R.id.menu_frame_layout, PresetViewFragment.newInstance()).commit()
+                    binding.menuAppBar.elevation = 0f
                 }
                 R.id.nav_mypage -> {
                     profileDetailViewModel.changeProfileDetail(ProfileSimpleItem(ProfileType.user, IntagralApplication.prefs.nickname!!, false, ""))
+                    binding.menuAppBar.elevation = 0f
                 }
                 else -> {
 
