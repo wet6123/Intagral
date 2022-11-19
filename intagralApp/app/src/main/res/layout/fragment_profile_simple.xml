@@ -52,5 +52,5 @@
             android:layout_gravity="center"
             android:text="Follow"
             android:fontFamily="@font/scdream5"
-            />
+            android:textColor="@color/white"/>
 </LinearLayout>
