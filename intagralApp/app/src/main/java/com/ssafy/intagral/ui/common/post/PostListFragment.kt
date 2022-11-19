@@ -48,6 +48,8 @@ class PostListFragment: Fragment() {
 
         binding = FragmentPostListBinding.inflate(inflater, container, false).apply {
             context?.also {
+                noPostFoundFragment.noFoundText.text = "게시물 없음"
+                noPostFoundFragment.noFoundLayout.visibility = View.GONE
                 postAdapter = PostAdapter(it, postList)
                 postListRecyclerView.apply {
                     adapter = postAdapter
@@ -69,6 +71,9 @@ class PostListFragment: Fragment() {
             }
         }
         postAdapter.notifyDataSetChanged()
+        if(initType == "user" || initType == "hashtag"){
+            checkAndShowEmptyList()
+        }
 
         postListViewModel.getPostList().observe(viewLifecycleOwner){
             it?.also{
@@ -85,6 +90,9 @@ class PostListFragment: Fragment() {
                     }
                 }
                 postAdapter.notifyItemRangeInserted(start, num)
+                if(initType == "user" || initType == "hashtag"){
+                    checkAndShowEmptyList()
+                }
             }
         }
 
@@ -100,11 +108,24 @@ class PostListFragment: Fragment() {
                     postList.removeAt(deletedIndex)
                     postAdapter.notifyItemRemoved(deletedIndex)
                     postAdapter.notifyItemRangeChanged(deletedIndex, postList.size)
-                    postListViewModel.reloadRecentPage()
+                    if(initType == "user" || initType == "hashtag"){
+                        checkAndShowEmptyList()
+                    }
                 }
             }
         }
         return binding.root
+    }
+
+    private fun checkAndShowEmptyList(){
+        val result = postList.size
+        if(result == 0){
+            binding.noPostFoundFragment.noFoundLayout.visibility = View.VISIBLE
+            binding.postListRecyclerView.visibility = View.GONE
+        } else {
+            binding.noPostFoundFragment.noFoundLayout.visibility = View.GONE
+            binding.postListRecyclerView.visibility = View.VISIBLE
+        }
     }
 
     inner class PostAdapter(context: Context, val p: MutableList<PostItem>)

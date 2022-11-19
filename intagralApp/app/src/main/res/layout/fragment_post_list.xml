@@ -4,6 +4,16 @@
     android:layout_height="match_parent"
     android:clickable="true"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+        <include
+            android:id="@+id/no_post_found_fragment"
+            layout="@layout/view_empty_follow"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/post_list_recycler_view"
 
