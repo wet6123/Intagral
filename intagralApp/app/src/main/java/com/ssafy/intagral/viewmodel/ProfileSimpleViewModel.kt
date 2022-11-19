@@ -16,10 +16,25 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileSimpleViewModel @Inject constructor(private val searchService: SearchService, private val followService: FollowService): ViewModel(){
+
+    //TODO: page info 관리 다시 하기..
+    enum class ProfileListPageInfo {
+        NONE,
+        SEARCH,
+        FOLLOWER,
+        FOLLOWING,
+        HASHTAGFOLLOWING
+    }
+
     private var profileSimpleList: MutableLiveData<ArrayList<ProfileSimpleItem>> = MutableLiveData()
+    private var profileListPageInfo: MutableLiveData<ProfileListPageInfo> = MutableLiveData()
 
     fun getProfileSimpleList(): MutableLiveData<ArrayList<ProfileSimpleItem>>{
         return profileSimpleList
+    }
+
+    fun getProfileListPageInfo(): MutableLiveData<ProfileListPageInfo> {
+         return profileListPageInfo
     }
 
     fun search(q: String) {
@@ -64,12 +79,19 @@ class ProfileSimpleViewModel @Inject constructor(private val searchService: Sear
 //TODO: array size 0일 때
     fun getOnesFollowList(type: String, q: String) {
         viewModelScope.launch {
+            when(type) {
+                "hashtag" -> { profileListPageInfo.value = ProfileListPageInfo.HASHTAGFOLLOWING }
+                "follower" -> { profileListPageInfo.value = ProfileListPageInfo.FOLLOWER }
+                "following" -> { profileListPageInfo.value = ProfileListPageInfo.FOLLOWING }
+                else -> { profileListPageInfo.value = ProfileListPageInfo.NONE }
+            }
             profileSimpleList.value = followService.getOnesFollowingList(type, q)
         }
     }
 
     fun getHashtagFollowerList(q: String) {
         viewModelScope.launch {
+            profileListPageInfo.value = ProfileListPageInfo.FOLLOWER
             profileSimpleList.value = followService.getHashtagFollowerList("follower", q)
         }
     }
