@@ -1,13 +1,16 @@
 package com.ssafy.intagral.ui.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import com.ssafy.intagral.MainMenuActivity
 import com.ssafy.intagral.R
 import com.ssafy.intagral.databinding.FragmentSettingBinding
+
 
 class SettingFragment : Fragment() {
 
@@ -35,7 +38,11 @@ class SettingFragment : Fragment() {
         override fun onClick(p0: View?) {
             when(p0?.id){
                 R.id.terms_of_service_button -> {
-
+                    val browserIntent = Intent(
+                        Intent.ACTION_VIEW,
+                        Uri.parse("https://k7a304.p.ssafy.io/intagral_policy.html")
+                    )
+                    startActivity(browserIntent)
                 }
                 R.id.logout_button -> {
                     val activity = requireActivity() as MainMenuActivity
