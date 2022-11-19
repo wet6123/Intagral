@@ -7,18 +7,19 @@
     android:clickable="true"
     tools:context=".MainMenuActivity">
 
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/menu_top_toolbar"
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/menu_app_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
+        android:background="@color/white"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/menu_frame_layout">
 
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent" >-->
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/menu_top_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
             <ImageView
                 android:id="@+id/top_intagral_logo"
@@ -29,12 +30,10 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0"
-                />
+                app:layout_constraintHorizontal_bias="0"/>
 
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-    </androidx.appcompat.widget.Toolbar>
+        </androidx.appcompat.widget.Toolbar>
+    </com.google.android.material.appbar.AppBarLayout>
 
     <FrameLayout
         android:id="@+id/menu_frame_layout"
@@ -42,7 +41,7 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toTopOf="@+id/menu_bottom_navigation"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/menu_top_toolbar">
+        app:layout_constraintTop_toBottomOf="@+id/menu_app_bar">
 
     </FrameLayout>
 
