@@ -27,7 +27,7 @@
             android:layout_height="40dp"
             android:layout_alignParentBottom="true"
             android:fontFamily="@font/scdream5"
-            />
+            android:textColor="@color/white"/>
         <LinearLayout
             android:id="@+id/profile_detail_follower"
             android:layout_width="match_parent"

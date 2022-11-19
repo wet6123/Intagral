@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:text="뒤로가기"
             android:fontFamily="@font/scdream5"
-            />
+            android:textColor="@color/white" />
 
         <Button
             android:id="@+id/publish_button"
@@ -39,7 +39,7 @@
             android:layout_marginStart="14dp"
             android:text="게시하기"
             android:fontFamily="@font/scdream5"
-            />
+            android:textColor="@color/white" />
     </LinearLayout>
 
 

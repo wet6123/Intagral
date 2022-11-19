@@ -45,5 +45,5 @@
         android:layout_weight="0"
         android:text="해시태그 생성"
         android:fontFamily="@font/scdream5"
-        />
+        android:textColor="@color/white" />
 </LinearLayout>
