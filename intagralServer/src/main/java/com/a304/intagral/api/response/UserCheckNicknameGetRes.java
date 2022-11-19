@@ -10,13 +10,13 @@ import lombok.Setter;
 public class UserCheckNicknameGetRes extends BaseResponseBody {
 
     @JsonProperty(value = "isAvailable")
-    boolean isAvailable;
+    Integer isAvailable;
 
-    public static UserCheckNicknameGetRes of(Integer statusCode, String message, boolean isAvailable) {
+    public static UserCheckNicknameGetRes of(Integer statusCode, String message, Integer isAvailable) {
         UserCheckNicknameGetRes res = new UserCheckNicknameGetRes();
         res.setStatusCode(statusCode);
         res.setMessage(message);
-        res.setAvailable(isAvailable);
+        res.setIsAvailable(isAvailable);
         return res;
     }
 
