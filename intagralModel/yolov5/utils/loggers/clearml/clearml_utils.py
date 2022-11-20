@@ -85,9 +85,9 @@ class ClearmlLogger:
         self.data_dict = None
         if self.clearml:
             self.task = Task.init(
-                project_name='YOLOv5',
-                task_name='training',
-                tags=['YOLOv5'],
+                project_name='프로젝트 이름',
+                task_name='experiment 이름',
+                tags=['원하는','태그','목록','roboflow'],
                 output_uri=True,
                 auto_connect_frameworks={'pytorch': False}
                 # We disconnect pytorch auto-detection, because we added manual model save points in the code
