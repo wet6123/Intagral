@@ -58,12 +58,18 @@ from utils.torch_utils import (EarlyStopping, ModelEMA, de_parallel, select_devi
                                smart_resume, torch_distributed_zero_first)
 
 from clearml import Task
+import gc
+# empty cache
+gc.collect()
+torch.cuda.empty_cache()
+##
+
 
 LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))  # https://pytorch.org/docs/stable/elastic/run.html
 RANK = int(os.getenv('RANK', -1))
 WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 
-task=Task.init(project_name="a304",task_name="training_fiftyone")
+task=Task.init(project_name="a304",task_name="training_fiftyone_coco10000_robo")
 
 
 
