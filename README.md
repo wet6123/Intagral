@@ -93,10 +93,13 @@
 # 기술스택
 
 -   **Back-end**
+
     ![springboot](https://img.shields.io/badge/SpringBoot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
     ![springsecurity](https://img.shields.io/badge/SpringSecurity-6DB33F?logo=SpringSecurity&logoColor=FFFFFF&style=for-the-badge)
     ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JsonWebTokens&logoColor=white)
+
     -   JPA
+
 -   **Database**
 
     ![MYSQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
@@ -116,6 +119,7 @@
     ![Nginx](https://img.shields.io/badge/Nginx-009639?logo=Nginx&logoColor=000000&style=for-the-badge)
 
 -   **Cooperation**
+
     ![Jira](https://img.shields.io/badge/Jira-0052CC?style=for-the-badge&logo=JiraSoftware&logoColor=white)
     ![GitLab](https://img.shields.io/badge/GitLab-FEEEEE?style=for-the-badge&logo=GitLab&logoColor=FC6D26)
     ![Mattermost](https://img.shields.io/badge/Mattermost-0058CC?logo=Mattermost&logoColor=FFFFFF&style=for-the-badge)
