@@ -1,0 +1,8 @@
+path: ../datasets/roboflow
+train: train/images
+val: valid/images
+test: test/images
+
+
+nc: 32
+names: ['basket', 'bathtub', 'bed', 'cabinet', 'carpet', 'chair', 'chandelier', 'clock', 'closet', 'computer', 'couch', 'curtain', 'diningtable', 'drawer', 'fan', 'lamp', 'light', 'mirror', 'notebook', 'oven', 'pillow', 'potted plant', 'refrigerator', 'shelf', 'showerhead', 'sink', 'stove', 'table', 'toilet', 'tv', 'vase', 'washstand']

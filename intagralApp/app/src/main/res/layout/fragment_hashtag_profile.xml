@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="210dp"
+    android:orientation="vertical"
+    android:clickable="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp">
+        <ImageView
+            android:id="@+id/hashtag_profile_img"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/intagral_logo"
+            android:layout_alignParentLeft="true"/>
+        <Button
+            android:id="@+id/profile_detail_btn"
+            android:text="follow"
+            android:layout_toRightOf="@+id/hashtag_profile_img"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/scdream5"
+            android:textColor="@color/white"/>
+        <LinearLayout
+            android:id="@+id/profile_detail_follower"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toRightOf="@+id/hashtag_profile_img"
+            android:layout_above="@+id/profile_detail_btn"
+            android:gravity="center">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="팔로워"/>
+                <TextView
+                    android:id="@+id/follower_cnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="10dp"
+                    android:text="100"/>
+            </LinearLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_gravity="left">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_detail_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:text="갱얼쥐ggg"
+                android:textSize="16sp"
+                android:fontFamily="@font/scdream5"
+                />
+
+            <TextView
+                android:id="@+id/profile_detail_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
+                android:text="갱얼쥐235uoieioauoisdjlfjkldsjklfjkdsjkldsjklfjkdsjkglhkalwjeklrsjkldfjksdjlkfjklsdjoigawjeoiruioweu918391724f"
+                android:textSize="12sp"
+                android:fontFamily="@font/scdream5"
+                />
+
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>

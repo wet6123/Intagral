@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/nav_home"
+        android:title="홈"
+        android:enabled="true"
+        app:showAsAction="always"
+        android:icon="@drawable/home_btn"/>
+    <item
+        android:id="@+id/nav_upload"
+        android:title="게시"
+        android:enabled="true"
+        app:showAsAction="always"
+        android:icon="@drawable/upload_btn"/>
+    <item
+        android:id="@+id/nav_hashtag"
+        android:title="태그"
+        android:enabled="true"
+        app:showAsAction="always"
+        android:icon="@drawable/tag_btn"/>
+    <item
+        android:id="@+id/nav_mypage"
+        android:title="My"
+        android:enabled="true"
+        app:showAsAction="always"
+        android:icon="@drawable/mypage_btn"/>
+</menu>

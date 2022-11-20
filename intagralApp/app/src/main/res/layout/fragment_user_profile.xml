@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:clickable="true"
+    android:orientation="vertical">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="130dp">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/user_profile_img_card"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentLeft="true"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="50pt">
+
+            <ImageView
+                android:id="@+id/user_profile_img"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/intagral_logo"
+                android:adjustViewBounds="true"
+                android:scaleType="centerCrop"/>
+
+        </androidx.cardview.widget.CardView>
+        <Button
+            android:id="@+id/profile_detail_btn"
+            android:text="follow"
+            android:layout_toRightOf="@+id/user_profile_img_card"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_alignParentBottom="true"
+            android:fontFamily="@font/scdream5"
+            android:textColor="@color/white"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_toRightOf="@+id/user_profile_img_card"
+            android:layout_above="@+id/profile_detail_btn"
+            android:gravity="center">
+
+            <LinearLayout
+                android:id="@+id/follower_btn"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="팔로워"
+                    android:fontFamily="@font/scdream5"
+                    />
+                <TextView
+                    android:id="@+id/follower_cnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="100"
+                    android:fontFamily="@font/scdream5"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/following_btn"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="팔로잉"
+                    android:fontFamily="@font/scdream5"
+                    />
+                <TextView
+                    android:id="@+id/following_cnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="150"
+                    android:fontFamily="@font/scdream5"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/hashtag_btn"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="해시태그"
+                    android:fontFamily="@font/scdream5"
+                    />
+                <TextView
+                    android:id="@+id/hashtag_cnt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="30"
+                    android:fontFamily="@font/scdream5"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+    <androidx.appcompat.widget.LinearLayoutCompat
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/profile_info_view_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/profile_detail_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="갱얼쥐ggg"
+                android:textSize="20sp"
+                android:fontFamily="@font/scdream5"
+                />
+
+            <TextView
+                android:id="@+id/profile_detail_intro"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingVertical="10dp"
+                android:text="갱얼쥐235uoieioauoisdjlfjkldsjklfjkdsjkldsjklfjkdsjkglhkalwjeklrsjkldfjksdjlkfjklsdjoigawjeoiruioweu918391724f"
+                android:textSize="14sp"
+                android:fontFamily="@font/scdream5"
+                />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/profile_info_edit_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_nickname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:hint="닉네임" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_intro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:hint="소개글" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</LinearLayout>

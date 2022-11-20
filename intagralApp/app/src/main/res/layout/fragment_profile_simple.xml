@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:clickable="true"
+    android:layout_marginHorizontal="20dp"
+    android:layout_marginVertical="10dp">
+        <LinearLayout
+            android:id="@+id/profile_simple_imgAndName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="50pt"
+                app:cardBackgroundColor="#10000000"
+                app:cardElevation="0dp">
+
+                <ImageView
+                    android:id="@+id/profile_simple_img"
+                    android:layout_width="70dp"
+                    android:layout_height="70dp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/intagral_logo"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/profile_simple_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:gravity="center_vertical"
+                android:textSize="14sp"
+                android:text="팔로워"
+                android:fontFamily="@font/scdream5"
+                />
+        </LinearLayout>
+        <Button
+            android:id="@+id/profile_simple_followbtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:text="Follow"
+            android:textSize="12sp"
+            android:fontFamily="@font/scdream5"
+            android:textColor="@color/white"/>
+</LinearLayout>
