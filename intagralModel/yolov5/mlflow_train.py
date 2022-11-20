@@ -68,7 +68,7 @@ LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))
 RANK = int(os.getenv('RANK', -1))
 WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 MLFLOW_URI="running server url:port"
-MLFLOW_EXP_NAME="ultralytics/yolov5"
+MLFLOW_EXP_NAME="experiment 이름"
 
 def train(hyp, opt, device, callbacks):  # hyp is path/to/hyp.yaml or hyp dictionary
     save_dir, epochs, batch_size, weights, single_cls, evolve, data, cfg, resume, noval, nosave, workers, freeze = \

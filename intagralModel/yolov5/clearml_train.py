@@ -69,7 +69,7 @@ LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))  # https://pytorch.org/docs/stable
 RANK = int(os.getenv('RANK', -1))
 WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 
-task=Task.init(project_name="a304",task_name="training_fiftyone_coco10000_robo")
+task=Task.init(project_name="프로젝트 이름",task_name="experiment 이름")
 
 
 
