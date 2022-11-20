@@ -1,0 +1,18 @@
+names:
+- suitcase
+- chair
+- couch
+- potted plant
+- bed
+- dining table
+- toilet
+- tv
+- microwave
+- refrigerator
+- clock
+- vase
+nc: 12
+path: /home/jupyter-k7a304/intagralModel/datasets/fiftyonecoco/cocoyolo
+test: ./images/test/
+train: ./images/train/
+val: ./images/val/
