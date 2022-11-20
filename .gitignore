@@ -1,1 +1,5 @@
 
+datasets/
+yolov5/runs/detect/*
+yolov5/runs/train/*
+clearml.conf
